@@ -1,0 +1,27 @@
+<mat-card class="bg-success">
+    <mat-card-content>
+        <!-- column -->
+        <div class="d-flex no-block align-items-center">
+            <div class="stats">
+                <h1 class="text-white m-0">35487</h1>
+                <h3 class="text-white m-0">{{texts.equipments | translate}}
+
+                </h3>
+                <!-- <h6 class="text-white m-t-0">March 2017</h6> -->
+                
+            </div>
+            <div class="ml-auto" style="height: 84px; width: 100px">
+                <div class="d-flex flex-column">
+                    <apx-chart [series]="inexpuchartOptions.series" [chart]="inexpuchartOptions.chart"
+                        [dataLabels]="inexpuchartOptions.dataLabels"
+                        [plotOptions]="inexpuchartOptions.plotOptions" [yaxis]="inexpuchartOptions.yaxis"
+                        [legend]="inexpuchartOptions.legend" [fill]="inexpuchartOptions.fill"
+                        [stroke]="inexpuchartOptions.stroke" [tooltip]="inexpuchartOptions.tooltip"
+                        [xaxis]="inexpuchartOptions.xaxis" [grid]="inexpuchartOptions.grid">
+                    </apx-chart>
+                </div>
+
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,72 @@
+<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center" fxLayout.xs="column" class="z-index-50">
+    <mat-card fxFlex.gt-xs="100">
+
+        <mat-card-content>
+           <div fxLayout="row" class="display-flex">
+                <mat-card-title  >Lists of office equipments</mat-card-title>
+                <button mat-raised-button type="button" (click)="openAddDialog()" color="primary" >
+                    <mat-icon class="md-36">add</mat-icon>
+                </button>
+           </div>
+            
+            <div class="responsive-table" >
+                
+                <mat-table #table [dataSource]="dataSource">
+
+                    <!-- Position Column -->
+                    <!-- <ng-container matColumnDef="position">
+                        <mat-header-cell *matHeaderCellDef> Position. </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="header-label">Position:</span>
+                            {{element.position}}
+                        </mat-cell>
+                    </ng-container> -->
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="header-label">Name:</span>
+                            {{element.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="header-label">Status:</span>
+                            {{element.status}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="category">
+                        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="header-label">Category:</span>
+                            {{element.category}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="header-label">Action:</span>
+                            <div class="buttons">
+                                <button class="action-button" (click)="openEditDialog(element)" mat-raised-button color="primary">Edit</button>
+                                <button class="action-button" (click)="onDelete(element)"mat-raised-button color="warn">Delete</button>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <!-- <button type="button" (click)="openAddDialog()" mat-fab color="primary" class="add-button">
+        <mat-icon>add</mat-icon>
+    </button> -->
+</div>

@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-content>
+        <div class="log-header" fxLayout="row">
+            <mat-card-title>Equipments Report</mat-card-title>
+            <button mat-raised-button color="primary">
+                <mat-icon >print</mat-icon>&nbsp; Print
+            </button>
+        </div>
+        
+        <mat-form-field>
+            <input matInput type='text' class="form-control" placeholder='Search log' (keyup)='updateFilter($event)'
+            />
+        </mat-form-field>
+        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

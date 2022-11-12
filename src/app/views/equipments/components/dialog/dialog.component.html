@@ -1,0 +1,71 @@
+<div fxFlex.gt-xs="100" fxFlex.gt-md="7100" fxFlex="100">
+    <!-- <mat-card>
+        <mat-card-content> -->
+            <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn">close</mat-icon>
+            <div fxLayout="column" fxLayoutWrap="wrap">
+                <!-- column -->
+                <div *ngIf="!this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100">
+                    <strong> Add Equipment </strong>
+                </div>
+                <div *ngIf="this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100"> 
+                    <strong> Edit Equipment </strong>
+                </div>
+
+                <form [formGroup]="_equipmentForm" (ngSubmit)="onAddEquipment(formDirective)" #formDirective="ngForm"  class="m-t-20">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input 
+                        matInput
+                        required
+                        formControlName="name"
+                         >
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <input 
+                        matInput
+                        required
+                        formControlName="status"
+                         >
+                    </mat-form-field>
+                
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <input 
+                        matInput
+                        required
+                        formControlName="category"
+                         >
+                    </mat-form-field>
+
+                    <div> Equipment Details</div><br/>
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Price</mat-label>
+                        <input 
+                        matInput
+                        required
+                        formControlName="price"
+                         >
+                    </mat-form-field>
+        
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <textarea 
+                        matInput
+                        required
+                        formControlName="description"
+                         ></textarea>
+                    </mat-form-field>
+
+                    <div fxLayout="row" fxLayout.xs="column" class="center-item">
+                        <button *ngIf="!this.equipmentsService.isEdit" type="submit" class="button-margin button-width" mat-raised-button [mat-dialog-close]=""  color="primary">Add</button>
+                        <button *ngIf="this.equipmentsService.isEdit" type="button" (click)="onCancelEdit(formDirective)" [mat-dialog-close]=""  class="button-margin button-width" mat-raised-button color="basic">Cancel</button>
+                        <button *ngIf="this.equipmentsService.isEdit" type="button" (click)="onEditEquipment(formDirective)" [mat-dialog-close]=""  class="button-margin button-width button-purple" mat-raised-button >Edit</button>
+                    </div> 
+
+                </form>
+            </div>
+        <!-- </mat-card-content>
+    </mat-card> -->
+</div>

@@ -1,0 +1,76 @@
+<div fxLayout="row wrap">
+    <!-- Card column -->
+    <div fxFlex.gt-sm="100%" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                <mat-card-title>To Recieve Equipments</mat-card-title>
+            </mat-card-content>
+            <!-- <div>
+                <button mat-raised-button class="example-add-tab-button"
+                    (click)="addTab(true)">
+                    Add new tab
+                </button>
+            </div> -->
+            <mat-tab-group class="demo-tab-group">
+                <mat-tab >
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">update</mat-icon>
+                        Pending
+                    </ng-template>
+                    <!-- <mat-card-title>Filtered table</mat-card-title> -->
+                    <div class="search-field">
+                        <mat-form-field >
+                            <input matInput type='text' class="form-control" placeholder='Search request' (keyup)='updateFilter($event)'/>
+                        </mat-form-field>
+                    </div>
+                    <div class="table-list">
+                        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+                        </ngx-datatable>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+                        Approved
+                    </ng-template>
+                    <div class="search-field">
+                        <mat-form-field >
+                            <input matInput type='text' class="form-control" placeholder='Search request' (keyup)='updateFilter($event)'/>
+                        </mat-form-field>
+                    </div>
+                    <div class="table-list">
+                        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+                        </ngx-datatable>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">thumb_down</mat-icon>
+                        Disapproved
+                    </ng-template>
+                    <div class="search-field">
+                        <mat-form-field >
+                            <input matInput type='text' class="form-control" placeholder='Search request' (keyup)='updateFilter($event)'/>
+                        </mat-form-field>
+                    </div>
+                    <div class="table-list">
+                        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                        [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+                        </ngx-datatable>
+                    </div>
+                </mat-tab>
+                <!-- <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+                    Contents for {{tab}} tab
+
+                    <button mat-raised-button class="example-delete-tab-button" 
+                        (click)="removeTab(index)">
+                        Delete Tab
+                    </button>
+                </mat-tab> -->
+               
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>

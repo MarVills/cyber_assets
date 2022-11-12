@@ -1,0 +1,65 @@
+.center-item{
+align-self: center;
+justify-self: center;
+justify-content: center;
+align-items: center;
+width: 100%;
+display: flex;
+}
+
+.button-width{
+    width: 80%;
+}
+
+.button-margin{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.responsive-table mat-header-cell, mat-cell{
+    text-align: center;
+    justify-content: center;
+  }
+
+.action-button{
+    margin: 5px;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.add-button{
+    // position: relative;
+    // top: 55;
+    top: 0;
+    right: 0;
+    margin-right: 50px;
+    margin-top: 20px;
+    // transform: scale(1);
+    // background-color: #125699;
+    color: white;
+  }
+
+  .width-50{
+    width: 50px;
+  }
+
+  .z-index-100{
+    z-index: 100;
+  }
+
+  .z-index-50{
+    z-index: 50;
+  }
+
+  .float-right{
+     float: right;
+  }
+
+  .display-flex{
+    display: flex;
+    justify-content:space-between;
+    margin-left: 10px;
+
+  }
