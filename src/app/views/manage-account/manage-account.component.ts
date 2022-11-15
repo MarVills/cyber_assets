@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Contact } from 'src/app/store/state/manage-account.state';
+import { Contact } from 'src/app/store/state/accounts/manage-account.state';
 import { UserAccountDialogComponent } from './components/user-account-dialog/user-account-dialog.component';
 
 @Component({
@@ -45,9 +45,9 @@ export class ManageAccountComponent implements OnInit {
   });
 
   dialogRef.afterClosed().subscribe(result => {
-      if (result.event === 'Add') {
-          this.addContact(result.data);
-      }
+      // if (result.event === 'Add') {
+      //     this.addContact(result.data);
+      // }
 
   });
   }

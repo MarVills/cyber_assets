@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, of, } from 'rxjs';
 // import { HandleTokenService } from 'src/app/shared/handle-token.service';
 import { Equipment, EquipmentDTO } from '../state/equipments.state';
 import * as equipmentActions from './equipments.actions';
-import { EquipmentsService } from '../services/equipments.service';
+import { EquipmentsService } from '../services/inventory/equipments.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { catchError, mergeMap, switchMap } from 'rxjs/operators';
 // import { TokenInterceptor } from 'src/app/shared/token.interceptor';
@@ -39,17 +39,21 @@ export class EquipmentsEffects {
     return subject;
   };
   
-  // fetchEquipmentsEFFECT$: Observable<Action> = createEffect(() => this.actions$.pipe(
-  //   ofType(equipmentActions.requestFetchEquipmentsACTION),
-  //   switchMap((_)=>{
-  //     return this.fireStore.collection('equipments').valueChanges({idField: 'id'}).pipe(
-  //       switchMap((data: any)=>{
-  //         return equipmentActions.successFetchEquipmentsACTION({ payload: data })
-  //       }),
-  //       catchError((error: Error) => of(equipmentActions.onEquipmentFailure({ error: error })))
-  //     )
-  //   })
-  // ));
+  fetchEquipmentsEFFECT$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(equipmentActions.requestFetchEquipmentsACTION),
+    // switchMap((_)=>{
+    //   const subject = new BehaviorSubject<Equipment[]>([]);
+    //   return this.fireStore.collection('equipments').valueChanges({ idField: 'id' }).subscribe((val: any) => {
+    //     subject.next(val);
+    //   });
+    //   // .pipe(
+    //   //   switchMap((data: any)=>{
+    //   //     return equipmentActions.successFetchEquipmentsACTION({ payload: data })
+    //   //   }),
+    //   //   catchError((error: Error) => of(equipmentActions.onEquipmentFailure({ error: error })))
+    //   // )
+    // })
+  ));
 // ===========================================================================
     // mergeMap(() =>{
     //   return this.http.get<any>(`/api/products?page=${res.page.toString()}`, this.config).pipe(

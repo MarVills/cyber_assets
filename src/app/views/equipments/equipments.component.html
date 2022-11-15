@@ -13,16 +13,6 @@
                 
                 <mat-table #table [dataSource]="dataSource">
 
-                    <!-- Position Column -->
-                    <!-- <ng-container matColumnDef="position">
-                        <mat-header-cell *matHeaderCellDef> Position. </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <span class="header-label">Position:</span>
-                            {{element.position}}
-                        </mat-cell>
-                    </ng-container> -->
-
-                    <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                         <mat-cell *matCellDef="let element">
@@ -31,7 +21,6 @@
                         </mat-cell>
                     </ng-container>
 
-                    <!-- Weight Column -->
                     <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                         <mat-cell *matCellDef="let element">
@@ -40,7 +29,6 @@
                         </mat-cell>
                     </ng-container>
 
-                    <!-- Symbol Column -->
                     <ng-container matColumnDef="category">
                         <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
                         <mat-cell *matCellDef="let element">
@@ -66,7 +54,4 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <!-- <button type="button" (click)="openAddDialog()" mat-fab color="primary" class="add-button">
-        <mat-icon>add</mat-icon>
-    </button> -->
 </div>

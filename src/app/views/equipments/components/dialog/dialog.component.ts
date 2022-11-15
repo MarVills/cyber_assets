@@ -1,18 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-dialog',
-//   templateUrl: './dialog.component.html',
-//   styleUrls: ['./dialog.component.scss']
-// })
-// export class DialogComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit(): void {
-//   }
-
-// }
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -21,7 +6,7 @@ import { EQUIPMENT_DATA } from '../../../../store/state/equipments.state';
 import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { EquipmentsService } from '../../../../store/services/equipments.service';
+import { EquipmentsService } from '../../../../store/services/inventory/equipments.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from 'src/app/shared/shared.service';
 

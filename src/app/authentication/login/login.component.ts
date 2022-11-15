@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { MyserviceService } from '../../myservice.service';
+import { LoginService } from 'src/app/store/services/authentication/login.service';
 
 import {
   FormBuilder,
@@ -17,15 +18,19 @@ import {
 })
 export class LoginComponent implements OnInit {
   msg = '';
-  constructor(private service: MyserviceService, private routes: Router) { }
+  constructor(
+    private service: MyserviceService, 
+    private routes: Router,
+    private loginService: LoginService) { }
 
-  check(uname: string, p: string) {
-    const output = this.service.checkusernameandpassword(uname, p);
+  async check(uname: string, p: string) {
+    const output = await this.service.checkusernameandpassword(uname, p);
     if (output == true) {
-      this.routes.navigate(['/starter']);
+      this.routes.navigate(['/dashboard']);
     } else {  
       this.msg = 'Invalid Username or Password';
     }
+    
   }
 
   ngOnInit() {}

@@ -6,7 +6,7 @@ import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
 import { FormGroup, FormGroupDirective, } from '@angular/forms';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialog} from '@angular/material/dialog';
-import { EquipmentsService } from 'src/app/store/services/equipments.service';
+import { EquipmentsService } from 'src/app/store/services/inventory/equipments.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
