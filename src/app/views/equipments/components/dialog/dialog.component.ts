@@ -2,8 +2,8 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { EQUIPMENT_DATA } from '../../../../store/state/equipments.state';
-import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
+import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
+import { Equipment } from 'src/app/Models/equipment.model';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { EquipmentsService } from '../../../../store/services/inventory/equipments.service';
@@ -18,8 +18,9 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class DialogComponent implements OnInit {
   
-  displayedColumns = [ 'name', 'status', 'category', 'action'];
+  displayedColumns = [ 'equipment', 'status', 'category', 'action'];
   dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
+  actionButton: string = "Add";
   
   _equipmentForm!: FormGroup;
   
@@ -33,19 +34,20 @@ export class DialogComponent implements OnInit {
     private sharedService: SharedService) { 
     breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
       this.displayedColumns = result.matches ?
-          [ 'name', 'status', 'category', 'action'] :
-          [ 'name', 'status', 'category', 'action'];
+          [ 'equipment', 'status', 'category', 'action'] :
+          [ 'equipment', 'status', 'category', 'action'];
     });
   }
 
   ngOnInit(): void {
     this.equipmentForm();
+    this.equipmentsService.isEdit? this.actionButton = "Edit": "Add"; 
   }
   
   equipmentForm(){
     var isEdit = this.equipmentsService.isEdit;
     this._equipmentForm = this.formBuilder.group({
-      name: new FormControl(isEdit?this.equipmentData.name:"", Validators.required),
+      equipment: new FormControl(isEdit?this.equipmentData.equipment:"", Validators.required),
       status: new FormControl(isEdit?this.equipmentData.status:"", Validators.required),
       price: new FormControl(isEdit?this.equipmentData.price:"", [
         Validators.required,
@@ -56,31 +58,6 @@ export class DialogComponent implements OnInit {
      });
   }
 
-
-  onAddEquipment(formDirective: FormGroupDirective){
-    var data = this._equipmentForm.value;
-    EQUIPMENT_DATA.push(data)
-    this.equipmentsService.onAddEquipment(data).then(res => {
-      this.sharedService.openSnackBar("Equipment Added Successfully", "Ok")
-    })
-    this.clearForm(formDirective);
-    formDirective.resetForm();
-  }
-
-  // onSelectEditEquipment(data: EquipmentDTO){
-  //   this.equipmentsService.isEdit = true;
-  //   this.toEditData = data;
-  //   this.equipmentForm()
-  // }
-
-  onEditEquipment(formDirective: FormGroupDirective){
-    this.equipmentsService.isEdit = false;
-    this.equipmentsService.onEditEquipment(this.equipmentsService.toEditData, this._equipmentForm.value).then(()=>{
-      this.sharedService.openSnackBar("Equipment Edited Successfuly", "Ok");
-    })
-    this.clearForm(formDirective)
-  }
-
   onCancelEdit(formDirective: FormGroupDirective){
     this.equipmentsService.isEdit = false
     formDirective.resetForm();
@@ -88,6 +65,22 @@ export class DialogComponent implements OnInit {
 
   clearForm(formDirective: FormGroupDirective){
     this._equipmentForm.reset()
+    formDirective.resetForm();
+  }
+
+  onSubmit(formDirective: FormGroupDirective){
+    if(this.equipmentsService.isEdit){
+      this.equipmentsService.onEditEquipment(this.equipmentsService.toEditData, this._equipmentForm.value).then(()=>{
+        this.sharedService.openSnackBar("Equipment Edited Successfuly", "Ok");
+      })
+    }else{
+      var data = this._equipmentForm.value;
+      EQUIPMENT_DATA.push(data)
+      this.equipmentsService.onAddEquipment(data).then(res => {
+        this.sharedService.openSnackBar("Equipment Added Successfully", "Ok")
+      })
+      this.clearForm(formDirective);
+    }
     formDirective.resetForm();
   }
 

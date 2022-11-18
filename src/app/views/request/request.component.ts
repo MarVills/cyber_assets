@@ -17,7 +17,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   
     @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
     searchText: any;
-    displayedColumns: string[] = ['#', 'name', 'email', 'mobile', 'date of joining', 'salary', 'projects', 'action'];
+    displayedColumns: string[] = [ 'name', 'request', 'date requested', 'action'];
 
     dataSource = new MatTableDataSource(employees);
 
@@ -65,7 +65,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
             Position: row_obj.Position,
             Email: row_obj.Email,
             Mobile: row_obj.Mobile,
-            
+            Request: "request dummy",
             DateOfJoining: new Date(),
             Salary: row_obj.Salary,
             Projects: row_obj.Projects,
@@ -179,6 +179,7 @@ const employees = [
       DateOfJoining: new Date('01-2-2020'),
       Salary: 12000,
       Projects: 10,
+      Request: 'Budget for repair',
       imagePath: 'assets/images/users/2.jpg'
   },
   {
@@ -190,6 +191,7 @@ const employees = [
       DateOfJoining: new Date('04-2-2020'),
       Salary: 12000,
       Projects: 10,
+      Request: 'Report for employee progress',
       imagePath: 'assets/images/users/3.jpg'
   },
   {
@@ -201,6 +203,7 @@ const employees = [
       DateOfJoining: new Date('02-2-2020'),
       Salary: 12000,
       Projects: 10,
+      Request: 'Pizza party',
       imagePath: 'assets/images/users/4.jpg'
   },
   {
@@ -212,6 +215,7 @@ const employees = [
       DateOfJoining: new Date('03-2-2020'),
       Salary: 12000,
       Projects: 11,
+      Request: 'Password reset',
       imagePath: 'assets/images/users/5.jpg'
   },
   {
@@ -223,6 +227,7 @@ const employees = [
       DateOfJoining: new Date('05-2-2020'),
       Salary: 12000,
       Projects: 19,
+      Request: 'Requirement tally',
       imagePath: 'assets/images/users/6.jpg'
   },
   {
@@ -234,6 +239,7 @@ const employees = [
       DateOfJoining: new Date('05-21-2020'),
       Salary: 12000,
       Projects: 5,
+      Request: 'Dummy data',
       imagePath: 'assets/images/users/7.jpg'
   },
   {
@@ -245,6 +251,7 @@ const employees = [
       DateOfJoining: new Date('02-15-2019'),
       Salary: 12000,
       Projects: 9,
+      Request: 'Party budget approval',
       imagePath: 'assets/images/users/3.jpg'
   },
   {
@@ -256,6 +263,7 @@ const employees = [
       DateOfJoining: new Date('07-3-2019'),
       Salary: 12000,
       Projects: 7,
+      Request: 'Equipment inventory for 09/12/22',
       imagePath: 'assets/images/users/6.jpg'
   },
   {
@@ -267,6 +275,7 @@ const employees = [
       DateOfJoining: new Date('01-15-2019'),
       Salary: 12000,
       Projects: 1,
+      Request: 'Other',
       imagePath: 'assets/images/users/5.jpg'
   }
 ];

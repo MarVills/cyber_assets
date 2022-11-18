@@ -1,0 +1,41 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+      <mat-card>
+        <mat-card-content>
+          <div fxLayout="row wrap" class="align-items-center">
+            <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+              <mat-form-field>
+                <input matInput class="p-b-0" placeholder="Search user" [(ngModel)]="searchText">
+              </mat-form-field>
+            </div>
+            <div fxFlex.gt-md="75" class="text-right">
+              <button mat-raised-button  color="primary" (click)="openDialog('Add',{})">Add Account</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div fxLayout="row wrap">
+    <div fxFlex.gt-lg="25" fxFlex.gt-md="33.33" fxFlex.gt-xs="100" fxFlex="100"
+      *ngFor="let account of accounts | filter:searchText">
+      <mat-card>
+        <mat-card-content class="text-center">
+          <img src="assets/images/users/default.png" class="img-circle border p-5" width="100" >
+          <h4 class="card-title m-t-15 m-b-0">{{ account.firstName }} {{ account.lastName }}</h4>
+          <small class="text-muted">{{ account.userRole }}</small>
+          <div class="m-t-20">
+            <button mat-raised-button class="m-r-5" color="primary">Edit</button>
+            <button mat-raised-button color="warn">Disable</button>
+          </div>
+          <div class="m-t-20">
+            <span>
+              {{ account.emailAddress }}
+              <br />
+              <br />
+              <i class="fa fa-phone m-r-10"></i>{{ account.contactNumber }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

@@ -1,16 +1,29 @@
 import { Component } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TranslateService } from '@ngx-translate/core';
+// import { LoginService } from 'src/app/store/services/authentication/login.service';
+import { AuthService } from 'src/app/store/services/authentication/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: []
 })
 export class AppHeaderComponent {
+
   public config: PerfectScrollbarConfigInterface = {};
 
+  constructor(
+    private translate: TranslateService,
+    private authService: AuthService) {
+    translate.setDefaultLang('en');
+  }
 
-  // This is for Notifications
+  changeLanguage(lang: any) {
+    this.translate.use(lang.code)
+    this.selectedLanguage = lang;
+  }
+  signOut = () => this.authService.signOut()
+  
   notifications: Object[] = [
     {
       round: 'round-danger',
@@ -42,7 +55,6 @@ export class AppHeaderComponent {
     }
   ];
 
-  // This is for Mymessages
   mymessages: Object[] = [
     {
       useravatar: 'assets/images/users/1.jpg',
@@ -102,15 +114,4 @@ export class AppHeaderComponent {
     code: 'de',
     icon: 'de'
   }]
-
-
-
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang('en');
-  }
-
-  changeLanguage(lang: any) {
-    this.translate.use(lang.code)
-    this.selectedLanguage = lang;
-  }
 }

@@ -30,14 +30,10 @@ display: flex;
 }
 
 .add-button{
-    // position: relative;
-    // top: 55;
     top: 0;
     right: 0;
     margin-right: 50px;
     margin-top: 20px;
-    // transform: scale(1);
-    // background-color: #125699;
     color: white;
   }
 
@@ -61,5 +57,17 @@ display: flex;
     display: flex;
     justify-content:space-between;
     margin-left: 10px;
+  }
 
+  // .category-field{
+  //   padding: 10px 15px 10px 15px;
+  // }
+
+  .padding-side-15{
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .padding-side-40{
+    margin-left: 40px;
+    margin-right: 40px;
   }

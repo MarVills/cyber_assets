@@ -8,9 +8,9 @@
                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Employee">
               </mat-form-field>
             </div>
-            <div fxFlex.gt-md="75" class="text-right">
+            <!-- <div fxFlex.gt-md="75" class="text-right">
               <button mat-raised-button (click)="openDialog('Add',{})" color="primary">Add Employee</button>
-            </div>
+            </div> -->
           </div>
         </mat-card-content>
       </mat-card>
@@ -23,10 +23,10 @@
           <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" class="table employee-list no-wrap">
   
-              <ng-container matColumnDef="#">
+              <!-- <ng-container matColumnDef="#">
                 <th mat-header-cell *matHeaderCellDef> # </th>
                 <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-              </ng-container>
+              </ng-container> -->
   
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -41,30 +41,30 @@
                 </td>
               </ng-container>
   
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+              <ng-container matColumnDef="request">
+                <th mat-header-cell *matHeaderCellDef> Request </th>
+                <td mat-cell *matCellDef="let element"> {{element.Request}} </td>
               </ng-container>
   
-              <ng-container matColumnDef="mobile">
+              <!-- <ng-container matColumnDef="mobile">
                 <th mat-header-cell *matHeaderCellDef> Mobile </th>
                 <td mat-cell *matCellDef="let element"> {{element.Mobile}} </td>
-              </ng-container>
+              </ng-container> -->
   
-              <ng-container matColumnDef="date of joining">
-                <th mat-header-cell *matHeaderCellDef> Date of Joining </th>
+              <ng-container matColumnDef="date requested">
+                <th mat-header-cell *matHeaderCellDef> Date Requested </th>
                 <td mat-cell *matCellDef="let element"> {{element.DateOfJoining | date :'fullDate'}} </td>
               </ng-container>
   
-              <ng-container matColumnDef="salary">
+              <!-- <ng-container matColumnDef="salary">
                 <th mat-header-cell *matHeaderCellDef> Salary </th>
                 <td mat-cell *matCellDef="let element"> {{element.Salary}} </td>
-              </ng-container>
+              </ng-container> -->
   
-              <ng-container matColumnDef="projects">
+              <!-- <ng-container matColumnDef="projects">
                 <th mat-header-cell *matHeaderCellDef> Projects </th>
                 <td mat-cell *matCellDef="let element"> {{element.Projects}} </td>
-              </ng-container>
+              </ng-container> -->
   
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>

@@ -1,0 +1,48 @@
+@import '../../../../../assets/styles/variable.scss';
+
+.close-icon {
+    transition: 1s ease-in-out;
+  }
+  
+.close-icon:hover {
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+  
+::ng-deep .icon-outside .close-button{
+    float: right;
+    top:-52px;
+    right:-52px;
+  }
+  
+::ng-deep .icon-outside .mat-dialog-container {
+   overflow: unset
+  }
+
+.button-width{
+    width: 80%;
+}
+
+.button-margin{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.align-right{
+    float: right;
+    justify-self: right;
+    align-self: right;
+}
+
+.center-item{
+    align-self: center;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+}
+.button-purple{
+  background-color: $primary;
+  color: white;
+}

@@ -1,3 +1,4 @@
+// import { Component, OnInit } from '@angular/core';
 
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
@@ -7,18 +8,18 @@ import { AccountDetails } from 'src/app/Models/manage-account.model';
 
 
 @Component({
-  selector: 'app-user-account-dialog',
-  templateUrl: './user-account-dialog.component.html',
-  styleUrls: ['./user-account-dialog.component.scss']
+  selector: 'app-account-dialog',
+  templateUrl: './account-dialog.component.html',
+  styleUrls: ['./account-dialog.component.scss']
 })
-export class UserAccountDialogComponent implements OnInit{
+export class AccountDialogComponent implements OnInit {
 
   action: string;
   local_data: any;
   _accountDialogForm!: FormGroup;
 
   constructor(
-      public dialogRef: MatDialogRef<UserAccountDialogComponent>,
+      public dialogRef: MatDialogRef<AccountDialogComponent>,
       @Optional() @Inject(MAT_DIALOG_DATA) public data: AccountDetails,
       private formBuilder: FormBuilder,
       private authService: AuthService) {

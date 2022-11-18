@@ -10,10 +10,11 @@ import { ReleaseEquipmentComponent } from './views/release-equipment/release-equ
 import { RecieveEquipmentComponent } from './views/recieve-equipment/recieve-equipment.component';
 import { ChecklistComponent } from './views/checklist/checklist.component';
 import { ReportsComponent } from './views/reports/reports.component';
-import { ManageAccountComponent } from './views/manage-account/manage-account.component';
+import { ProfileComponent } from './views/manage-account/profile.component';
 import { RequestComponent } from './views/request/request.component';
 import { ActivityLogComponent } from './views/activity-log/activity-log.component';
 import { AboutAppComponent } from './views/about-app/about-app.component';
+import { ManageUsersComponent } from './views/manage-users/manage-users.component';
 
 
 export const AppRoutes: Routes = [
@@ -99,7 +100,7 @@ export const AppRoutes: Routes = [
               },
               {
                 path: 'manage-account',
-                component: ManageAccountComponent,
+                component: ProfileComponent,
                 data: {
                   title: 'Manage Account',
                   urls: [
@@ -143,12 +144,23 @@ export const AppRoutes: Routes = [
               },
               {
                 path: 'manage-account',
-                component: ManageAccountComponent,
+                component: ProfileComponent,
                 data: {
                   title: 'Manage Account',
                   urls: [
                     { title: 'Manage Account', url: '/manage-account' },
                     { title: 'Manage Account' }
+                  ]
+                }
+              },
+              {
+                path: 'manage-users',
+                component: ManageUsersComponent,
+                data: {
+                  title: 'Manage Users',
+                  urls: [
+                    { title: 'Manage Users', url: '/manage-users' },
+                    { title: 'Manage Users' }
                   ]
                 }
               },

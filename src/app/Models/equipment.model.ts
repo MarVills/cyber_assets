@@ -1,5 +1,6 @@
 export interface Equipment {
-    name: string;
+    id?: string;
+    equipment: string;
     status: string;
     price: number;
     category: string;
@@ -8,13 +9,21 @@ export interface Equipment {
 
   export interface EquipmentDTO {
     id: string;
-    name: string;
+    equipment: string;
     status: string;
     price: number;
     category: string;
     description: string;
   }
   
-  export const EQUIPMENT_DATA: Equipment[] = [
+  export interface Category {
+    id?: string;
+    category: string;
+    edit: boolean;
+  }
+  
+  export const EQUIPMENT_DATA: Equipment[] = [];
+
+  export const CATEGORY_DATA: Category[] = [];
+
  
-  ];

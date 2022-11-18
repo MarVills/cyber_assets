@@ -1,13 +1,20 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { EQUIPMENT_DATA } from '../../store/state/equipments.state';
-import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
-import { FormGroup, FormGroupDirective, } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, } from '@angular/forms';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialog} from '@angular/material/dialog';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
+import { Equipment,
+         EquipmentDTO,
+         Category,
+         EQUIPMENT_DATA,
+         CATEGORY_DATA 
+      } from 'src/app/Models/equipment.model';
+
+
 
 @Component({
   selector: 'app-equipments',
@@ -16,30 +23,43 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class EquipmentsComponent implements OnInit {
   
-  displayedColumns = [ 'name', 'status', 'category', 'action'];
-  dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
-  _equipmentForm!: FormGroup;
+  displayedColumns = [ 'equipment', 'status', 'category', 'action'];
+  equipmentDataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
+  // categoryDataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+  _categoryForm!: FormGroup;
   toEditData!:EquipmentDTO;
-  
+  panelOpenState = false;
+  categories!: Category[];
   constructor(
     breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private equipmentService: EquipmentsService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private formBuilder: FormBuilder
     ) { 
     breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
       this.displayedColumns = result.matches ?
-          [ 'name', 'status', 'category', 'action'] :
-          [ 'name', 'status', 'category', 'action'];
+          [ 'equipment', 'status', 'category', 'action'] :
+          [ 'equipment', 'status', 'category', 'action'];
     });
+   
   }
 
   ngOnInit(): void {
     this.equipmentService.onFetchEquipments();
+    this.equipmentService.onFetchCategories();
+    this.categoryForm();
     this.refresh()
   }
+
+  categoryForm(){
+    this._categoryForm = this.formBuilder.group({
+      category: new FormControl(""),
+     });
+  }
   
-   onDelete(data: EquipmentDTO){
+  
+  onDelete(data: EquipmentDTO){
     this.equipmentService.onDeleteEquipment(data).then((res)=>{
       this.sharedService.openSnackBar("Deleted successfully", "Undo")
     })
@@ -48,16 +68,13 @@ export class EquipmentsComponent implements OnInit {
 
   refresh(){
     setTimeout(() => {
-      this.dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
+      this.equipmentDataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
+      this.categories = CATEGORY_DATA;
+      console.log("dataaaaaaa",CATEGORY_DATA)
     }, 1000);
   }
 
-  clearForm(formDirective: FormGroupDirective){
-    this._equipmentForm.reset();
-    formDirective.resetForm();
-  }
-
-  openAddDialog(): void {
+  openAddEquipmentDialog(): void {
     this.equipmentService.isEdit = false;
     const addDialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
@@ -74,7 +91,7 @@ export class EquipmentsComponent implements OnInit {
     const editDialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
       data: { 
-        name: data.name, 
+        equipment: data.equipment, 
         status: data.status, 
         category: data.category, 
         price: data.price, 
@@ -82,9 +99,46 @@ export class EquipmentsComponent implements OnInit {
       },
     });
     editDialogRef.afterClosed().subscribe(result => {
+      this.equipmentService.isEdit = false;
       this.refresh()
     });
   }
 
+  openAddCategoryDialog(): void {
+    const addDialogRef = this.dialog.open(AddCategoryDialogComponent, {
+      width: '500px',
+      data: {},
+    });
+    addDialogRef.afterClosed().subscribe(() => {
+      this.refresh()
+    });
+  }
+
+  applyFilter(filterValue: string) {
+    
+  }
+
+  editTodo(i: string, str: string) {
+    if (this.categories) {
+      if (str === 'edit') {
+          this.categories.find(x => x.id === i)!.edit = true;
+      } else {
+          this.categories.find(x => x.id === i)!.edit = false;
+      }
+    }
+    this.categories = CATEGORY_DATA;
+  }
+
+  deleteTodo(id: number) {
+      console.log(id);
+      this.categories.splice(id, 1);
+      this.categories = CATEGORY_DATA;
+  }
+
+
 }
+
+
+
+
 

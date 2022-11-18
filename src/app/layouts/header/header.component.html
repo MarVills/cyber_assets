@@ -103,7 +103,7 @@
     <button routerLink="/about-app" mat-menu-item>
         <mat-icon>info</mat-icon> About App
     </button>
-    <button routerLink="/authentication/login" mat-menu-item>
+    <button type="button" (click)="signOut()" mat-menu-item>
         <mat-icon>exit_to_app</mat-icon> Sign Out
     </button>
 </mat-menu>

@@ -1,31 +1,37 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-
-
+import { AuthService } from 'src/app/store/services/authentication/auth.service';
 import { MenuItems } from '../../shared/menu-items/menu-items';
-import { FormControl } from '@angular/forms';
+
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: [
-    
-  ]
+  styleUrls: []
 })
 export class AppSidebarComponent implements OnDestroy {
   public config: PerfectScrollbarConfigInterface = {};
   mobileQuery: MediaQueryList;
-
   private _mobileQueryListener: () => void;
   status = true;
-
   itemSelect: number[] = [];
   parentIndex = 0;
   childIndex = 0;
+
+  constructor(
+  changeDetectorRef: ChangeDetectorRef,
+  media: MediaMatcher,
+  public menuItems: MenuItems,
+  private authService: AuthService) {
+    this.mobileQuery = media.matchMedia('(min-width: 768px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener("event",this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeEventListener("event",this._mobileQueryListener);
+  }
 
   setClickedRow(i: number, j: number) {
     this.parentIndex = i;
@@ -41,17 +47,5 @@ export class AppSidebarComponent implements OnDestroy {
     });
   }
 
-  constructor(
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
-    public menuItems: MenuItems
-  ) {
-    this.mobileQuery = media.matchMedia('(min-width: 768px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener("event",this._mobileQueryListener);
-  }
-
-  ngOnDestroy(): void {
-    this.mobileQuery.removeEventListener("event",this._mobileQueryListener);
-  }
+  signOut = () => this.authService.signOut()
 }

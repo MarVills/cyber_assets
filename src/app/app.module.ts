@@ -35,7 +35,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { ChecklistComponent } from './views/checklist/checklist.component';
 import { ReportsComponent } from './views/reports/reports.component';
-import { ManageAccountComponent } from './views/manage-account/manage-account.component';
+import { ProfileComponent } from './views/manage-account/profile.component';
 import { RequestComponent, EmployeeDialogContent } from './views/request/request.component';
 import { ActivityLogComponent } from './views/activity-log/activity-log.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -57,7 +57,10 @@ import { DatePipe } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { UserAccountDialogComponent } from './views/manage-account/components/user-account-dialog/user-account-dialog.component';
-
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { ManageUsersComponent } from './views/manage-users/manage-users.component';
+import { AccountDialogComponent } from './views/manage-users/components/account-dialog/account-dialog.component';
+import { AddCategoryDialogComponent } from './views/equipments/components/add-category-dialog/add-category-dialog.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -84,7 +87,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ErrorComponent, 
     ChecklistComponent,
     ReportsComponent,
-    ManageAccountComponent,
+    ProfileComponent,
     RequestComponent,
     ActivityLogComponent,
     SettingsComponent,
@@ -102,6 +105,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AddRequestComponent,
     EmployeeDialogContent,
     UserAccountDialogComponent,
+    ManageUsersComponent,
+    AccountDialogComponent,
+    AddCategoryDialogComponent,
 
  
   ],
@@ -127,6 +133,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
     NgxDatatableModule,
     Ng2SearchPipeModule,
+    AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(AppRoutes),
     TranslateModule.forRoot({
