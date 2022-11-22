@@ -1,3 +1,4 @@
+
 .center-item{
 align-self: center;
 justify-self: center;
@@ -26,7 +27,6 @@ display: flex;
     padding: 0px;
     align-items: center;
     justify-content: center;
-
 }
 
 .add-button{
@@ -56,12 +56,7 @@ display: flex;
   .display-flex{
     display: flex;
     justify-content:space-between;
-    margin-left: 10px;
   }
-
-  // .category-field{
-  //   padding: 10px 15px 10px 15px;
-  // }
 
   .padding-side-15{
     margin-left: 15px;
@@ -70,4 +65,8 @@ display: flex;
   .padding-side-40{
     margin-left: 40px;
     margin-right: 40px;
+  }
+  .padding-top-botttom-20{
+    padding-top: 20px;
+    padding-bottom: 20px;
   }

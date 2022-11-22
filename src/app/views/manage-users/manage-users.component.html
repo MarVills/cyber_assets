@@ -3,12 +3,15 @@
       <mat-card>
         <mat-card-content>
           <div fxLayout="row wrap" class="align-items-center">
-            <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+            <div fxFlex.gt-md="25" fxFlex.gt-sm="40" fxFlex.gt-lg="40" fxFlex="100">
               <mat-form-field>
-                <input matInput class="p-b-0" placeholder="Search user" [(ngModel)]="searchText">
+                <mat-placeholder>
+                  <mat-icon>search</mat-icon> Search user
+                </mat-placeholder>
+                <input matInput class="p-b-0" [(ngModel)]="searchText">
               </mat-form-field>
             </div>
-            <div fxFlex.gt-md="75" class="text-right">
+            <div fxFlex.gt-md="75"fxFlex.gt-sm="60" fxFlex.gt-lg="60" class="text-right">
               <button mat-raised-button  color="primary" (click)="openDialog('Add',{})">Add Account</button>
             </div>
           </div>

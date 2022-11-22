@@ -1,0 +1,90 @@
+<div fxFlex.gt-xs="100" fxFlex.gt-md="7100" fxFlex="100">
+    <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn">close</mat-icon>
+    <div fxLayout="column" fxLayoutWrap="wrap">
+        <div *ngIf="!this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100">
+            <strong> Add Equipment </strong>
+        </div>
+        <div *ngIf="this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100"> 
+            <strong> Edit Equipment </strong>
+        </div>
+
+        <form 
+        [formGroup]="_equipmentForm" 
+        (ngSubmit)="onModifyEquipment(formDirective)"
+        #formDirective="ngForm"  
+        class="m-t-20">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Equipment Name</mat-label>
+                <input 
+                matInput
+                required
+                formControlName="equipment">
+            </mat-form-field>
+
+            <mat-form-field class="m-b-20" appearance="outline" >
+                <mat-label>Equipment Status</mat-label>
+                <mat-select 
+                formControlName="status" 
+                required>
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let status of this.equipmentStatus" [value]="status">
+                        {{status}}
+                    </mat-option>
+                </mat-select>            
+                <mat-error *ngIf="_equipmentForm.value.status">Equipment status is required</mat-error>
+            </mat-form-field>
+            
+            <div class="category-field" fxLayout="row" >
+                <mat-form-field appearance="outline" >
+                    <mat-label>Category</mat-label>
+                    <mat-select 
+                    formControlName="category"
+                    panelClass="example-panel-blue" 
+                    required>
+                       <div>
+                        <mat-form-field class="p-l-20 p-r-20 p-t-20">
+                            <mat-placeholder>
+                                <mat-icon>search</mat-icon> Search category
+                            </mat-placeholder>
+                            <input matInput formControlName="category" (input)="searchCategory($event.target.value);">
+                        </mat-form-field>
+                       </div>
+                        <mat-option >--</mat-option>
+                        <mat-option 
+                        *ngFor="let category of this.categories" 
+                        [value]="category.category" >
+                            {{category.category}}
+                        </mat-option>
+                    </mat-select> 
+                        
+                    <!-- <mat-error *ngIf="_equipmentForm.value.category">Equipment category is required</mat-error> -->
+                </mat-form-field>
+            <div matSuffix class="category-icon">
+                <mat-icon (click)="openCategoryDialog($event)">settings</mat-icon>
+            </div>   
+            </div>
+
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea 
+                matInput
+                required
+                formControlName="description"></textarea>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayout.xs="column" class="center-item">
+                <button  
+                type="button" 
+                [mat-dialog-close]=""  
+                class="button-margin button-width" 
+                mat-raised-button color="basic">Cancel</button>
+                <button  
+                type="submit"  
+                class="button-margin button-width" 
+                color="primary"
+                [mat-dialog-close]=""  
+                mat-raised-button >{{actionButton}}</button>
+            </div> 
+        </form>
+    </div>
+</div>

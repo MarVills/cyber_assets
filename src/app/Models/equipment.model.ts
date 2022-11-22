@@ -8,7 +8,7 @@ export interface Equipment {
   }
 
   export interface EquipmentDTO {
-    id: string;
+    id?: string;
     equipment: string;
     status: string;
     price: number;
@@ -19,7 +19,13 @@ export interface Equipment {
   export interface Category {
     id?: string;
     category: string;
-    edit: boolean;
+    edit?: boolean;
+  }
+
+  export interface CategoryDTO {
+    id?: string;
+    category: string;
+    edit?: boolean;
   }
   
   export const EQUIPMENT_DATA: Equipment[] = [];

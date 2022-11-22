@@ -1,110 +1,3 @@
-<!-- <mat-card>
-    <mat-card-content>
-        <mat-card-title>Basic Expansion</mat-card-title>
-        <mat-card-subtitle>Expansion panel
-            <code class=""><a href="https://material.angular.io/components/expansion/overview">Official Component</a></code>
-        </mat-card-subtitle>
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title> Personal data </mat-panel-title>
-                    <mat-panel-description> Type your name and age </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-form-field>
-                    <input matInput placeholder="First name"> </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Age"> </mat-form-field>
-            </mat-expansion-panel>
-            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                <mat-expansion-panel-header>
-                    <mat-panel-title> Self aware panel </mat-panel-title>
-                    <mat-panel-description> Currently I am {{panelOpenState ? 'open' : 'closed'}} </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </mat-card-content>
-</mat-card> -->
-<div class="padding-side-15 chat-middle-box">
-    <mat-accordion >
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title> <h3>Categories</h3> </mat-panel-title>
-            </mat-expansion-panel-header>
-            <!-- <mat-form-field>
-                <input matInput placeholder="First name"> </mat-form-field>
-            <mat-form-field>
-                <input matInput placeholder="Age"> </mat-form-field> -->
-                <div class="bg-white">
-                    <form 
-                    fxLayout="row"
-                    [formGroup]="_categoryForm" 
-                    class="d-md-flex align-items-center"
-                    (ngSubmit)="openAddCategoryDialog()">
-                        <mat-form-field class="p-r-15 m-r-15">
-                            <mat-label>Category</mat-label>
-                            <!-- <input matInput formControlName='category'> -->
-                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search (Filter)">
-                        </mat-form-field>
-                        <div class="ml-auto">
-                            <button 
-                            mat-raised-button 
-                            color="primary" 
-                            class="shadow-none"
-                            type="submit"
-                            id="btnAddTodo">Add Category</button>
-                        </div>
-                    </form>
-                </div>
-                <br/>
-                <div *ngFor="let category of categories;let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40">
-                    <div class="todo-item-left d-md-flex w-100" fxLayout="row">
-                        <div *ngIf="!category.edit">
-                            <!-- <span class="header-label">{{category.message}}</span> -->
-                            <!-- <h5>{{category.message}}</h5> -->
-                            <div >{{category.category}}</div> 
-                            <!-- <mat-checkbox [(ngModel)]="category.completionStatus">{{category.message}}</mat-checkbox> -->
-                            <!-- <p class="m-t-0 font-12 text-muted font-normal p-l-25">{{category.date | date}}</p> -->
-                        </div>
-                        <div class="todo-item-label w-100">
-                            <div class="d-flex align-items-start" *ngIf="!category.edit" (click)="editTodo(category.id)">
-
-                                <div class="ml-auto px-3 mr-2">
-                                    <a href="javascript: void(0);" (click)='editTodo(category.id,"edit")'
-                                        class="link m-r-10" placement="top" ngbTooltip="Edit">
-                                        <mat-icon>edit</mat-icon>
-                                    </a>
-                                    <a href="javascript: void(0);" class="link text-danger" (click)='deleteTodo(i)'
-                                        placement="top" ngbTooltip="Delete">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-start edit-view" *ngIf="category.edit">
-
-                                <mat-form-field>
-                                    <mat-label></mat-label>
-                                    <input matInput class="form-control" [(ngModel)]="category.category" />
-                                </mat-form-field>
-
-                                <!-- <input type="text" [(ngModel)]="todo.message" class="form-control" /> -->
-                                <div class="ml-auto d-flex">
-                                    <a href="javascript: void(0);" (click)='editTodo(category.id,"save")'
-                                        class="link m-r-10" placement="top" ngbTooltip="Save">
-                                        <mat-icon>done_all</mat-icon>
-                                    </a>
-                                    <a href="javascript: void(0);" class="link text-danger" (click)='deleteTodo(i)'
-                                        placement="top" ngbTooltip="Delete">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</div>
 
 <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center" fxLayout.xs="column" class="z-index-50">
     <mat-card fxFlex.gt-xs="100">
@@ -115,6 +8,17 @@
                     <mat-icon class="md-36">add</mat-icon>
                 </button>
            </div>
+
+           <div class="bg-white">
+            <form 
+            fxLayout="row"
+            [formGroup]="_categoryForm" 
+            class="d-md-flex align-items-center">
+                <mat-form-field class="p-r-15 m-r-15">
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search equipment">
+                </mat-form-field>
+            </form>
+        </div>
             
             <div class="responsive-table" >
                 <mat-table #table [dataSource]="equipmentDataSource">

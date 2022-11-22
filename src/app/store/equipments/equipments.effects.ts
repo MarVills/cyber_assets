@@ -1,114 +1,80 @@
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, EffectSources, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { BehaviorSubject, Observable, of, } from 'rxjs';
-// import { HandleTokenService } from 'src/app/shared/handle-token.service';
-import { Equipment, EquipmentDTO } from '../state/equipments.state';
+import { Observable, of, } from 'rxjs';
+import { SharedService } from 'src/app/shared/shared.service';
 import * as equipmentActions from './equipments.actions';
-import { EquipmentsService } from '../services/inventory/equipments.service';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { catchError, mergeMap, switchMap } from 'rxjs/operators';
-// import { TokenInterceptor } from 'src/app/shared/token.interceptor';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { catchError, switchMap } from 'rxjs/operators';
 
 
 @Injectable()
 export class EquipmentsEffects {
 
-  equipments$ = this.getObservable(this.fireStore.collection('equipments')) as Observable<Equipment[]>;
-
   constructor(
     private actions$: Actions,
-    // private handleToken: HandleTokenService,
-    private http: HttpClient,
-    private equipmentsService: EquipmentsService,
     private fireStore: AngularFirestore,
-    // private tokenInterceptor: TokenInterceptor,
-    ) {}
+    private sharedService: SharedService) {}
 
-  // config = {
-  //   headers: new HttpHeaders({'Authorization': 'Bearer '+this.handleToken.getToken()})
-  // }
-
-  getObservable(collection: AngularFirestoreCollection<Equipment>){
-    const subject = new BehaviorSubject<Equipment[]>([]);
-    collection.valueChanges({ idField: 'id' }).subscribe((val: Equipment[]) => {
-      subject.next(val);
-    });
-    return subject;
-  };
-  
   fetchEquipmentsEFFECT$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(equipmentActions.requestFetchEquipmentsACTION),
-    // switchMap((_)=>{
-    //   const subject = new BehaviorSubject<Equipment[]>([]);
-    //   return this.fireStore.collection('equipments').valueChanges({ idField: 'id' }).subscribe((val: any) => {
-    //     subject.next(val);
-    //   });
-    //   // .pipe(
-    //   //   switchMap((data: any)=>{
-    //   //     return equipmentActions.successFetchEquipmentsACTION({ payload: data })
-    //   //   }),
-    //   //   catchError((error: Error) => of(equipmentActions.onEquipmentFailure({ error: error })))
-    //   // )
-    // })
+    switchMap(()=>{
+      return this.fireStore.collection('equipments').valueChanges({ idField: 'id' }).pipe(
+        switchMap((response)=>{
+          return [equipmentActions.successFetchEquipmentsACTION({ payload: response })]
+        }),
+        catchError((error: Error) => {
+         console.log("Fetch Error: ", error)
+         return of(equipmentActions.onEquipmentFailure({ error: error }))
+        })
+      )
+    })
   ));
-// ===========================================================================
-    // mergeMap(() =>{
-    //   return this.http.get<any>(`/api/products?page=${res.page.toString()}`, this.config).pipe(
-    //     switchMap((data: any) => {
-    //       console.log('effect', data)
-    //       return [
-    //         productActions.successFetchProductsACTION({ payload: data })
-    //       ]
-    //     }),
-    //     catchError((error: Error) => of(productActions.onProductFailure({ error: error })))
-    //   )
-    // })
 
-// ==========================================================================
+  addEquipmentEFFECT$: Observable<Action> = createEffect(() => { 
+    return this.actions$.pipe(
+      ofType(equipmentActions.requestAddEquipmentACTION),
+      switchMap((data)=>{
+        return this.fireStore.collection('equipments').add(data.payload).then(()=>{
+          this.sharedService.openSnackBar("Equipment added successfuly", "Ok");
+          return equipmentActions.successAddEquipmentACTION()
+        }).catch((error)=>{
+          console.log("Add Error: ", error)
+          this.sharedService.openSnackBar("Failed adding equipment", "Ok");
+          return equipmentActions.onEquipmentFailure({ error: error })
+        })
+      })
+    )}
+  );
 
-  // fetchProductEffect$: Observable<Action> = createEffect(() => this.actions$.pipe(
-  //   ofType(productActions.requestFetchProductACTION),
-  //   mergeMap(data =>{
-  //     return this.http.get<Product>(`/api/products/${data.payload}`, this.config).pipe(
-  //       switchMap((data: Product) => {
-  //         return [
-  //           productActions.successFetchProductACTION({ payload: data })
-  //         ]
-  //       }),
-  //       catchError((error: Error) => of(productActions.onProductFailure({ error: error })))
-  //     )
-  //   })
-  // ));
+  updateEquipmentEffect$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(equipmentActions.requestUpdateEquipmentACTION),
+    switchMap((data)=>{
+      return this.fireStore.collection('equipments').doc(data.id).update(data.payload).then(()=>{
+        this.sharedService.openSnackBar("Equipment updated successfuly", "Ok");
+        return equipmentActions.successUpdateEquipmentACTION()
+      }).catch((error)=>{
+        console.log("Update Error: ", error)
+        this.sharedService.openSnackBar("Failed updating equipment", "Ok");
+        return equipmentActions.onEquipmentFailure({ error: error })
+      })
+    })
+  ));
 
-  // updateArticleActionEffect$: Observable<Action> = createEffect(() => this.actions$.pipe(
-  //   ofType(productActions.requestUpdateProductACTION),
-  //   mergeMap(action => {
-  //     return this.http.put<Product>(`/api/products/${this.productService.dataID}`, action.payload, this.config).pipe(
-  //       switchMap((data: ProductDTO) => {
-  //         var returnData = [productActions.successUpdateProductACTION({ payload: data })];
-  //         console.log("success data", returnData)
-  //         return returnData;
-  //       }
-  //       ),
-  //       catchError((error: Error) => of(productActions.onProductFailure({ error: error })))
-  //     )
-  //   })
-  // ));
-
-  // deleteProductEFFEET$: Observable<Action> = createEffect(() => this.actions$.pipe(
-  //   ofType(productActions.requestDeleteProductACTION),
-  //   mergeMap(data =>{
-  //     return this.http.delete<number>(`/api/products/${this.productService.dataID}`, this.config).pipe(
-  //       switchMap(res => [
-  //         productActions.successDeleteProductACTION()
-  //       ]),
-  //       catchError((error: Error) => of(productActions.onProductFailure({ error: error })))
-  //     )
-  //   })
-  // ));
+  deleteEquipmentEFFEET$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(equipmentActions.requestDeleteEquipmentACTION),
+    switchMap((docID)=>{
+      return this.fireStore.collection('equipments').doc(docID.payload).delete().then(()=>{
+        this.sharedService.openSnackBar("Equipment deleted successfuly", "Ok");
+        return equipmentActions.successAddEquipmentACTION()
+      }).catch((error)=>{
+        console.log("Delete Error: ", error)
+        this.sharedService.openSnackBar("Failed deleting equipment", "Ok");
+        return equipmentActions.onEquipmentFailure({ error: error })
+      })
+    })
+  ));
 }
 
 
