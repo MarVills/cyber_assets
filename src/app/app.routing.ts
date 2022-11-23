@@ -8,7 +8,7 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EquipmentsComponent } from './views/equipments/equipments.component';
 import { ReleaseEquipmentComponent } from './views/release-equipment/release-equipment.component';
 import { RecieveEquipmentComponent } from './views/recieve-equipment/recieve-equipment.component';
-import { ChecklistComponent } from './views/checklist/checklist.component';
+import { EquipmentConditionComponent } from './views/equipment-condition/equipment-condition.component';
 import { ReportsComponent } from './views/reports/reports.component';
 import { ProfileComponent } from './views/manage-account/profile.component';
 import { RequestComponent } from './views/request/request.component';
@@ -28,10 +28,6 @@ export const AppRoutes: Routes = [
                 redirectTo: '/dashboard',
                 pathMatch: 'full'
             },
-            // {
-            //     path: '',
-            //     loadChildren: () => import('./views/main.module').then(m => m.StarterModule)
-            // },
             {
                 path: 'dashboard',
                 component: DashboardComponent,
@@ -77,13 +73,13 @@ export const AppRoutes: Routes = [
                 }
               },
               {
-                path: 'checklist',
-                component: ChecklistComponent,
+                path: 'equipment-condition',
+                component: EquipmentConditionComponent,
                 data: {
-                  title: 'Checklist',
+                  title: 'Equipment Condition',
                   urls: [
-                    { title: 'Checklist', url: '/checklist' },
-                    { title: 'Checklist' }
+                    { title: 'Equipment Condition', url: '/equipment-condition' },
+                    { title: 'Equipment Condition' }
                   ]
                 }
               },

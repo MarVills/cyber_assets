@@ -9,7 +9,7 @@
     <br>
     <form 
     fxLayout="row"
-    [formGroup]="_categoryForm" 
+    [formGroup]="_addCategoryForm" 
     class="d-md-flex align-items-center"
     (ngSubmit)="addCategory(formDirective)" #formDirective="ngForm">
         <mat-form-field class="p-r-15 m-r-15">
@@ -18,7 +18,7 @@
             </mat-placeholder>
             <input 
             matInput 
-            formControlName="category" >
+            formControlName="addCategory" >
         </mat-form-field>
         <div class="ml-auto">
             <button 
@@ -31,8 +31,8 @@
     </form>
 </div>
 <br/>
-<div *ngFor="let category of categories let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40">
-    <div class="todo-item-left d-md-flex w-100" fxLayout="row" [align]="center">
+<div *ngFor="let category of categories let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40 ">
+    <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row" >
         <div *ngIf="!category.edit">
             <p style="white-space: nowrap ;">{{category.category}}</p> 
         </div>
@@ -40,7 +40,7 @@
             <div class="d-flex align-items-start" *ngIf="!category.edit">
 
                 <div class="ml-auto px-3 mr-2">
-                    <a href="javascript: void(0);" (click)='editCategory(category, "edit")'
+                    <a href="javascript: void(0);" (click)='editCategory("edit", i)'
                         class="link m-r-10" placement="top" ngbTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </a>
@@ -50,15 +50,15 @@
                     </a>
                 </div>
             </div>
-            <div class="d-flex align-items-start edit-view" *ngIf="category.edit" [align]="center">
+            <div class="d-flex align-items-start edit-view category-field" *ngIf="category.edit">
 
-                <mat-form-field>
+                <mat-form-field  [formGroup]="_editCategoryForm">
                     <mat-label></mat-label>
-                    <input matInput class="form-control" [(ngModel)]="category.category" />
+                    <input matInput class="form-control" formControlName="editCategory" />
                 </mat-form-field>
 
                 <div class="ml-auto d-flex">
-                    <a href="javascript: void(0);" (click)='editCategory(category,"save")'
+                    <a href="javascript: void(0);" (click)='editCategory("save", i)'
                         class="link m-r-10" placement="top" ngbTooltip="Save">
                         <mat-icon>done_all</mat-icon>
                     </a>

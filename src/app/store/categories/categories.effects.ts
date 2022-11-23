@@ -60,7 +60,7 @@ export class CategoriesEffects {
     })
   ));
 
-  deleteEquipmentEFFEET$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  deleteCategoryEFFEET$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(categoryActions.requestDeleteCategoryACTION),
     switchMap((docID)=>{
       return this.fireStore.collection('categories').doc(docID.payload).delete().then(()=>{

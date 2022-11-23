@@ -46,19 +46,19 @@ const MENUITEMS = [
         toolTip: 'Manage Users'
     },
     {
-        state: 'checklist',
-        name: 'Checklist',
+        state: 'equipment-condition',
+        name: 'Equipment Condition',
         type: 'link',
         icon: 'playlist_add_check',
-        toolTip: 'Go to equipments checklist page'
+        toolTip: 'Monitor Equipment\'s condition'
     },
-    {
-        state: 'request',
-        name: 'Requests',
-        type: 'link',
-        icon: 'exit_to_app',
-        toolTip: 'Go to requests page'
-    },
+    // {
+    //     state: 'request',
+    //     name: 'Requests',
+    //     type: 'link',
+    //     icon: 'exit_to_app',
+    //     toolTip: 'Go to requests page'
+    // },
     {
         state: 'inventory',
         name: 'Inventory',
@@ -68,8 +68,8 @@ const MENUITEMS = [
         toolTip: 'Equipment\'s inventory ',
         children: [
             { state: 'equipments', name: 'Equipments', type: 'link', toolTip: 'Go to list of equipments', icon: "weekend"},
-            { state: 'release-equipment', name: 'Release Equipments', type: 'link', toolTip: 'See list of released equipments', icon: "vertical_align_top"},
-            { state: 'recieve-equipment', name: 'Recieve Equipments', type: 'link', toolTip: 'See list of recieved equipments', icon: "vertical_align_bottom" },
+            // { state: 'release-equipment', name: 'Release Equipments', type: 'link', toolTip: 'See list of released equipments', icon: "vertical_align_top"},
+            // { state: 'recieve-equipment', name: 'Recieve Equipments', type: 'link', toolTip: 'See list of recieved equipments', icon: "vertical_align_bottom" },
         ]
     },
     {

@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-card-content>
+        <mat-card-title>Equipments Conditions</mat-card-title>
+        <mat-card-subtitle>
+            <code><a href="">Monitor and update conditions of each equipments</a></code>
+        </mat-card-subtitle>
+        <div class="categories">Categories</div>
+        <mat-accordion >
+            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue">
+                <mat-expansion-panel-header>
+                    <mat-panel-title> {{ category }} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                   
+                          <mat-form-field appearance="outline">
+                            <mat-label>Search Equipment
+                              <mat-icon >search</mat-icon>
+                            </mat-label>
+                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Equipment">
+                          </mat-form-field>
+                  
+                          <div class="responsive-table">
+                            <mat-table #table [dataSource]="dataSource">
+                           
+                              <ng-container matColumnDef="serialNumber">
+                                <mat-header-cell *matHeaderCellDef> Serial No. </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="equipmentName">
+                                <mat-header-cell *matHeaderCellDef> Equipment Name </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.equipmentName}} </mat-cell>
+                              </ng-container>
+                  
+                              <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef> Status/Condition </mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="good"> 
+                              
+                                  <mat-form-field appearance="outline" >
+                                    <mat-select 
+                                    panelClass="select-field"
+                                    [value]="element.status">
+                                        <mat-option 
+                                        
+                                        *ngFor="let conditions of this.equipmentConditions" 
+                                        [value]="conditions.condition" >
+                                            {{conditions.condition}}
+                                        </mat-option>
+                                    </mat-select> 
+                                        
+                                </mat-form-field>
+                                </mat-cell>
+                              </ng-container>
+                  
+                              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+                          </div>
+                    </div>
+                  </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-card-content>
+</mat-card>

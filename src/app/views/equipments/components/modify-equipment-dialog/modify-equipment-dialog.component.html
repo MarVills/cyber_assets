@@ -26,7 +26,6 @@
                 <mat-select 
                 formControlName="status" 
                 required>
-                    <mat-option>--</mat-option>
                     <mat-option *ngFor="let status of this.equipmentStatus" [value]="status">
                         {{status}}
                     </mat-option>
@@ -56,8 +55,7 @@
                             {{category.category}}
                         </mat-option>
                     </mat-select> 
-                        
-                    <!-- <mat-error *ngIf="_equipmentForm.value.category">Equipment category is required</mat-error> -->
+                    
                 </mat-form-field>
             <div matSuffix class="category-icon">
                 <mat-icon (click)="openCategoryDialog($event)">settings</mat-icon>

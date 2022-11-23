@@ -4,14 +4,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, } from '@angular/forms';
 import { ModifyEquipmentDialogComponent } from './components/modify-equipment-dialog/modify-equipment-dialog.component';
 import { MatDialog} from '@angular/material/dialog';
-import { EquipmentsService } from 'src/app/store/services/inventory/equipments.service';
+import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Equipment,
          EquipmentDTO,
          Category,
-         EQUIPMENT_DATA,
-         CATEGORY_DATA 
-      } from 'src/app/Models/equipment.model';
+         EQUIPMENT_DATA} 
+         from 'src/app/Models/equipment.model';
 
 
 
@@ -27,7 +26,7 @@ export class EquipmentsComponent implements OnInit {
   _categoryForm!: FormGroup;
   toEditData!:EquipmentDTO;
   panelOpenState = false;
-  categories!: Category[];
+  equipments!: Equipment[];
   constructor(
     breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
@@ -44,9 +43,8 @@ export class EquipmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.equipmentService.onFetchEquipments();
-    this.equipmentService.onFetchCategories();
     this.categoryForm();
-    this.refresh()
+    this.refresh();
   }
 
   categoryForm(){
@@ -75,8 +73,6 @@ export class EquipmentsComponent implements OnInit {
         default: break;
       }
     })
-    
-    
   }
 
   openAddEquipmentDialog(): void {
@@ -112,7 +108,8 @@ export class EquipmentsComponent implements OnInit {
   refresh(){
     setTimeout(() => {
       this.equipmentDataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
-      this.categories = CATEGORY_DATA;
+      this.equipments = EQUIPMENT_DATA;
+      
     }, 1000);
   }
 

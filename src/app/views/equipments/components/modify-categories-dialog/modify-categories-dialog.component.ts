@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Category, CATEGORY_DATA } from 'src/app/Models/equipment.model';
-import { EquipmentsService } from 'src/app/store/services/inventory/equipments.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 
 @Component({
   selector: 'app-modify-categories-dialog',
@@ -12,39 +12,63 @@ import { SharedService } from 'src/app/shared/shared.service';
 export class ModifyCategoriesDialogComponent implements OnInit {
 
   categories!: Category[];
-  _categoryForm!: FormGroup; 
+  _addCategoryForm!: FormGroup;
+  _editCategoryForm!: FormGroup;  
 
   constructor(
     private formBuilder: FormBuilder,
-    private equipmentService: EquipmentsService,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
-    this.categoryForm();
+    this.addCategoryForm();
     this.categories = CATEGORY_DATA;
   }
 
-  categoryForm(){
-    this._categoryForm = this.formBuilder.group({
-      category: new FormControl("", Validators.required),
+  addCategoryForm(){
+    this._addCategoryForm = this.formBuilder.group({
+      addCategory: new FormControl("", Validators.required),
+     });
+  }
+
+  editCategoryForm(value: string){
+    this._editCategoryForm = this.formBuilder.group({
+      editCategory: new FormControl(value, Validators.required),
      });
   }
 
   addCategory(formDirective: FormGroupDirective){
-    this.equipmentService.onAddCategory(this._categoryForm.value)
+    const category: Category = {
+      category: this._addCategoryForm.value.addCategory,
+      edit: false
+    }
+    this.categoriesService.onAddCategory(category)
+    this.categories = CATEGORY_DATA;
     formDirective.resetForm();
   }
 
-  editCategory(category: any, action: string) {
+  editCategory( action: string, index: number) {
+    
     if (this.categories) {
-      var cat = this.categories;
+      let cat = this.categories;
       switch(action){
         case "edit":
-          this.categories.find(x => cat.indexOf(x) === cat.indexOf(category))!.edit = true;
+          this.editCategoryForm(this.categories[index].category);
+          const editCategory: Category = {
+            id: CATEGORY_DATA[index].id,
+            category: this._editCategoryForm.value.category,
+            edit: true
+          }
+          CATEGORY_DATA[index] = editCategory;
           break;
         case "save":
-          this.categories.find(x => cat.indexOf(x) === cat.indexOf(category))!.edit = false;
-          
+          const saveCategory: Category = {
+            id: CATEGORY_DATA[index].id,
+            category: this._editCategoryForm.value.editCategory,
+            edit: false
+          }
+          CATEGORY_DATA[index] = saveCategory;
+          this.categoriesService.onEditCategory(index, saveCategory)
           break;
       }
     }
@@ -56,10 +80,8 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     isDelete.subscribe((response)=>{
       switch (response){
         case "confirm":
-          this.equipmentService.onDeleteCategory(category).then(()=>{
-            this.sharedService.openSnackBar(`You deleted ${category.category} category`, "Undo")
-            this.categories = CATEGORY_DATA;
-          })
+          this.categoriesService.onDeleteCategory(category)
+          this.categories = CATEGORY_DATA;
           break;
         case "cancel": 
           this.sharedService.openSnackBar("Deleting category canceld !");

@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
-import { ChecklistComponent } from './views/checklist/checklist.component';
+import { EquipmentConditionComponent } from './views/equipment-condition/equipment-condition.component';
 import { ReportsComponent } from './views/reports/reports.component';
 import { ProfileComponent } from './views/manage-account/profile.component';
 import { RequestComponent, EmployeeDialogContent } from './views/request/request.component';
@@ -88,7 +88,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DashboardComponent, 
     EquipmentsComponent, 
     ErrorComponent, 
-    ChecklistComponent,
+    EquipmentConditionComponent,
     ReportsComponent,
     ProfileComponent,
     RequestComponent,

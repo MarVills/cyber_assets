@@ -17,7 +17,7 @@ export const categoryReducer = createReducer(
   on(categoriesAction.successFetchCategoriesACTION, (state: CategoriesState, { payload }) =>{
     return { 
       ...state, 
-      equipments: payload }
+      categories: payload }
   }),
 
   on(categoriesAction.successAddCategoryACTION, (state: CategoriesState) =>{

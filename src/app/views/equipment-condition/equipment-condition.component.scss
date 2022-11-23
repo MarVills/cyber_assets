@@ -1,0 +1,24 @@
+@import '../../../assets/styles/variable.scss';
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+::ng-deep .responsive-table .good .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: $light-success;
+  border-radius: 5px;
+}
+
+.selectField .mat-select-panel{
+  background-color: $light-success;
+}
+
+.categories{
+  margin: 0px 0px 10px 10px;
+}
