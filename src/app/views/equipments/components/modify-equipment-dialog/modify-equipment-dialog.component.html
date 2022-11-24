@@ -33,11 +33,12 @@
                 <mat-error *ngIf="_equipmentForm.value.status">Equipment status is required</mat-error>
             </mat-form-field>
             
-            <div class="category-field" fxLayout="row" >
-                <mat-form-field appearance="outline" >
+            <div class="category-field" fxLayout="row">
+                <mat-form-field appearance="outline">
                     <mat-label>Category</mat-label>
                     <mat-select 
                     formControlName="category"
+                    (selectionChange)="onCategoryChange()"
                     panelClass="example-panel-blue" 
                     required>
                        <div>
@@ -47,20 +48,31 @@
                             </mat-placeholder>
                             <input matInput formControlName="category" (input)="searchCategory($event.target.value);">
                         </mat-form-field>
-                       </div>
-                        <mat-option >--</mat-option>
+                        </div>
+                        <br>
                         <mat-option 
                         *ngFor="let category of this.categories" 
                         [value]="category.category" >
                             {{category.category}}
                         </mat-option>
                     </mat-select> 
-                    
                 </mat-form-field>
-            <div matSuffix class="category-icon">
-                <mat-icon (click)="openCategoryDialog($event)">settings</mat-icon>
-            </div>   
+                <button 
+                    matSuffix 
+                    type="button"
+                    class="category-button"
+                    (click)="openCategoryDialog($event)">
+                    <mat-icon >settings</mat-icon>
+                </button>   
             </div>
+
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Serial Number</mat-label>
+                <input 
+                matInput
+                required
+                formControlName="serialNumber">
+            </mat-form-field>
 
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Description</mat-label>

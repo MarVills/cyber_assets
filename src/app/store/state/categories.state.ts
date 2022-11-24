@@ -1,4 +1,4 @@
-import { Category, CategoryDTO } from "src/app/Models/equipment.model"
+import { Category, CategoryDTO } from "src/app/Models/category.model"
 
 
 export interface Categories {

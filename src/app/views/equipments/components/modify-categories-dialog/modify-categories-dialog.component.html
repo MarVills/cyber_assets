@@ -12,7 +12,7 @@
     [formGroup]="_addCategoryForm" 
     class="d-md-flex align-items-center"
     (ngSubmit)="addCategory(formDirective)" #formDirective="ngForm">
-        <mat-form-field class="p-r-15 m-r-15">
+        <mat-form-field class="p-r-15 m-r-15" >
             <mat-placeholder>
                 <mat-icon>add</mat-icon> Category
             </mat-placeholder>
@@ -29,9 +29,26 @@
             id="btnAddTodo">Add Category</button>
         </div>
     </form>
+    <br>
+    <div *ngIf="categories.length != 0" class="search-field">
+        <form 
+        fxLayout="row"
+        [formGroup]="_searchCategoryForm" 
+        #formDirective="ngForm"
+        class="d-md-flex align-items-center">
+            <mat-form-field class="p-r-15 m-r-15" appearance="fill">
+                <mat-label>
+                    <mat-icon>search</mat-icon> Search category
+                </mat-label>
+                <input 
+                matInput 
+                formControlName="searchCategory" >
+            </mat-form-field>
+        </form>
+    </div>
 </div>
 <br/>
-<div *ngFor="let category of categories let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40 ">
+<div *ngFor="let category of categories | filter: _searchCategoryForm.value.searchCategory let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40 ">
     <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row" >
         <div *ngIf="!category.edit">
             <p style="white-space: nowrap ;">{{category.category}}</p> 

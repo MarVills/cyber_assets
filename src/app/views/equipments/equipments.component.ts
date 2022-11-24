@@ -6,9 +6,9 @@ import { ModifyEquipmentDialogComponent } from './components/modify-equipment-di
 import { MatDialog} from '@angular/material/dialog';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { Category } from 'src/app/Models/category.model';
 import { Equipment,
          EquipmentDTO,
-         Category,
          EQUIPMENT_DATA} 
          from 'src/app/Models/equipment.model';
 

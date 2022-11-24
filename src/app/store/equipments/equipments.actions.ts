@@ -1,8 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Equipment,
-         EquipmentDTO, 
-         Category, 
-         CategoryDTO } from '../../Models/equipment.model';
+         EquipmentDTO} from '../../Models/equipment.model';
+
 
 
 export const requestFetchEquipmentsACTION = createAction(

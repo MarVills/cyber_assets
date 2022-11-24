@@ -16,7 +16,6 @@ export interface AccountCredentials{
   password: string;
 }
 
-
 export interface AllData{
     firstName: string;
     lastName: string;

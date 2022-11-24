@@ -25,3 +25,11 @@
   margin: 0px;
   align-items: center;
 }
+
+::ng-deep .mat-form-field-wrapper{
+  margin-bottom: -1.25em;
+  padding: -2em ;
+}
+::ng-deep .search-field .mat-form-field-underline {
+  display: none;
+}

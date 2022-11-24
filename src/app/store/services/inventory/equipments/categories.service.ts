@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { CATEGORY_DATA, Category } from 'src/app/Models/equipment.model';
+import { CATEGORY_DATA, Category } from 'src/app/Models/category.model';
 import * as categoryActions from '../../../categories/categories.actions';
 import { selectCategory } from '../../../categories/categories.selectors';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { Category, CATEGORY_DATA } from 'src/app/Models/equipment.model';
+import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
 import { SharedService } from 'src/app/shared/shared.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 
@@ -13,7 +13,8 @@ export class ModifyCategoriesDialogComponent implements OnInit {
 
   categories!: Category[];
   _addCategoryForm!: FormGroup;
-  _editCategoryForm!: FormGroup;  
+  _editCategoryForm!: FormGroup;
+  _searchCategoryForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,7 +23,14 @@ export class ModifyCategoriesDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.addCategoryForm();
+    this.searchCategoryForm();
     this.categories = CATEGORY_DATA;
+  }
+
+  searchCategoryForm(){
+    this._searchCategoryForm = this.formBuilder.group({
+      searchCategory: new FormControl(""),
+     });
   }
 
   addCategoryForm(){
@@ -37,9 +45,21 @@ export class ModifyCategoriesDialogComponent implements OnInit {
      });
   }
 
+  generatePrefix(): string{
+    const value = this._addCategoryForm.value;
+    let prefix:string = value.addCategory.substring(0,2).toUpperCase();
+    const isPrefixExist = this.categories.filter(category=>category.category === prefix)
+    if(isPrefixExist.length != 0){
+     
+    }
+    return prefix;
+  }
+
   addCategory(formDirective: FormGroupDirective){
+    const value = this._addCategoryForm.value;
     const category: Category = {
-      category: this._addCategoryForm.value.addCategory,
+      category: value.addCategory,
+      prefix: this.generatePrefix(),
       edit: false
     }
     this.categoriesService.onAddCategory(category)
@@ -56,6 +76,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
           this.editCategoryForm(this.categories[index].category);
           const editCategory: Category = {
             id: CATEGORY_DATA[index].id,
+            prefix: "EX",
             category: this._editCategoryForm.value.category,
             edit: true
           }
@@ -64,6 +85,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
         case "save":
           const saveCategory: Category = {
             id: CATEGORY_DATA[index].id,
+            prefix: "EX",
             category: this._editCategoryForm.value.editCategory,
             edit: false
           }
@@ -89,11 +111,5 @@ export class ModifyCategoriesDialogComponent implements OnInit {
         default: break;
       }
     })
-    
-    
   }
-
- 
-
-
 }
