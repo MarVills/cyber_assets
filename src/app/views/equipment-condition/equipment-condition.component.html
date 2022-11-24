@@ -8,7 +8,7 @@
         <mat-accordion >
             <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue">
                 <mat-expansion-panel-header>
-                    <mat-panel-title> {{ category }} </mat-panel-title>
+                    <mat-panel-title> {{ category.key }} </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div fxLayout="row wrap">
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
@@ -17,20 +17,20 @@
                             <mat-label>Search Equipment
                               <mat-icon >search</mat-icon>
                             </mat-label>
-                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Equipment">
+                            <input matInput (keyup)="applyFilter($event.target.value, category)" placeholder="Equipment">
                           </mat-form-field>
                   
                           <div class="responsive-table">
-                            <mat-table #table [dataSource]="dataSource">
+                            <mat-table #table [dataSource]="category.value">
                            
                               <ng-container matColumnDef="serialNumber">
                                 <mat-header-cell *matHeaderCellDef> Serial No. </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
+                                <mat-cell *matCellDef="let element"> SerialNo.{{element.serialNumber}} </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="equipmentName">
                                 <mat-header-cell *matHeaderCellDef> Equipment Name </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{element.equipmentName}} </mat-cell>
+                                <mat-cell *matCellDef="let element"> {{element.equipment}} </mat-cell>
                               </ng-container>
                   
                               <ng-container matColumnDef="status">
