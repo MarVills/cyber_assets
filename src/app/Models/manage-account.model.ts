@@ -28,9 +28,7 @@ export interface AllData{
     password: string;
 }
 
-export const ACCOUNT_DETAILS_DATA: AccountDetails[] = [
- 
-];
+export const ACCOUNT_DETAILS_DATA: AccountDetails[] = [];
 
 export interface Contact {
   contactimg: string;

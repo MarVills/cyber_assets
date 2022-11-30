@@ -7,24 +7,3 @@ export enum EQUIPMENT_CONDITIONS {
     borrowed = "BORROWED",
     missing = "MISING"
 }
-
-// export const EQUIPMENT_CONDITIONS = [
-//     {
-//         condition: "Good"
-//     },
-//     {
-//         condition: "Fair/Poor"
-//     },
-//     {
-//         condition: "Scrap/Damaged"
-//     },
-//     {
-//         condition: "Repaired"
-//     },
-//     {
-//         condition: "Borrowed"
-//     },
-//     {
-//         condition: "Missing"
-//     }
-// ]

@@ -13,16 +13,27 @@
         (ngSubmit)="onModifyEquipment(formDirective)"
         #formDirective="ngForm"  
         class="m-t-20">
+            <mat-label>Equipment Name *</mat-label>
             <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Equipment Name</mat-label>
                 <input 
                 matInput
                 required
                 formControlName="equipment">
             </mat-form-field>
 
-            <mat-form-field class="m-b-20" appearance="outline" >
-                <mat-label>Equipment Status</mat-label>
+            <div *ngIf="!this.equipmentsService.isEdit">
+                <mat-label>Items *</mat-label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <input 
+                    matInput
+                    required
+                    (input)="onCategoryOrItemsChange()"
+                    formControlName="items">
+                </mat-form-field>
+            </div>
+
+            <mat-label >Equipment Status*</mat-label>
+            <mat-form-field appearance="outline">
                 <mat-select 
                 formControlName="status" 
                 required>
@@ -33,21 +44,22 @@
                 <mat-error *ngIf="_equipmentForm.value.status">Equipment status is required</mat-error>
             </mat-form-field>
             
+            <mat-label>Category *</mat-label>
             <div class="category-field" fxLayout="row">
                 <mat-form-field appearance="outline">
-                    <mat-label>Category</mat-label>
                     <mat-select 
                     formControlName="category"
-                    (selectionChange)="onCategoryChange()"
-                    panelClass="example-panel-blue" 
+                    (selectionChange)="onCategoryOrItemsChange()"
                     required>
                        <div>
-                        <mat-form-field class="p-l-20 p-r-20 p-t-20">
-                            <mat-placeholder>
-                                <mat-icon>search</mat-icon> Search category
-                            </mat-placeholder>
-                            <input matInput formControlName="category" (input)="searchCategory($event.target.value);">
-                        </mat-form-field>
+                            <form [formGroup]="_searchCategoryForm" >
+                                <mat-form-field class="p-l-20 p-r-20 p-t-20">
+                                    <mat-placeholder>
+                                        <mat-icon>search</mat-icon> Search category
+                                    </mat-placeholder>
+                                    <input matInput formControlName="searchCategory" (input)="searchCategory($event.target.value);">
+                                </mat-form-field>
+                            </form>
                         </div>
                         <br>
                         <mat-option 
@@ -66,16 +78,19 @@
                 </button>   
             </div>
 
-            <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Serial Number</mat-label>
-                <input 
-                matInput
-                required
-                formControlName="serialNumber">
-            </mat-form-field>
+            <div *ngIf="!this.equipmentsService.isEdit" class="serial-number-field">
+                <mat-label >Serial Number *</mat-label>
+                <mat-form-field class="example-full-width " appearance="fill">
+                    <textarea 
+                    matInput
+                    required
+                    rows="{{serialFieldRow}}"
+                    formControlName="serialNumber"></textarea>
+                </mat-form-field>
+            </div>
 
+            <mat-label>Description: *</mat-label>
             <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Description</mat-label>
                 <textarea 
                 matInput
                 required
@@ -92,7 +107,8 @@
                 type="submit"  
                 class="button-margin button-width" 
                 color="primary"
-                [mat-dialog-close]=""  
+                [disabled]="!_equipmentForm.valid"
+                [mat-dialog-close]  
                 mat-raised-button >{{actionButton}}</button>
             </div> 
         </form>

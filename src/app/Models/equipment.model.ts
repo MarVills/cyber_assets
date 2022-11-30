@@ -3,7 +3,7 @@ export interface Equipment {
     equipment: string;
     status: string;
     category: string;
-    serialNumber: string;
+    serialNumber?: string;
     description: string;
   }
 

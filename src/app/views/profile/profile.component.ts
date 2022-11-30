@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
   updateAccount(){
     var value = this._accountDetailsForm.value;
     value.profileImageID = this.downloadUrl;
-    this.manageAccount.onEditAccountDetails(this.manageAccount.toEditAccount, {
+    this.manageAccount.onEditAccountDetails(this.manageAccount.userAccountDetails, {
       firstName: value.firstName,
       lastName: value.lastName,
       middleName: value.middleName,

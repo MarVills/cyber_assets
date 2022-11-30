@@ -22,7 +22,6 @@ import { EQUIPMENT_CONDITIONS } from 'src/app/shared/equipment-conditions/equipm
 })
 export class ModifyEquipmentDialogComponent implements OnInit {
   
-  displayedColumns = [ 'equipment', 'status', 'category', 'action'];
   equipmentStatus = Object.values(EQUIPMENT_CONDITIONS);
   dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
   actionButton: string = "Add";
@@ -30,33 +29,29 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   _equipmentForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
   serialData = "somenhtingng";
+  serialFieldRow = 1;
+  serialNumbers: string[] = []
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public equipmentData:Equipment,
-    breakpointObserver: BreakpointObserver,
     public equipmentsService: EquipmentsService,
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
     private categoriesService: CategoriesService) { 
-    breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
-      this.displayedColumns = result.matches ?
-          [ 'equipment', 'status', 'category', 'action']:
-          [ 'equipment', 'status', 'category', 'action'];
-    });
   }
 
   ngOnInit(): void {
     this.equipmentForm();
-    this.categoryForm();
+    this.searchCategoryForm();
     this.categoriesService.onFetchCategories();
     this.equipmentsService.isEdit? this.actionButton = "Edit": "Add"; 
     this.categories = CATEGORY_DATA;
   }
   
-  categoryForm(){
+  searchCategoryForm(){
     this._searchCategoryForm = this.formBuilder.group({
-      category: new FormControl(""),
+      searchCategory: new FormControl(""),
      });
   }
   
@@ -64,14 +59,13 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     let isEdit = this.equipmentsService.isEdit;
     this._equipmentForm = this.formBuilder.group({
       equipment: new FormControl(isEdit?this.equipmentData.equipment:"", Validators.required),
+      items: new FormControl(1, Validators.pattern('[0-9]*')),
       status: new FormControl(isEdit?this.equipmentData.status:"", Validators.required),
       category: new FormControl(isEdit?this.equipmentData.category:"", Validators.required),
-      serialNumber: new FormControl(isEdit?this.equipmentData.serialNumber: "", Validators.required),
+      serialNumber: new FormControl({value: isEdit?this.equipmentData.serialNumber: "", disabled: true},  Validators.required),
       description: new FormControl(isEdit?this.equipmentData.description:"", Validators.required),
      });
   }
-
-
 
   searchCategory(filterValue: string) {
     filterValue = filterValue.toLowerCase(); 
@@ -92,11 +86,33 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     formDirective.resetForm();
   }
 
-  onCategoryChange(){
-    this._equipmentForm.patchValue({serialNumber: "somethingngng"});
+  generateSerialNumber() :string{
+    const value = this._equipmentForm.value;
+    const category: Category[] = this.categories.filter((category: Category)=> category.category === value.category)
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth()+1;
+    const day = new Date().getDate();
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    const milliseconds = new Date().getMilliseconds();
+    const randomNumber =  Math.floor(Math.random() * 900000) +100000
+    const constructSerialNumber:string = `${category[0].prefix}-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`
+    return constructSerialNumber;
   }
 
-  // Need optimize
+  onCategoryOrItemsChange(){
+    const value = this._equipmentForm.value;
+    if(value.category != ""){
+      const value = this._equipmentForm.value;
+      this.serialNumbers.splice(0);
+      for(let i=0; i<Number(value.items); i++){
+        this.serialNumbers.push(this.generateSerialNumber())
+      }
+      this._equipmentForm.patchValue({serialNumber: this.serialNumbers.toString().replace(/,/g, "\n")});
+      this.serialFieldRow = Number(value.items)
+    }
+  }
+
   onModifyEquipment(formDirective: FormGroupDirective){
     const isEdit:boolean = this.equipmentsService.isEdit;
     const isFormValid:boolean = this._equipmentForm.valid;
@@ -107,9 +123,8 @@ export class ModifyEquipmentDialogComponent implements OnInit {
         this.equipmentsService.onEditEquipment(this.equipmentsService.toEditData, this._equipmentForm.value)
         break;
       case 'false,true':
-        let data = this._equipmentForm.value;
-        EQUIPMENT_DATA.push(data)
-        this.equipmentsService.onAddEquipment(data)
+        const value = this._equipmentForm.value;
+        this.equipmentsService.onAddEquipment(value, this.serialNumbers)
         this.clearForm(formDirective);
         break;
       case 'false,false':
@@ -124,6 +139,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
 
   openCategoryDialog(data: any): void {
     const addDialogRef = this.dialog.open( ModifyCategoriesDialogComponent, {
+      maxHeight: '90vh',
       width: '500px',
       data: {},
     });

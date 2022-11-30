@@ -6,11 +6,16 @@
         </mat-card-subtitle>
         <div class="categories">Categories</div>
         <mat-accordion >
-            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue">
-                <mat-expansion-panel-header>
-                    <mat-panel-title> {{ category.key }} </mat-panel-title>
+            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue" >
+                <mat-expansion-panel-header style="background-color: #e8fdf8;">
+                    <mat-panel-title class="space-between" >  
+                      {{ category.key }} 
+                      <span class="label label-primary">
+                        {{category.value.length}}
+                      </span>
+                    </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div fxLayout="row wrap">
+                <div *ngIf="category.value.length != 0" fxLayout="row wrap">
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                    
                           <mat-form-field appearance="outline">
@@ -57,7 +62,11 @@
                               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                             </mat-table>
                           </div>
-                    </div>
+                      </div>
+                  </div>
+                  <div *ngIf="category.value.length == 0">
+                    <p class="m-b-0 text-center font-18 font-bold m-t-40">No Equipments Found</p>
+                    <br/>
                   </div>
             </mat-expansion-panel>
         </mat-accordion>

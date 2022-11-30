@@ -1,50 +1,61 @@
 
-import { Component, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivityLog, ACTIVITY_LOG_DATA } from 'src/app/Models/activity-log-model';
+import { ActivityLogService } from '../../store/services/activity-log.service';
 
-declare var require: any;
-const data: any = require('src/assets/company.json');
+
 @Component({
   selector: 'app-activity-log',
   templateUrl: './activity-log.component.html',
   styleUrls: ['./activity-log.component.scss']
 })
-export class ActivityLogComponent {
-  editing: any[] = [];
-  rows: any[] = [];
-  temp = [...data];
+export class ActivityLogComponent implements AfterViewInit, OnInit{
 
-  loadingIndicator = true;
-  reorderable = true;
+  displayedColumns = ['activity', 'user-name', 'user-role', 'date'];
+  dataSource: MatTableDataSource<ActivityLog>;
 
-  columns = [{ prop: 'name' }, { name: 'Gender' }, { name: 'Company' }];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
 
-  @ViewChild(ActivityLogComponent, { static: true }) table: ActivityLogComponent = Object.create(null);
-  constructor() {
-    this.rows = data;
-    this.temp = [...data];
-    setTimeout(() => {
-      this.loadingIndicator = false;
-    }, 1500);
-  }
-
-  updateFilter(event: any) {
-    const val = event.target.value.toLowerCase();
-
-    // filter our data
-    const temp = this.temp.filter(function (d) {
-      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+  constructor(breakpointObserver: BreakpointObserver,
+             private logService: ActivityLogService) {
+      breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
+        this.displayedColumns = result.matches ?
+            ['activity', 'user-name', 'user-role', 'date']:
+            ['activity', 'user-name', 'user-role', 'date'];
     });
-    // update the rows
-    this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
-    this.table = data;
+    this.logService.onFetchActivityLogs();
+    this.dataSource = new MatTableDataSource(ACTIVITY_LOG_DATA);
+ 
   }
-  updateValue(event: any, cell: string, rowIndex: number) {
-    console.log('inline editing rowIndex', rowIndex);
-   // // // this.editing[rowIndex + '-' + cell] = false;
-    this.rows[rowIndex][cell] = event.target.value;
-    this.rows = [...this.rows];
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  ngOnInit(): void {
+    // this.refresh()
+    this.dataSource = new MatTableDataSource(ACTIVITY_LOG_DATA);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(filterValue: string) {
+      filterValue = filterValue.trim(); 
+      filterValue = filterValue.toLowerCase(); 
+      this.dataSource.filter = filterValue;
+  }
+  refresh(){
+   setTimeout(() => {
+    this.dataSource = new MatTableDataSource(ACTIVITY_LOG_DATA);
+   }, 1000);
   }
 }
+
+
+
+
+
 

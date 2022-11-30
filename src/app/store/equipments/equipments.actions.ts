@@ -3,7 +3,6 @@ import { Equipment,
          EquipmentDTO} from '../../Models/equipment.model';
 
 
-
 export const requestFetchEquipmentsACTION = createAction(
   '[Equipments] Request Fetch Equipments',
    props<{payload: any[] }>(),

@@ -12,10 +12,10 @@
     [formGroup]="_addCategoryForm" 
     class="d-md-flex align-items-center"
     (ngSubmit)="addCategory(formDirective)" #formDirective="ngForm">
-        <mat-form-field class="p-r-15 m-r-15" >
-            <mat-placeholder>
+        <mat-form-field class="p-r-15 m-r-15" appearance="fill">
+            <mat-label>
                 <mat-icon>add</mat-icon> Category
-            </mat-placeholder>
+            </mat-label>
             <input 
             matInput 
             formControlName="addCategory" >
@@ -26,7 +26,8 @@
             color="primary" 
             class="shadow-none"
             type="submit"
-            id="btnAddTodo">Add Category</button>
+            id="btnAddTodo"
+            [disabled]="!_addCategoryForm.valid">Add Category</button>
         </div>
     </form>
     <br>
@@ -35,7 +36,7 @@
         fxLayout="row"
         [formGroup]="_searchCategoryForm" 
         #formDirective="ngForm"
-        class="d-md-flex align-items-center">
+        class="d-md-flex align-items-center" >
             <mat-form-field class="p-r-15 m-r-15" appearance="fill">
                 <mat-label>
                     <mat-icon>search</mat-icon> Search category

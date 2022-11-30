@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { FullComponent } from './layouts/full.component';
 import { LoginComponent } from './authentication/login/login.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './authentication/auth.guard';
 import { ErrorComponent } from './views/error/error.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EquipmentsComponent } from './views/equipments/equipments.component';
@@ -10,7 +10,7 @@ import { ReleaseEquipmentComponent } from './views/release-equipment/release-equ
 import { RecieveEquipmentComponent } from './views/recieve-equipment/recieve-equipment.component';
 import { EquipmentConditionComponent } from './views/equipment-condition/equipment-condition.component';
 import { ReportsComponent } from './views/reports/reports.component';
-import { ProfileComponent } from './views/manage-account/profile.component';
+import { ProfileComponent } from './views/profile/profile.component';
 import { RequestComponent } from './views/request/request.component';
 import { ActivityLogComponent } from './views/activity-log/activity-log.component';
 import { AboutAppComponent } from './views/about-app/about-app.component';

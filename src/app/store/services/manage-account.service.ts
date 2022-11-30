@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { AccountDetails, ACCOUNT_DETAILS_DATA } from 'src/app/Models/manage-account.model';
+import { User } from '../../shared/user-details/user-details';
 
 
 @Injectable({
@@ -10,10 +11,12 @@ import { AccountDetails, ACCOUNT_DETAILS_DATA } from 'src/app/Models/manage-acco
 export class ManageAccountService implements OnDestroy{
 
   accountDetails$!: Subscription;
-  toEditAccount!:AccountDetails;
+  userAccountDetails!:AccountDetails;
   observable$ = this.getObservable(this.fireStore.collection('users')) as Observable<AccountDetails[]>;
 
-  constructor(private fireStore: AngularFirestore) { }
+  constructor(
+    private fireStore: AngularFirestore,
+    private user: User) { }
 
   ngOnDestroy(): void {
     this.accountDetails$.unsubscribe();
@@ -28,6 +31,8 @@ export class ManageAccountService implements OnDestroy{
   }; 
   
  onFetchAccDetails(){
+   // Temporarily using this function while working on 
+   // fetch one data function in firebase with ngrx.
     this.observable$.subscribe((response) => {
       ACCOUNT_DETAILS_DATA.splice(0)
       for (var res of response) {
@@ -44,7 +49,7 @@ export class ManageAccountService implements OnDestroy{
             contactNumber: res.contactNumber,
             uid: localStorage.getItem('uid')!
           }
-          this.toEditAccount = accData;
+          this.user.signedInUserDetails = accData
         }
       }
     })

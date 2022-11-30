@@ -76,7 +76,6 @@ export class ModifyCategoriesDialogComponent implements OnInit {
           this.editCategoryForm(this.categories[index].category);
           const editCategory: Category = {
             id: CATEGORY_DATA[index].id,
-            prefix: "EX",
             category: this._editCategoryForm.value.category,
             edit: true
           }
@@ -85,7 +84,6 @@ export class ModifyCategoriesDialogComponent implements OnInit {
         case "save":
           const saveCategory: Category = {
             id: CATEGORY_DATA[index].id,
-            prefix: "EX",
             category: this._editCategoryForm.value.editCategory,
             edit: false
           }

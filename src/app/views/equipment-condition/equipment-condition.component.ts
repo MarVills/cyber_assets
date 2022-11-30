@@ -15,7 +15,6 @@ import { CATEGORY_DATA } from 'src/app/Models/category.model';
 })
 export class EquipmentConditionComponent implements  OnInit {
 
-
   panelOpenState = false;
   step = 0;
   equipmentConditions = Object.values(EQUIPMENT_CONDITIONS);
@@ -44,7 +43,6 @@ export class EquipmentConditionComponent implements  OnInit {
       filterValue = filterValue.trim(); 
       filterValue = filterValue.toLowerCase();
       this.equipmentsByCategory.forEach((item)=>{
-        console.log("item values", item);
         if(item.length != 0){
           let items = item.filter((equipmentDetails)=>{
             return equipmentDetails.equipment + equipmentDetails.status.includes(filterValue)

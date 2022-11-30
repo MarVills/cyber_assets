@@ -1,19 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Category, CategoryDTO } from 'src/app/Models/category.model';
 
-// export const loadCategoriess = createAction(
-//   '[Categories] Load Categoriess'
-// );
-
-// export const loadCategoriessSuccess = createAction(
-//   '[Categories] Load Categoriess Success',
-//   props<{ data: any }>()
-// );
-
-// export const loadCategoriessFailure = createAction(
-//   '[Categories] Load Categoriess Failure',
-//   props<{ error: any }>()
-// );
 
 export const requestFetchCategoriesACTION = createAction(
   '[Categories] Request Fetch Categories',
