@@ -1,12 +1,13 @@
 
-import { Component, OnInit, ɵɵqueryRefresh } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { EQUIPMENT_CONDITIONS } from 'src/app/shared/equipment-conditions/equipment-conditions';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
-import { Equipment, EQUIPMENT_DATA, EquipmentsWithSelectedStatus } from 'src/app/Models/equipment.model';
+import { Equipment, EQUIPMENT_DATA, EquipmentsWithSelectedStatus, EquipmentDTO } from 'src/app/Models/equipment.model';
 import { CATEGORY_DATA } from 'src/app/Models/category.model';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class EquipmentConditionComponent implements  OnInit {
   constructor(breakpointObserver: BreakpointObserver,
              private equipmentsService: EquipmentsService,
              private categoriesService: CategoriesService,
-             private formBuilder: FormBuilder,){
+             private formBuilder: FormBuilder,
+             private manageAccountService: ManageAccountService){
       breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
         this.displayedColumns = result.matches ?
             ['serialNumber', 'equipmentName', 'status'] :
@@ -42,6 +44,7 @@ export class EquipmentConditionComponent implements  OnInit {
     this.refresh();
     this.equipmentsService.onFetchEquipments();
     this.categoriesService.onFetchCategories();
+    this.manageAccountService.onFetchAccDetails();
     this.searchEquipmentForm();
     
   }
@@ -53,7 +56,6 @@ export class EquipmentConditionComponent implements  OnInit {
   }
 
   panelClicked(category: any){
-    console.log("#####", category);
     this.selectedEquipments = category
     this._searchEquipmentForm.reset();
   }
@@ -82,6 +84,22 @@ export class EquipmentConditionComponent implements  OnInit {
       }
       filteredEquipment?this.equipmentsByCategory.set(category.category, values):null
     })
+  }
+
+  onConditionChange(data: string){
+    const previousData = this.equipmentsService.toEditData;
+    const latestData:Equipment = {
+      equipment: previousData.equipment,
+      category: previousData.category,
+      status: data,
+      description: previousData.description,
+      serialNumber: previousData.serialNumber
+    }
+    this.equipmentsService.onEditEquipment(this.equipmentsService.toEditData, latestData)
+  }
+
+  onSelectionClicked(data: EquipmentDTO){
+    this.equipmentsService.toEditData = data;
   }
 
   refresh(){

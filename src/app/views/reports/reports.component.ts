@@ -24,6 +24,10 @@ export class ReportsComponent implements OnInit{
     this.refresh();
     this.dataSource.paginator = this.paginator;
   }
+
+  print(){
+    window.print();
+  }
   
   refresh(){
     setTimeout(() => {

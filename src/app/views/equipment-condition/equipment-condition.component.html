@@ -39,7 +39,7 @@
                            
                               <ng-container matColumnDef="serialNumber">
                                 <mat-header-cell *matHeaderCellDef> Serial No. </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> SerialNo.{{element.serialNumber}} </mat-cell>
+                                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="equipmentName">
@@ -54,6 +54,8 @@
                                   <mat-form-field appearance="outline" >
                                     <mat-select 
                                     panelClass="select-field"
+                                    (selectionChange)="onConditionChange($event.value)"
+                                    (openedChange)="onSelectionClicked(element)"
                                     [value]="element.status">
                                         <mat-option 
                                         
