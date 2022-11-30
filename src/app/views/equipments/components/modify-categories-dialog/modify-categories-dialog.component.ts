@@ -88,9 +88,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
             category: category,
             edit: false
           }
-          console.log(`==== ${category} === ${CATEGORY_DATA[index].category}`)
           if(category !== CATEGORY_DATA[index].category){
-            console.log("executed =======")
             this.categoriesService.onEditCategory(index, saveCategory)
           }
           CATEGORY_DATA[index] = saveCategory;
