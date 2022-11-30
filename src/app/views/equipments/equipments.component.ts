@@ -32,12 +32,14 @@ export class EquipmentsComponent implements OnInit {
   equipmentsByCategory: Map<string, Equipment[]> = new Map<string, Equipment[]>();
   _categoryForm!: FormGroup;
   toEditData!:EquipmentDTO;
-  panelOpenState = false;
-  sidePanelOpened = true;
-  searchText = '';
+  panelOpenState:boolean = false;
+  sidePanelOpened:boolean = true;
+  searchText:string = '';
   equipments!: Equipment[];
   categories: Category[] = CATEGORY_DATA;
   backgroundColors: string[] = [];
+  toolbarBgColor:string = '#f5f5f5';
+  hasEquipments:boolean = true;
 
   constructor(
     breakpointObserver: BreakpointObserver,
@@ -88,7 +90,9 @@ export class EquipmentsComponent implements OnInit {
     this.equipmentDataSource.filter = filterValue;
   }
 
-  filterByCategory(category:string){
+  filterByCategory(category:string, color: string, equipments: string){
+    this.hasEquipments = Number(equipments) > 0;
+    this.toolbarBgColor = color;
     this.equipmentDataSource.filter = category.trim().toLowerCase();
     return this.equipmentDataSource.filteredData.length;
   }
@@ -102,7 +106,7 @@ export class EquipmentsComponent implements OnInit {
 
   getTotalEquipmentsPerCategory(category:string){
     try{
-      return this.equipmentsByCategory.get(category)!.length
+      return (this.equipmentsByCategory.get(category)!.length).toString()
     }catch(e){
       return "0"
     }
@@ -178,7 +182,9 @@ export class EquipmentsComponent implements OnInit {
     })
   }
 
-  allEquipments(){
+  allEquipments(color: string){
+    this.hasEquipments = true;
+    this.toolbarBgColor = color;
     this.equipmentDataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
   }
 
@@ -188,8 +194,8 @@ export class EquipmentsComponent implements OnInit {
       this.categories = CATEGORY_DATA;
       this.setEquipmentsByCategory();
       this.getBackgroundColors();
-      this.allEquipments();
-    }, 1000);
+      this.allEquipments('#f5f5f5');
+    }, 2000);
   }
 }
 

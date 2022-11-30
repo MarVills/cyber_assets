@@ -15,6 +15,11 @@ export interface Equipment {
     serialNumber: string;
     description: string;
   }
+
+  export interface EquipmentsWithSelectedStatus{
+    isSelected: boolean;
+    items: Equipment[]
+  }
   
   export const EQUIPMENT_DATA: Equipment[] = [];
 
