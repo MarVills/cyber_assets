@@ -32,8 +32,8 @@
                   <mat-list-item 
                   class="notes-item" 
                   *ngFor="let category of this.categories | filter:searchText let i = index" 
-                  (click)="filterByCategory(category.category, this.backgroundColors[i]+'3f', this.getTotalEquipmentsPerCategory(category.category))">
-                    <div class="note d-flex"  [ngStyle]="{'background-color': this.backgroundColors[i]+'3f'}">
+                  (click)="filterByCategory(category.category, this.backgroundColors[i]+'1f', this.getTotalEquipmentsPerCategory(category.category))">
+                    <div class="note d-flex"  [ngStyle]="{'background-color': this.backgroundColors[i]+'1f'}">
                       <div>
                         <span class="note-color" [ngStyle]="{'background-color': this.backgroundColors[i]}" ></span>
                         <span class="note-title">

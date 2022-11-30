@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
+import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
 import { SharedService } from 'src/app/shared/shared.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 
@@ -70,7 +71,6 @@ export class ModifyCategoriesDialogComponent implements OnInit {
   editCategory( action: string, index: number) {
     
     if (this.categories) {
-      let cat = this.categories;
       switch(action){
         case "edit":
           this.editCategoryForm(this.categories[index].category);
@@ -82,22 +82,44 @@ export class ModifyCategoriesDialogComponent implements OnInit {
           CATEGORY_DATA[index] = editCategory;
           break;
         case "save":
+          const category = this._editCategoryForm.value.editCategory;
           const saveCategory: Category = {
             id: CATEGORY_DATA[index].id,
-            category: this._editCategoryForm.value.editCategory,
+            category: category,
             edit: false
           }
+          console.log(`==== ${category} === ${CATEGORY_DATA[index].category}`)
+          if(category !== CATEGORY_DATA[index].category){
+            console.log("executed =======")
+            this.categoriesService.onEditCategory(index, saveCategory)
+          }
           CATEGORY_DATA[index] = saveCategory;
-          this.categoriesService.onEditCategory(index, saveCategory)
+          
           break;
       }
     }
     this.categories = CATEGORY_DATA;
   }
 
+  checkIfCategoryUsed(category: string): boolean{
+    let isUsed:boolean = false
+    EQUIPMENT_DATA.forEach((equipment)=>{
+      if (equipment.category == category){
+        isUsed = true
+      }
+    })
+    return isUsed;
+  }
+
   deleteCategory(category: any) {
+
+    if(this.checkIfCategoryUsed(category.category)){
+      this.sharedService.openAlertDialog("Delete Failed", "Cannot delete category because \nit is being used in other equipment", "OK")
+      return;
+    }
+
     let isDelete = this.sharedService.openAlertDialog("Delete Category", "Are you sure you want to delete this category?", "Delete")
-    isDelete.subscribe((response)=>{
+    isDelete.subscribe((response: string)=>{
       switch (response){
         case "confirm":
           this.categoriesService.onDeleteCategory(category)
@@ -110,4 +132,5 @@ export class ModifyCategoriesDialogComponent implements OnInit {
       }
     })
   }
+
 }
