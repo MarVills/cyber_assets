@@ -6,31 +6,40 @@
         </mat-card-subtitle>
         <div class="categories">Categories</div>
         <mat-accordion >
-            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue" >
-                <mat-expansion-panel-header style="background-color: #e8fdf8;">
+            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue">
+                <mat-expansion-panel-header 
+                    style="background-color: #e8fdf8;" 
+                    [ngClass]="(panelOpenState)?'no-events':'default'"
+                    (click)="panelClicked(category)">
                     <mat-panel-title class="space-between" >  
                       {{ category.key }} 
                       <span class="label label-primary">
-                        {{category.value.length}}
+                        {{category.value.items.length}}
                       </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div *ngIf="category.value.length != 0" fxLayout="row wrap">
+                <div *ngIf="category.value.items.length != 0" fxLayout="row wrap">
                     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                    
-                          <mat-form-field appearance="outline">
+                          <mat-form-field 
+                          appearance="outline" 
+                          class="m-t-10"
+                          [formGroup]="_searchEquipmentForm" >
                             <mat-label>Search Equipment
                               <mat-icon >search</mat-icon>
                             </mat-label>
-                            <input matInput (keyup)="applyFilter($event.target.value, category)" placeholder="Equipment">
+                            <input 
+                            matInput 
+                            formControlName="searchEquipment" 
+                            placeholder="Equipment">
                           </mat-form-field>
                   
                           <div class="responsive-table">
-                            <mat-table #table [dataSource]="category.value">
+                            <mat-table #table [dataSource]="category.value.items | filter: _searchEquipmentForm.value.searchEquipment ">
                            
                               <ng-container matColumnDef="serialNumber">
                                 <mat-header-cell *matHeaderCellDef> Serial No. </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> SerialNo.{{element.serialNumber}} </mat-cell>
+                                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="equipmentName">
@@ -45,6 +54,8 @@
                                   <mat-form-field appearance="outline" >
                                     <mat-select 
                                     panelClass="select-field"
+                                    (selectionChange)="onConditionChange($event.value)"
+                                    (openedChange)="onSelectionClicked(element)"
                                     [value]="element.status">
                                         <mat-option 
                                         
@@ -64,7 +75,7 @@
                           </div>
                       </div>
                   </div>
-                  <div *ngIf="category.value.length == 0">
+                  <div *ngIf="category.value.items.length == 0">
                     <p class="m-b-0 text-center font-18 font-bold m-t-40">No Equipments Found</p>
                     <br/>
                   </div>

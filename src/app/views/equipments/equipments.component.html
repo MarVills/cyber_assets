@@ -10,7 +10,7 @@
           (open)="sidePanelOpened = true"
           (close)="sidePanelOpened = false">
             <perfect-scrollbar class="scroll-container" fxFlex="auto"  [scrollIndicators]="true">
-              <mat-toolbar class="no-shadow">
+              <mat-toolbar class="no-shadow"  [ngStyle]="{'background-color': toolbarBgColor}">
                 <div fxLayout="row" fxFlex="100">
                   <mat-form-field>
                     <mat-label>Search Category</mat-label>
@@ -20,9 +20,9 @@
               </mat-toolbar>
               <mat-nav-list>
                 <ng-container>
-                  <mat-list-item class="notes-item" (click)="allEquipments()">
-                    <div class="note d-flex">
-                      <div>
+                  <mat-list-item class="notes-item" (click)="allEquipments('#f5f5f5')">
+                    <div class="note d-flex" [ngStyle]="{'background-color': '#1e88e53f'}">
+                      <div >
                         <span class="note-color" [ngStyle]="{'background-color': '#1e88e5'}" ></span>
                         <span class="note-title"><strong>{{totalEquipments()}}</strong></span>
                         <small class="note-time">All</small>
@@ -30,9 +30,10 @@
                     </div>
                   </mat-list-item>
                   <mat-list-item 
+                  class="notes-item" 
                   *ngFor="let category of this.categories | filter:searchText let i = index" 
-                  class="notes-item" (click)="filterByCategory(category.category)">
-                    <div class="note d-flex">
+                  (click)="filterByCategory(category.category, this.backgroundColors[i]+'1f', this.getTotalEquipmentsPerCategory(category.category))">
+                    <div class="note d-flex"  [ngStyle]="{'background-color': this.backgroundColors[i]+'1f'}">
                       <div>
                         <span class="note-color" [ngStyle]="{'background-color': this.backgroundColors[i]}" ></span>
                         <span class="note-title">
@@ -50,22 +51,25 @@
             </perfect-scrollbar>
             
           </mat-sidenav>
-          <mat-toolbar class="no-shadow" >
+          <mat-toolbar class="no-shadow" [ngStyle]="{'background-color': toolbarBgColor}">
             <div fxLayout="row" fxFlex="100" class="display-flex">
+
               <button (click)="noteslist.toggle()" class="mr-1" mat-icon-button>
                 <mat-icon>short_text</mat-icon>
               </button>
+
               <mat-card-title  fxLayoutAlign="center center">Lists of office equipments</mat-card-title>
+
               <div class="top-icons">
                 <mat-icon (click)="openCategoryDialog()">view_module</mat-icon >
-                
                 <mat-icon class="m-r-20" (click)="openAddEquipmentDialog()">add</mat-icon>
-               
               </div>
+
             </div>
           </mat-toolbar>
           <mat-card-content>
-            <div>
+            <div *ngIf="hasEquipments">
+              <div>
                 <form 
                 fxLayout="row"
                 [formGroup]="_categoryForm" 
@@ -75,56 +79,59 @@
                         <input matInput (keyup)="applyFilter($event.target.value)">
                     </mat-form-field>
                 </form>
+              </div>
+              <div class="responsive-table m-l-10 m-r-10">
+                  <mat-table #table [dataSource]="equipmentDataSource">
+
+                      <ng-container matColumnDef="serial-number">
+                          <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
+                          <mat-cell *matCellDef="let element">
+                              <span class="header-label">Serial Number:</span>
+                              {{element.serialNumber}}
+                          </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="equipment">
+                          <mat-header-cell *matHeaderCellDef> Equipment </mat-header-cell>
+                          <mat-cell *matCellDef="let element">
+                              <span class="header-label">Equipment:</span>
+                              {{element.equipment}}
+                          </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="status">
+                          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                          <mat-cell *matCellDef="let element">
+                              <span class="header-label">Status:</span>
+                              {{element.status}}
+                          </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="action">
+                          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                          <mat-cell *matCellDef="let element">
+                              <span class="header-label">Action:</span>
+                              <div class="buttons">
+                                  <button 
+                                  class="action-button" 
+                                  (click)="openEditDialog(element)" 
+                                  mat-raised-button color="primary">Edit</button>
+                                  <button 
+                                  class="action-button" 
+                                  (click)="onDelete(element)" 
+                                  mat-raised-button 
+                                  color="warn">Delete</button>
+                              </div>
+                          </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+              </div>
             </div>
-            <div class="responsive-table">
-              <!-- <perfect-scrollbar class="scroll-container" fxFlex="auto"  [scrollIndicators]="true"> -->
-                <mat-table #table [dataSource]="equipmentDataSource">
-
-                    <ng-container matColumnDef="serial-number">
-                        <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <span class="header-label">Serial Number:</span>
-                            {{element.serialNumber}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="equipment">
-                        <mat-header-cell *matHeaderCellDef> Equipment </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <span class="header-label">Equipment:</span>
-                            {{element.equipment}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <span class="header-label">Status:</span>
-                            {{element.status}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="action">
-                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <span class="header-label">Action:</span>
-                            <div class="buttons">
-                                <button 
-                                class="action-button" 
-                                (click)="openEditDialog(element)" 
-                                mat-raised-button color="primary">Edit</button>
-                                <button 
-                                class="action-button" 
-                                (click)="onDelete(element)" 
-                                mat-raised-button 
-                                color="warn">Delete</button>
-                            </div>
-                        </mat-cell>
-                    </ng-container>
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </mat-table>
-              <!-- </perfect-scrollbar> -->
+            <div *ngIf="!hasEquipments">
+              <p class="m-b-0 text-center font-18 font-bold m-t-40">No Equipments found in this category</p>
+              <br/>
             </div>
           </mat-card-content>
         </mat-sidenav-container>

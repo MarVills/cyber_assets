@@ -1,7 +1,9 @@
 
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ɵɵqueryRefresh } from '@angular/core';
 import { TEXTS } from '../../dashboardTexts';
+import { ManageAccountService } from 'src/app/store/services/manage-account.service';
+import { ACCOUNT_DETAILS_DATA } from 'src/app/Models/manage-account.model';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -28,10 +30,10 @@ export class DashboardUserComponent implements OnInit {
 
   @ViewChild('chart') chart: ChartComponent = Object.create(null);
   public inexpuchartOptions: Partial<inexpuchartOptions>;
-
+  accounts:number = 0;
   texts = TEXTS; 
 
-  constructor(){
+  constructor(private manageAccountService: ManageAccountService){
     
     this.inexpuchartOptions = {
       series: [
@@ -98,7 +100,15 @@ export class DashboardUserComponent implements OnInit {
       }
     };
   }
-  ngOnInit(): void{}
+  ngOnInit(): void{
+    this.manageAccountService.fetchAccounts()
+    this.refresh();
+  }
+  refresh(){
+    setTimeout(() => {
+      this.accounts = ACCOUNT_DETAILS_DATA.length;
+    }, 1000);
+  }
 }
 
 export interface inexpuchartOptions {

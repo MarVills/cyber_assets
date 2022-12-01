@@ -26,3 +26,11 @@
 .space-between{
   justify-content: space-between;
 }
+
+.no-events {
+  pointer-events: none;
+}
+
+.default {
+  pointer-events: auto;
+}

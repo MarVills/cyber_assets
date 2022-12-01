@@ -3,7 +3,7 @@
         <!-- column -->
         <div class="d-flex no-block align-items-center">
             <div class="stats">
-                <h1 class="text-white m-0">3</h1>
+                <h1 class="text-white m-0">{{accounts}}</h1>
                 <h3 class="text-white m-0">{{texts.users | translate}}</h3>
                 <!-- <h6 class="text-white m-t-0">March 2017</h6> -->
                 
@@ -18,7 +18,6 @@
                         [xaxis]="inexpuchartOptions.xaxis" [grid]="inexpuchartOptions.grid">
                     </apx-chart>
                 </div>
-
             </div>
         </div>
     </mat-card-content>

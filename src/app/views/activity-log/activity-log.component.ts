@@ -43,10 +43,15 @@ export class ActivityLogComponent implements AfterViewInit, OnInit{
   }
 
   applyFilter(filterValue: string) {
-      filterValue = filterValue.trim(); 
-      filterValue = filterValue.toLowerCase(); 
-      this.dataSource.filter = filterValue;
+    filterValue = filterValue.trim(); 
+    filterValue = filterValue.toLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
+
+  print(){
+    window.print();
+  }
+
   refresh(){
    setTimeout(() => {
     this.dataSource = new MatTableDataSource(ACTIVITY_LOG_DATA);

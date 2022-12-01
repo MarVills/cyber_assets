@@ -3,35 +3,41 @@
     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
       <mat-card>
         <mat-card-content>
-          <mat-card-title>Equipment reports</mat-card-title>
+          <div fxLayout="row" class="report-header">
+            <mat-card-title>Equipments report</mat-card-title>
+            <button mat-raised-button color="primary" (click)="print()">
+              <mat-icon >print</mat-icon>&nbsp; Print
+            </button>
+          </div>
+         
           <div class="responsive-table">
             <mat-table #table [dataSource]="dataSource">
 
-              <ng-container matColumnDef="position">
-                <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+              <ng-container matColumnDef="serialNumber">
+                <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
               </ng-container>
   
-              <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+              <ng-container matColumnDef="equipment">
+                <mat-header-cell *matHeaderCellDef> Equipment </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.equipment}} </mat-cell>
               </ng-container>
   
-              <ng-container matColumnDef="weight">
-                <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+              <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
               </ng-container>
   
-              <ng-container matColumnDef="symbol">
-                <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
               </ng-container>
   
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
   
-            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 30]">
             </mat-paginator>
           </div>
         </mat-card-content>

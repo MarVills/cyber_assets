@@ -64,7 +64,7 @@ const MENUITEMS = [
         name: 'Inventory',
         type: 'sub',
         icon: 'dvr',
-        badge: [{ type: 'purple', value: '3' }],
+        badge: [{ type: 'purple', value: '1' }],
         toolTip: 'Equipment\'s inventory ',
         children: [
             { state: 'equipments', name: 'Equipments', type: 'link', toolTip: 'Go to list of equipments', icon: "weekend"},
