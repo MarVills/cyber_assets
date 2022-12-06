@@ -10,10 +10,8 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { Category } from 'src/app/Models/category.model';
 import { Equipment,EquipmentDTO, EQUIPMENT_DATA} from 'src/app/Models/equipment.model';
 import { CATEGORY_DATA } from 'src/app/Models/category.model';
-import { PerfectScrollbarComponent, PerfectScrollbarConfigInterface, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { AuthService } from 'src/app/store/services/authentication/auth.service';
-import { ManageAccountService } from 'src/app/store/services/manage-account.service';
-import { ModifyCategoriesDialogComponent } from './components/modify-categories-dialog/modify-categories-dialog.component';
 
 
 
@@ -49,7 +47,6 @@ export class EquipmentsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private categoriesService: CategoriesService,
     private authService: AuthService,
-    private manageAccountService: ManageAccountService
     ) { 
     breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
       this.displayedColumns = result.matches ?
@@ -61,9 +58,9 @@ export class EquipmentsComponent implements OnInit {
   ngOnInit(): void {
     this.categoriesService.onFetchCategories();
     this.equipmentService.onFetchEquipments();
-    this.manageAccountService.onFetchAccDetails();
     this.categoryForm();
     this.refresh();
+    console.log("islogged in", this.authService.isLoggedIn())
   }
 
   categoryForm(){
@@ -151,17 +148,6 @@ export class EquipmentsComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       this.equipmentService.isEdit = false;
-      this.refresh()
-    });
-  }
-
-  openCategoryDialog(): void {
-    const addDialogRef = this.dialog.open( ModifyCategoriesDialogComponent, {
-      maxHeight: '90vh',
-      width: '500px',
-      data: {},
-    });
-    addDialogRef.afterClosed().subscribe(() => {
       this.refresh()
     });
   }

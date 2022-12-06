@@ -49,10 +49,11 @@ export class ManageAccountService implements OnDestroy{
             contactNumber: res.contactNumber,
             uid: localStorage.getItem('uid')!
           }
-          this.user.signedInUserDetails = accData
+         
         }
       }
     })
+    console.log("User details ==== ", this.user.signedInUserDetails)
   } 
 
   fetchAccounts(){

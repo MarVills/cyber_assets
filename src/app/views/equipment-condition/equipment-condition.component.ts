@@ -61,6 +61,7 @@ export class EquipmentConditionComponent implements  OnInit {
   }
 
   applyFilter(filterValue: string, category: any) {
+<<<<<<< HEAD
     filterValue = filterValue.trim(); 
     filterValue = filterValue.toLowerCase();
     const equipments:EquipmentsWithSelectedStatus = category.value;
@@ -73,6 +74,19 @@ export class EquipmentConditionComponent implements  OnInit {
       var key = category.key;
       this.selectedEquipments = {key: key, value:values}
     }
+=======
+      filterValue = filterValue.trim(); 
+      filterValue = filterValue.toLowerCase();
+      this.equipmentsByCategory.forEach((item)=>{
+        console.log("item values", item);
+        if(item.length != 0){
+          let items = item.filter((equipmentDetails)=>{
+            return equipmentDetails.equipment + equipmentDetails.status.includes(filterValue)
+          });
+          this.equipmentsByCategory.set(category.key, items)
+        }
+      })
+>>>>>>> parent of 1165ea2 (working on activity log and report)
   }
 
   setEquipmentsByCategories(){

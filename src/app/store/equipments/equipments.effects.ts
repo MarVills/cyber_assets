@@ -1,5 +1,5 @@
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of, } from 'rxjs';
@@ -16,7 +16,6 @@ export class EquipmentsEffects {
     private actions$: Actions,
     private fireStore: AngularFirestore,
     private sharedService: SharedService) {}
-
 
   fetchEquipmentsEFFECT$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(equipmentActions.requestFetchEquipmentsACTION),

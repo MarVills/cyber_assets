@@ -19,7 +19,6 @@ export const equipmentReducer = createReducer(
   }),
 
   on(equipmentsAction.successAddEquipmentACTION, (state: EquipmentsState) =>{
-    console.log("executed reducer=========================")
     return { ...state }
   }),
 
