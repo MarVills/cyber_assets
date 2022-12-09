@@ -1,90 +1,118 @@
-
 <div class="bg-white">
-    <div fxLayout="row" class="category-header">
-        <div fxFlex.gt-sm="50" fxFlex="100">
-            <strong> Modify Category</strong>
-        </div>
-        <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn">close</mat-icon>
+  <div fxLayout="row" class="category-header">
+    <div fxFlex.gt-sm="50" fxFlex="100">
+      <strong> Modify Category</strong>
     </div>
-    <br>
-    <form 
+    <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn"
+      >close</mat-icon
+    >
+  </div>
+  <br />
+  <form
     fxLayout="row"
-    [formGroup]="_addCategoryForm" 
+    [formGroup]="_addCategoryForm"
     class="d-md-flex align-items-center"
-    (ngSubmit)="addCategory(formDirective)" #formDirective="ngForm">
-        <mat-form-field class="p-r-15 m-r-15" >
-            <mat-placeholder>
-                <mat-icon>add</mat-icon> Category
-            </mat-placeholder>
-            <input 
-            matInput 
-            formControlName="addCategory" >
-        </mat-form-field>
-        <div class="ml-auto">
-            <button 
-            mat-raised-button 
-            color="primary" 
-            class="shadow-none"
-            type="submit"
-            id="btnAddTodo">Add Category</button>
-        </div>
+    (ngSubmit)="addCategory(formDirective)"
+    #formDirective="ngForm"
+  >
+    <mat-form-field class="p-r-15 m-r-15" appearance="fill">
+      <mat-label> <mat-icon>add</mat-icon> Category </mat-label>
+      <input matInput formControlName="addCategory" />
+    </mat-form-field>
+    <div class="ml-auto">
+      <button
+        mat-raised-button
+        color="primary"
+        class="shadow-none"
+        type="submit"
+        id="btnAddTodo"
+        [disabled]="!_addCategoryForm.valid"
+      >
+        Add Category
+      </button>
+    </div>
+  </form>
+  <br />
+  <div *ngIf="categories.length != 0" class="search-field">
+    <form
+      fxLayout="row"
+      [formGroup]="_searchCategoryForm"
+      #formDirective="ngForm"
+      class="d-md-flex align-items-center"
+    >
+      <mat-form-field class="p-r-15 m-r-15" appearance="fill">
+        <mat-label> <mat-icon>search</mat-icon> Search category </mat-label>
+        <input matInput formControlName="searchCategory" />
+      </mat-form-field>
     </form>
-    <br>
-    <div *ngIf="categories.length != 0" class="search-field">
-        <form 
-        fxLayout="row"
-        [formGroup]="_searchCategoryForm" 
-        #formDirective="ngForm"
-        class="d-md-flex align-items-center">
-            <mat-form-field class="p-r-15 m-r-15" appearance="fill">
-                <mat-label>
-                    <mat-icon>search</mat-icon> Search category
-                </mat-label>
-                <input 
-                matInput 
-                formControlName="searchCategory" >
-            </mat-form-field>
-        </form>
-    </div>
+  </div>
 </div>
-<br/>
-<div *ngFor="let category of categories | filter: _searchCategoryForm.value.searchCategory let i=index" class="todo-item py-3 pl-3 border-bottom padding-side-40 ">
-    <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row" >
-        <div *ngIf="!category.edit">
-            <p style="white-space: nowrap ;">{{category.category}}</p> 
-        </div>
-        <div class="todo-item-label w-100">
-            <div class="d-flex align-items-start" *ngIf="!category.edit">
-
-                <div class="ml-auto px-3 mr-2">
-                    <a href="javascript: void(0);" (click)='editCategory("edit", i)'
-                        class="link m-r-10" placement="top" ngbTooltip="Edit">
-                        <mat-icon>edit</mat-icon>
-                    </a>
-                    <a href="javascript: void(0);" class="link text-danger" (click)='deleteCategory(category)'
-                        placement="top" ngbTooltip="Delete">
-                        <mat-icon>delete_outline</mat-icon>
-                    </a>
-                </div>
-            </div>
-            <div class="d-flex align-items-start edit-view category-field" *ngIf="category.edit">
-
-                <mat-form-field  [formGroup]="_editCategoryForm">
-                    <mat-label></mat-label>
-                    <input matInput class="form-control" formControlName="editCategory" />
-                </mat-form-field>
-
-                <div class="ml-auto d-flex">
-                    <a href="javascript: void(0);" (click)='editCategory("save", i)'
-                        class="link m-r-10" placement="top" ngbTooltip="Save">
-                        <mat-icon>done_all</mat-icon>
-                    </a>
-                    <a href="javascript: void(0);" class="link text-danger" (click)='deleteCategory(category)'
-                        placement="top" ngbTooltip="Delete">
-                        <mat-icon>delete_outline</mat-icon>
-                    </a>
-                </div>
-            </div>
-        </div>
+<br />
+<div
+  *ngFor="
+    let category of categories
+      | filter : _searchCategoryForm.value.searchCategory;
+    let i = index
+  "
+  class="todo-item py-3 pl-3 border-bottom padding-side-40"
+>
+  <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row">
+    <div *ngIf="!category.edit">
+      <p style="white-space: nowrap">{{ category.category_name }}</p>
     </div>
+    <div class="todo-item-label w-100">
+      <div class="d-flex align-items-start" *ngIf="!category.edit">
+        <div class="ml-auto px-3 mr-2">
+          <a
+            href="javascript: void(0);"
+            (click)="editCategory('edit', i)"
+            class="link m-r-10"
+            placement="top"
+            ngbTooltip="Edit"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+          <a
+            href="javascript: void(0);"
+            class="link text-danger"
+            (click)="deleteCategory(category)"
+            placement="top"
+            ngbTooltip="Delete"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </a>
+        </div>
+      </div>
+      <div
+        class="d-flex align-items-start edit-view category-field"
+        *ngIf="category.edit"
+      >
+        <mat-form-field [formGroup]="_editCategoryForm">
+          <mat-label></mat-label>
+          <input matInput class="form-control" formControlName="editCategory" />
+        </mat-form-field>
+
+        <div class="ml-auto d-flex">
+          <a
+            href="javascript: void(0);"
+            (click)="editCategory('save', i)"
+            class="link m-r-10"
+            placement="top"
+            ngbTooltip="Save"
+          >
+            <mat-icon>done_all</mat-icon>
+          </a>
+          <a
+            href="javascript: void(0);"
+            class="link text-danger"
+            (click)="deleteCategory(category)"
+            placement="top"
+            ngbTooltip="Delete"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

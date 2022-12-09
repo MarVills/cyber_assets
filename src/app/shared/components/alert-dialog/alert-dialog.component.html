@@ -1,16 +1,17 @@
-<h2 matDialogTitle>{{this.alertData.title}}</h2>
+<h2 matDialogTitle>{{ this.alertData.title }}</h2>
 <mat-dialog-content>
-  <p>{{this.alertData.message}}</p>
+  <p>{{ this.alertData.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button 
-  *ngIf="this.alertData.action !== 'Ok'" 
-  mat-button 
-  matDialogClose="cancel" 
-  color="primary">Cancel</button>
-  <button 
-  mat-button 
-  matDialogClose="confirm" 
-  color="warn">{{this.alertData.action}}</button>
+  <button
+    *ngIf="this.alertData.action !== 'Ok'"
+    mat-button
+    matDialogClose="cancel"
+    color="primary"
+  >
+    Cancel
+  </button>
+  <button mat-button matDialogClose="confirm" color="warn">
+    {{ this.alertData.action }}
+  </button>
 </mat-dialog-actions>
-

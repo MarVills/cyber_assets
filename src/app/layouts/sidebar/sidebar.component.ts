@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AuthService } from 'src/app/store/services/authentication/auth.service';
+import { AuthService } from 'src/app/store/services/auth/auth.service';
 import { MenuItems } from '../../shared/menu-items/menu-items';
 
 

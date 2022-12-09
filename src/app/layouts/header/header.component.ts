@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TranslateService } from '@ngx-translate/core';
 // import { LoginService } from 'src/app/store/services/authentication/login.service';
-import { AuthService } from 'src/app/store/services/authentication/auth.service';
+import { AuthService } from 'src/app/store/services/auth/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

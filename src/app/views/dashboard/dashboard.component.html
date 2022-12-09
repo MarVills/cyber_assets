@@ -1,15 +1,17 @@
 <div fxLayout="column" layoutAlign="center center" class="dashboard">
-    <div fxLayout="row" fxLayout.xs="column">
-       <div fxFlex.gt-sm="50.33" fxFlex.gt-xs="100" fxFlex="100">
-         <app-dashboard-equipment></app-dashboard-equipment>
-       </div>
-       <div fxFlex.gt-sm="50.33" fxFlex.gt-xs="100" fxFlex="100">
-        <app-dashboard-user></app-dashboard-user>
-       </div>
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex.gt-sm="50.33" fxFlex.gt-xs="100" fxFlex="100">
+      <app-dashboard-equipment
+        [totalEquipment]="totalEquipment"
+      ></app-dashboard-equipment>
     </div>
-    <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-        <app-equipment-categories></app-equipment-categories>
-      </div>
-   </div>
+    <div fxFlex.gt-sm="50.33" fxFlex.gt-xs="100" fxFlex="100">
+      <app-dashboard-user [totalUsers]="totalUsers"></app-dashboard-user>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <app-equipment-categories></app-equipment-categories>
+    </div>
+  </div>
 </div>

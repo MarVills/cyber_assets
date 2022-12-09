@@ -1,6 +1,5 @@
 export const TEXTS = {
-    equipments: "Equipments",
-    users: "Users",
-    requests: "Requests"
-}
-    
+  equipments: 'Equipments',
+  users: 'Users',
+  requests: 'Requests',
+};

@@ -113,5 +113,6 @@
   "Inventory": "Inventaire",
   "Equipments":"Équipements",
   "Checklist": "Liste de contrôle",
-  "Users": "Utilisateurs" 
+  "Users": "Utilisateurs", 
+  "Manage Users": "gérer les utilisateurs"
 }

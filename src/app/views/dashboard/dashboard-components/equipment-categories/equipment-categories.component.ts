@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TEXTS } from '../../dashboardTexts';
 import {
@@ -16,10 +14,8 @@ import {
   ApexTooltip,
   ApexGrid,
   ApexNonAxisChartSeries,
-  ApexResponsive
+  ApexResponsive,
 } from 'ng-apexcharts';
-
-
 
 export interface VisitorChartOptions {
   series: ApexNonAxisChartSeries;
@@ -36,15 +32,14 @@ export interface VisitorChartOptions {
 
 @Component({
   selector: 'app-equipment-categories',
-   templateUrl: './equipment-categories.component.html',
-  styleUrls: ['./equipment-categories.component.scss']
+  templateUrl: './equipment-categories.component.html',
+  styleUrls: ['./equipment-categories.component.scss'],
 })
 export class EquipmentCategoriesComponent implements OnInit {
-
   @ViewChild('visitor-chart') chart2: ChartComponent = Object.create(null);
   public VisitorChartOptions: Partial<VisitorChartOptions>;
 
-  texts= TEXTS;
+  texts = TEXTS;
 
   constructor() {
     this.VisitorChartOptions = {
@@ -52,14 +47,14 @@ export class EquipmentCategoriesComponent implements OnInit {
       chart: {
         type: 'donut',
         fontFamily: 'Poppins,sans-serif',
-        height: 230
+        height: 230,
       },
       plotOptions: {
         pie: {
           donut: {
-            size: '80px'
-          }
-        }
+            size: '80px',
+          },
+        },
       },
       tooltip: {
         fillSeriesColor: false,
@@ -68,7 +63,7 @@ export class EquipmentCategoriesComponent implements OnInit {
         enabled: false,
       },
       stroke: {
-        width: 0
+        width: 0,
       },
       legend: {
         show: false,
@@ -80,17 +75,13 @@ export class EquipmentCategoriesComponent implements OnInit {
           breakpoint: 767,
           options: {
             chart: {
-              width: 200
-            }
-          }
-        }
-      ]
+              width: 200,
+            },
+          },
+        },
+      ],
     };
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
-
-

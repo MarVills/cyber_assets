@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "http://cyber-assets.janreygroup.site",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

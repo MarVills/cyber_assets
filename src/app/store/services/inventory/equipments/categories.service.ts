@@ -2,49 +2,93 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { ActivityLog } from 'src/app/Models/activity-log-model';
 import { CATEGORY_DATA, Category } from 'src/app/Models/category.model';
 import * as categoryActions from '../../../categories/categories.actions';
+import * as logActions from '../../../activity-log/activity-log.actions';
 import { selectCategory } from '../../../categories/categories.selectors';
-
+import { User } from 'src/app/shared/user-details/user-details';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CategoriesService implements OnDestroy{
-
+export class CategoriesService implements OnDestroy {
   fetchEquipments$!: Subscription;
   fetchCategory$!: Subscription;
 
   constructor(
     private fireStore: AngularFirestore,
-    private store: Store,) { }
+    private store: Store,
+    private user: User
+  ) {}
 
   ngOnDestroy(): void {
     this.fetchEquipments$.unsubscribe();
     this.fetchCategory$.unsubscribe();
   }
 
-  onFetchCategories(){
-    this.store.dispatch(categoryActions.requestFetchCategoriesACTION({payload: []}));
-    this.fetchCategory$ = this.store.select( selectCategory ).subscribe((response) => {
-      CATEGORY_DATA.splice(0)
-      for (var res of response.categories) {
-        CATEGORY_DATA.push(res);
-      }
-    })
+  onFetchCategories() {
+    this.store.dispatch(categoryActions.requestFetchCategoriesACTION());
+    this.fetchCategory$ = this.store
+      .select(selectCategory)
+      .subscribe((response) => {
+        CATEGORY_DATA.splice(0);
+        for (var res of response.categories) {
+          CATEGORY_DATA.push(res);
+        }
+      });
   }
 
-  onAddCategory(category: Category){
-    this.store.dispatch(categoryActions.requestAddCategoryACTION({payload: category}))
+  onAddCategory(category: Category) {
+    const userDetails = this.user.signedInUserDetails;
+    const addCategoryLog: ActivityLog = {
+      activity: `Added "${category.category_name}" category`,
+      userName: 'dummy name', // userDetails.firstName + userDetails.lastName,
+      userRole: 'dummy role', //userDetails.userRole!,
+      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+    };
+    this.store.dispatch(
+      categoryActions.requestAddCategoryACTION({ payload: category })
+    );
+    this.store.dispatch(
+      logActions.requestAddActivityLogACTION({ payload: addCategoryLog })
+    );
   }
 
-  onEditCategory(index: number, newData: Category){
+  onEditCategory(index: number, newData: Category) {
     CATEGORY_DATA[index] = newData;
-    this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: CATEGORY_DATA[index].id!, payload: newData}))
+    const userDetails = this.user.signedInUserDetails;
+    const editCategoryLog: ActivityLog = {
+      activity: `Edited category from "${CATEGORY_DATA[index].category_name}" to "${newData.category_name}" category`,
+      userName: 'dummay name',//userDetails.firstName + userDetails.lastName,
+      userRole: 'dummy role', //userDetails.userRole!,
+      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+    };
+    this.store.dispatch(
+      categoryActions.requestUpdateCategoryACTION({
+        id: CATEGORY_DATA[index].id!,
+        payload: newData,
+      })
+    );
+    this.store.dispatch(
+      logActions.requestAddActivityLogACTION({ payload: editCategoryLog })
+    );
   }
 
-  onDeleteCategory(data: Category){
-    CATEGORY_DATA.splice(CATEGORY_DATA.indexOf(data), 1)
-    this.store.dispatch(categoryActions.requestDeleteCategoryACTION({ payload: data.id!}))
+  onDeleteCategory(category: Category) {
+    CATEGORY_DATA.splice(CATEGORY_DATA.indexOf(category), 1);
+    const userDetails = this.user.signedInUserDetails;
+    const deleteCategoryLog: ActivityLog = {
+      activity: `Deleted "${category.category_name}" category`,
+      userName: 'dummy name', //userDetails.firstName + userDetails.lastName,
+      userRole: 'dummy role', //userDetails.userRole!,
+      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+    };
+    this.store.dispatch(
+      categoryActions.requestDeleteCategoryACTION({ id: category.id! })
+    );
+    this.store.dispatch(
+      logActions.requestAddActivityLogACTION({ payload: deleteCategoryLog })
+    );
   }
 }

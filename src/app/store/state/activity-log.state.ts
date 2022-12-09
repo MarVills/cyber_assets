@@ -1,12 +1,11 @@
-import { ActivityLog, ActivityLogDTO } from "src/app/Models/activity-log-model"
-
+import { ActivityLog, ActivityLogDTO } from 'src/app/Models/activity-log-model';
 
 export interface ActivityLogs {
-    activityLogs: ActivityLog[]
+  activityLogs: ActivityLog[];
 }
-export interface  ActivityLogsDTO {
-    activityLogs: ActivityLogDTO[]
+export interface ActivityLogsDTO {
+  activityLogs: ActivityLogDTO[];
 }
 export interface ActivityLogsState {
-    activityLogs: any,
+  activityLogs: any;
 }

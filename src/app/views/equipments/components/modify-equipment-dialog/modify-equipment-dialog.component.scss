@@ -1,53 +1,53 @@
-@import '../../../../../assets/styles/variable.scss';
+@import "../../../../../assets/styles/variable.scss";
 
 .close-icon {
-    transition: 1s ease-in-out;
-  }
-  
+  transition: 1s ease-in-out;
+}
+
 .close-icon:hover {
-    transform: rotate(180deg);
-    cursor: pointer;
-  }
-  
-::ng-deep .icon-outside .close-button{
-    float: right;
-    top:-52px;
-    right:-52px;
-  }
-  
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
 ::ng-deep .icon-outside .mat-dialog-container {
-   overflow: unset
-  }
-
-.button-width{
-    width: 80%;
+  overflow: unset;
 }
 
-.button-margin{
-    margin-left: 10px;
-    margin-right: 10px;
+.button-width {
+  width: 80%;
 }
 
-.align-right{
-    float: right;
-    justify-self: right;
-    align-self: right;
+.button-margin {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.center-item{
-    align-self: center;
-    justify-self: center;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    display: flex;
+.align-right {
+  float: right;
+  justify-self: right;
+  align-self: right;
 }
-.button-purple{
+
+.center-item {
+  align-self: center;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+}
+.button-purple {
   background-color: $primary;
   color: white;
 }
 
-.category-field{
+.category-field {
   position: relative;
   padding-bottom: 0px;
   margin-bottom: 10px;
@@ -55,32 +55,31 @@
   align-items: center;
 }
 
-.category-button{
+.category-button {
   background-color: $themecolor;
   padding-left: 10px;
-  padding-right: 10px;  
+  padding-right: 10px;
   margin-right: 0px;
   margin-bottom: 0px;
   padding-bottom: 0px;
   border-radius: 0px 5px 5px 0px;
   border: none;
-
 }
 
-.category-button{
+.category-button {
   height: 60px;
 }
 
-.category-button .mat-icon{ 
+.category-button .mat-icon {
   padding: 0px;
   color: white;
 }
 
-.category-button:hover{
+.category-button:hover {
   cursor: pointer;
 }
 
-.category-field .mat-form-field .mat-form-field-wrapper{
+.category-field .mat-form-field .mat-form-field-wrapper {
   margin-bottom: -1.3em;
   margin-top: 0em;
 }
@@ -93,10 +92,8 @@
   margin-bottom: 0px;
 }
 
-
-.serial-number-field .mat-form-field .mat-form-field-wrapper{
+.serial-number-field .mat-form-field .mat-form-field-wrapper {
   padding: 0px;
   margin-bottom: 20px;
   margin-top: 0px;
 }
-

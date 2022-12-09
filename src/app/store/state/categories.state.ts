@@ -1,12 +1,11 @@
-import { Category, CategoryDTO } from "src/app/Models/category.model"
-
+import { Category, CategoryDTO } from 'src/app/Models/category.model';
 
 export interface Categories {
-    categories: Category[]
+  categories: Category[];
 }
-export interface  CategoriesDTO {
-    categories: CategoryDTO[]
+export interface CategoriesDTO {
+  categories: CategoryDTO[];
 }
 export interface CategoriesState {
-    categories: any,
+  categories: any;
 }

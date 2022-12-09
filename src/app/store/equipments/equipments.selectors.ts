@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { EquipmentsState } from '../state/equipments.state';
+import { Equipments, EquipmentsState } from '../state/equipments.state';
 
-
-export const selectEquipmentsFeatureState = createFeatureSelector<any>('equipments');
+export const selectEquipmentsFeatureState =
+  createFeatureSelector<any>('equipment');
 export const selectEquipment = createSelector(
-    selectEquipmentsFeatureState,
-    (state: EquipmentsState) => state
-)
+  selectEquipmentsFeatureState,
+  (state: EquipmentsState) => state.equipment
+);

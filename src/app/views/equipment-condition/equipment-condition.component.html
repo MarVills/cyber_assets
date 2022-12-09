@@ -1,85 +1,113 @@
 <mat-card>
-    <mat-card-content>
-        <mat-card-title>Equipments Conditions</mat-card-title>
-        <mat-card-subtitle>
-            <code><a href="">Monitor and update conditions of each equipments</a></code>
-        </mat-card-subtitle>
-        <div class="categories">Categories</div>
-        <mat-accordion >
-            <mat-expansion-panel class="p-0" *ngFor="let category of this.equipmentsByCategory | keyvalue">
-                <mat-expansion-panel-header 
-                    style="background-color: #e8fdf8;" 
-                    [ngClass]="(panelOpenState)?'no-events':'default'"
-                    (click)="panelClicked(category)">
-                    <mat-panel-title class="space-between" >  
-                      {{ category.key }} 
-                      <span class="label label-primary">
-                        {{category.value.items.length}}
-                      </span>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngIf="category.value.items.length != 0" fxLayout="row wrap">
-                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                   
-                          <mat-form-field 
-                          appearance="outline" 
-                          class="m-t-10"
-                          [formGroup]="_searchEquipmentForm" >
-                            <mat-label>Search Equipment
-                              <mat-icon >search</mat-icon>
-                            </mat-label>
-                            <input 
-                            matInput 
-                            formControlName="searchEquipment" 
-                            placeholder="Equipment">
-                          </mat-form-field>
-                  
-                          <div class="responsive-table">
-                            <mat-table #table [dataSource]="category.value.items | filter: _searchEquipmentForm.value.searchEquipment ">
-                           
-                              <ng-container matColumnDef="serialNumber">
-                                <mat-header-cell *matHeaderCellDef> Serial No. </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{element.serialNumber}} </mat-cell>
-                              </ng-container>
+  <mat-card-content>
+    <mat-card-title>Equipments Conditions</mat-card-title>
+    <mat-card-subtitle>
+      <code
+        ><a href="">Monitor and update conditions of each equipments</a></code
+      >
+    </mat-card-subtitle>
+    <div class="categories">Categories</div>
+    <mat-accordion>
+      <mat-expansion-panel
+        class="p-0"
+        *ngFor="let category of this.equipmentsByCategory | keyvalue"
+      >
+        <mat-expansion-panel-header
+          style="background-color: #e8fdf8"
+          [ngClass]="panelOpenState ? 'no-events' : 'default'"
+          (click)="panelClicked(category)"
+        >
+          <mat-panel-title class="space-between">
+            {{ category.key }}
+            <span class="label label-primary">
+              {{ category.value.items.length }}
+            </span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngIf="category.value.items.length != 0" fxLayout="row wrap">
+          <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <mat-form-field
+              appearance="outline"
+              class="m-t-10"
+              [formGroup]="_searchEquipmentForm"
+            >
+              <mat-label
+                >Search Equipment
+                <mat-icon>search</mat-icon>
+              </mat-label>
+              <input
+                matInput
+                formControlName="searchEquipment"
+                placeholder="Equipment"
+              />
+            </mat-form-field>
 
-                              <ng-container matColumnDef="equipmentName">
-                                <mat-header-cell *matHeaderCellDef> Equipment Name </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{element.equipment}} </mat-cell>
-                              </ng-container>
-                  
-                              <ng-container matColumnDef="status">
-                                <mat-header-cell *matHeaderCellDef> Status/Condition </mat-header-cell>
-                                <mat-cell *matCellDef="let element" class="good"> 
-                              
-                                  <mat-form-field appearance="outline" >
-                                    <mat-select 
-                                    panelClass="select-field"
-                                    (selectionChange)="onConditionChange($event.value)"
-                                    (openedChange)="onSelectionClicked(element)"
-                                    [value]="element.status">
-                                        <mat-option 
-                                        
-                                        *ngFor="let conditions of this.equipmentConditions" 
-                                        [value]="conditions" >
-                                            {{conditions}}
-                                        </mat-option>
-                                    </mat-select> 
-                                        
-                                </mat-form-field>
-                                </mat-cell>
-                              </ng-container>
-                  
-                              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                            </mat-table>
-                          </div>
-                      </div>
-                  </div>
-                  <div *ngIf="category.value.items.length == 0">
-                    <p class="m-b-0 text-center font-18 font-bold m-t-40">No Equipments Found</p>
-                    <br/>
-                  </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </mat-card-content>
+            <div class="responsive-table">
+              <mat-table
+                #table
+                [dataSource]="
+                  category.value.items
+                    | filter : _searchEquipmentForm.value.searchEquipment
+                "
+              >
+                <ng-container matColumnDef="serialNumber">
+                  <mat-header-cell *matHeaderCellDef>
+                    Serial No.
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element.serialNumber }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="equipmentName">
+                  <mat-header-cell *matHeaderCellDef>
+                    Equipment Name
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{ element.equipment }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <mat-header-cell *matHeaderCellDef>
+                    Status/Condition
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="good">
+                    <mat-form-field appearance="outline">
+                      <mat-select
+                        panelClass="select-field"
+                        (selectionChange)="onConditionChange($event.value)"
+                        (openedChange)="onSelectionClicked(element)"
+                        [value]="element.status"
+                      >
+                        <mat-option
+                          *ngFor="let conditions of this.equipmentConditions"
+                          [value]="conditions"
+                        >
+                          {{ conditions }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                  *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></mat-row>
+              </mat-table>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="category.value.items.length == 0">
+          <p class="m-b-0 text-center font-18 font-bold m-t-40">
+            No Equipments Found
+          </p>
+          <br />
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
 </mat-card>

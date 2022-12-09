@@ -1,13 +1,11 @@
-
 import { Component, OnInit } from '@angular/core';
 import { TEXTS } from '../../dashboardTexts';
 @Component({
   selector: 'app-dashboard-request',
   templateUrl: './dashboard-request.component.html',
-  styleUrls: ['./dashboard-request.component.scss']
+  styleUrls: ['./dashboard-request.component.scss'],
 })
 export class DashboardRequestComponent implements OnInit {
-
   texts = TEXTS;
   mycomments = [
     {
@@ -17,7 +15,7 @@ export class DashboardRequestComponent implements OnInit {
       profile: 'assets/images/users/1.jpg',
       status: 'Pending',
       class: 'info',
-      date: 'April 14, 2016'
+      date: 'April 14, 2016',
     },
     {
       name: 'Michael Jorden',
@@ -26,7 +24,7 @@ export class DashboardRequestComponent implements OnInit {
       profile: 'assets/images/users/2.jpg',
       status: 'Approved',
       class: 'light-success',
-      date: 'April 14, 2016'
+      date: 'April 14, 2016',
     },
     {
       name: 'James Anderson',
@@ -35,7 +33,7 @@ export class DashboardRequestComponent implements OnInit {
       profile: 'assets/images/users/3.jpg',
       status: 'Pending',
       class: 'danger',
-      date: 'April 14, 2016'
+      date: 'April 14, 2016',
     },
     {
       name: 'Johnathan Doeting',
@@ -44,14 +42,11 @@ export class DashboardRequestComponent implements OnInit {
       profile: 'assets/images/users/1.jpg',
       status: 'Pending',
       class: 'info',
-      date: 'April 14, 2016'
-    }
+      date: 'April 14, 2016',
+    },
   ];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
-

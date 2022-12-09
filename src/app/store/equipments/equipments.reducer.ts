@@ -1,43 +1,54 @@
 import { createReducer, on } from '@ngrx/store';
+import { Equipment } from 'src/app/Models/equipment.model';
 import { EquipmentsState } from '../state/equipments.state';
 import * as equipmentsAction from './equipments.actions';
-
 
 export const equipmentsFeatureKey = 'equipments';
 
 export const initialState: EquipmentsState = {
-  equipments: [],
+  equipment: [],
 };
 
 export const equipmentReducer = createReducer(
   initialState,
 
-  on(equipmentsAction.successFetchEquipmentsACTION, (state: EquipmentsState, { payload }) =>{
-    return { 
-      ...state, 
-      equipments: payload }
-  }),
+  on(
+    equipmentsAction.successFetchEquipmentACTION,
+    (state: EquipmentsState, { payload }) => {
+      return {
+        ...state,
+        equipment: payload,
+      };
+    }
+  ),
 
-  on(equipmentsAction.successAddEquipmentACTION, (state: EquipmentsState) =>{
-    return { ...state }
-  }),
+  on(
+    equipmentsAction.successAddEquipmentACTION,
+    (state: EquipmentsState, { payload }) => {
+      // console.log("state", state)
+      // return { ...state, equipments: [state, payload]}
+      return { ...state };
+    }
+  ),
 
-  on(equipmentsAction.requestUpdateEquipmentACTION, (state: EquipmentsState, { payload }) =>{
-    const updateProduct = [state.equipments].map((product:any)=> {
-      return payload === product.id ? payload : product;
-    })
-    const returnState = { ...state, products: updateProduct, selected_product: '' }
-    return returnState;
-  }),
+  on(
+    equipmentsAction.requestUpdateEquipmentACTION,
+    (state: EquipmentsState, { payload }) => {
+      const updateItem = [state.equipment].map((equipment: any) => {
+        return payload === equipment.id ? payload : equipment;
+      });
+      const returnState = { ...state, equipment: updateItem };
+      return returnState;
+    }
+  ),
 
-  on(equipmentsAction.requestDeleteEquipmentACTION, (state: EquipmentsState, { payload }) =>{
-    let newState = [state.equipments];
-    newState.splice(newState.indexOf(payload), 1);
-    const returnState = { ...state, products: newState }
-    return returnState;
-  }),
+  on(
+    equipmentsAction.requestDeleteEquipmentACTION,
+    (state: EquipmentsState, { payload }) => {
+      let newState = [state.equipment];
+      newState.splice(newState.indexOf(payload), 1);
+      const returnState = { ...state, equipment: newState };
+      return returnState;
+    }
+  )
 );
-
-
-
-

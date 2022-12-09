@@ -3,26 +3,26 @@ import {
   Input,
   OnDestroy,
   Inject,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   Router,
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
-  NavigationError
+  NavigationError,
 } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-spinner',
   template: `<div class="preloader" *ngIf="isSpinnerVisible">
-        <div class="spinner">
-          <div class="double-bounce1"></div>
-          <div class="double-bounce2"></div>
-        </div>
-    </div>`,
-  encapsulation: ViewEncapsulation.None
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>`,
+  encapsulation: ViewEncapsulation.None,
 })
 export class SpinnerComponent implements OnDestroy {
   public isSpinnerVisible = true;
@@ -34,7 +34,7 @@ export class SpinnerComponent implements OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.router.events.subscribe(
-      event => {
+      (event) => {
         if (event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if (

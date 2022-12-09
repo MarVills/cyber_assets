@@ -1,157 +1,177 @@
+@import "../../../assets/styles/variable.scss";
 
-.center-item{
-align-self: center;
-justify-self: center;
-justify-content: center;
-align-items: center;
-width: 100%;
-display: flex;
+.center-item {
+  align-self: center;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
 }
 
-.button-width{
-    width: 80%;
+.button-width {
+  width: 80%;
 }
 
-.button-margin{
-    margin-left: 10px;
-    margin-right: 10px;
+.button-margin {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.responsive-table mat-header-cell, mat-cell{
-    text-align: center;
-    justify-content: center;
-  }
-
-.action-button{
-    margin: 5px;
-    padding: 0px;
-    align-items: center;
-    justify-content: center;
+.responsive-table mat-header-cell,
+mat-cell {
+  text-align: center;
+  justify-content: center;
 }
 
-.add-button{
-    top: 0;
-    right: 0;
-    margin-right: 50px;
-    margin-top: 20px;
-    color: white;
+.action-button {
+  margin: 5px;
+  padding: 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-button {
+  top: 0;
+  right: 0;
+  margin-right: 50px;
+  margin-top: 20px;
+  color: white;
+}
+
+.width-50 {
+  width: 50px;
+}
+
+.margin-20 {
+  margin: 20px;
+}
+
+.table-padding {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.z-index-100 {
+  z-index: 100;
+}
+
+.z-index-50 {
+  z-index: 50;
+}
+
+.float-right {
+  float: right;
+}
+
+.display-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.padding-side-15 {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.padding-side-40 {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.padding-top-botttom-20 {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.info-widget {
+  width: 31.75%;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+.note-color {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.note {
+  position: relative;
+  padding: 1rem 1rem 1rem 0;
+  border-bottom: 1px solid rgba(120, 130, 140, 0.13);
+  width: 100%;
+}
+
+.notes-item.selected {
+  background-color: #e9ecef;
+}
+
+.note-title {
+  width: 175px;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-title,
+.note-time {
+  margin-left: 15px;
+  display: block;
+}
+
+.note-content {
+  border: none;
+  resize: none;
+  padding: 15px;
+}
+
+.remove-note {
+  margin-left: auto;
+}
+
+.remove-note,
+.notes-item {
+  cursor: pointer;
+}
+
+.notes-app {
+  .mat-flat-button {
+    min-width: 20px !important;
+    padding: 0 !important;
   }
 
-  .width-50{
-    width: 50px;
+  .mat-list-base .mat-list-item,
+  .mat-list-base .mat-list-option {
+    height: auto !important;
   }
 
-  .margin-20{
-    margin: 20px;
+  .mat-list-base {
+    padding-top: 0 !important;
   }
+}
 
-  .table-padding{
-    padding-left: 30px;
-    padding-right: 30px;
-  }
+.table-padding {
+  padding-bottom: 20px !important;
+}
 
-  .z-index-100{
-    z-index: 100;
-  }
+.top-icons {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .z-index-50{
-    z-index: 50;
-  }
+.top-icons mat-icon {
+  font-size: 30px;
+}
 
-  .float-right{
-     float: right;
-  }
-
-  .display-flex{
-    display: flex;
-    justify-content:space-between;
-  }
-
-  .padding-side-15{
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  .padding-side-40{
-    margin-left: 40px;
-    margin-right: 40px;
-  }
-  .padding-top-botttom-20{
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-
-  .info-widget {
-    width: 31.75%;
-    border: 1px solid black;
-    display: inline-block;
-  }
-
-  ::ng-deep .mat-form-field-underline {
-    display: none;
-  }
-
-  .note-color {
-    position: absolute;
-    width: 5px;
-    height: 100%;
-    left: 0;
-    top: 0;
-  }
-  
-  .note {
-    position: relative;
-    padding: 1rem 1rem 1rem 0;
-    border-bottom: 1px solid rgba(120, 130, 140, 0.13);
-    width: 100%;
-  }
-  
-  .notes-item.selected {
-    background-color: #e9ecef;
-  }
-  
-  .note-title {
-    width: 175px;
-    font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .note-title,
-  .note-time {
-    margin-left: 15px;
-    display: block;
-  }
-  
-  .note-content {
-    border: none;
-    resize: none;
-    padding: 15px;
-  }
-  
-  .remove-note {
-    margin-left: auto;
-  }
-  
-  .remove-note,
-  .notes-item {
-    cursor: pointer;
-  }
-  
-  .notes-app {
-  
-    .mat-flat-button {
-      min-width: 20px !important;
-      padding: 0 !important;
-    }
-  
-    .mat-list-base .mat-list-item,
-    .mat-list-base .mat-list-option {
-      height: auto !important;
-    }
-  
-    .mat-list-base {
-      padding-top: 0 !important;
-    }
-  }
-  
+.top-icons mat-icon:hover {
+  cursor: pointer;
+  color: $themecolor;
+}

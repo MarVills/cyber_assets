@@ -1,5 +1,4 @@
-
-import {Component, Injectable} from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -7,21 +6,18 @@ import {
 } from '@angular/material/snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 @Component({
   selector: 'app-snackbar',
   templateUrl: './snackbar.component.html',
-  styleUrls: ['./snackbar.component.scss']
+  styleUrls: ['./snackbar.component.scss'],
 })
 export class SnackbarComponent {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private _snackBar: MatSnackBar) {
-
-  }
+  constructor(private _snackBar: MatSnackBar) {}
 
   openSnackBar(message: string, buttonName: string) {
     this._snackBar.open(message, buttonName, {

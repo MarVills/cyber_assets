@@ -1,113 +1,143 @@
-<div fxLayout="row"  fxLayout.sm="column" fxLayout.xs="column">
-    <div  fxFlex.gt-sm="30">
-        <mat-card class="oh text-center little-profile">
-            <img mat-card-image src="assets/images/background/profile-bg.jpg" class="profile-bg-height"
-                alt="Photo of a Shiba Inu">
-            <mat-card-content>
-                <div class="pro-img" >
-                    <img src="{{this.downloadUrl}}" width="100" alt="user" matBadge="check">
-                </div>
-                <h3 class="m-b-0">{{this.accountData.firstName}} {{this.accountData.lastName}}</h3>
-                <br/>
-                <h6 class="m-t-0 ">Admin</h6>
-                <mat-card-actions>
-                    <button 
-                    mat-raised-button 
-                    color="warn"
-                    type="button"
-                    (click)="editAccStatus()"
-                    >Disable</button>
-                </mat-card-actions>
-                <br/>
-                <div fxLayout="row" fxLayoutWrap="wrap" class="text-center">
-                  <div fxFlex="100" >
-                    <small class="m-0 font-light">{{this.accountData.description}}</small>
-                </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
-    <div fxFlex.gt-sm="70"  >
-        <mat-card>
-        <mat-card-content>
-            <mat-card-title>Update Account Details</mat-card-title>
-            <br/>
-            <form class="basic-form" [formGroup]="_accountDetailsForm" (ngSubmit)="updateAccount()">
-            <div fxLayout="row wrap">
-              
-                <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
-                  <mat-form-field>
-                    <input 
-                    matInput 
-                    formControlName="firstName"
-                    placeholder="First name">
-                  </mat-form-field>
-                </div>
-                
-                <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
-                  <mat-form-field>
-                    <input 
-                    matInput 
-                    formControlName="lastName"
-                    placeholder="Last name">
-                  </mat-form-field>
-                </div>
-                
-                <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
-                  <mat-form-field>
-                    <input 
-                    matInput 
-                    formControlName="middleName"
-                    placeholder="Middle name">
-                  </mat-form-field>
-                </div>
-            
-                
-                <div fxFlex.gt-sm="100" fxFlex="100">
-                  <mat-form-field>
-                      <input 
-                      matInput 
-                      formControlName="emailAddress"
-                      placeholder="Email address" 
-                      type="email">
-                  </mat-form-field>
-                </div>
-
-                <div fxFlex.gt-sm="100" fxFlex="100">
-                  <mat-form-field>
-                      <input 
-                      matInput 
-                      formControlName="contactNumber"
-                      placeholder="Contact number" 
-                      type="text">
-                  </mat-form-field>
-                </div>
-                
-                <div fxFlex.gt-sm="100" fxFlex="100">
-                  <mat-form-field>
-                      <textarea 
-                      matInput 
-                      formControlName="description"
-                      placeholder="Description"></textarea>
-                  </mat-form-field>
-                </div>
-
-                <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-20">
-                  <input 
-                  formControlName="profileImage"
-                  class="form-control b-b" 
-                  placeholder="Select Profile image" 
-                  type="file"
-                  accept="image/*"
-                  (change)="imageTest($event)">
-                </div>
-                
-                <div fxFlex.gt-sm="100" fxFlex="100">
-                  <button mat-raised-button color="primary" [disabled]="!_accountDetailsForm.valid">Update Account</button>
-                </div>
+<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+  <div fxFlex.gt-sm="30">
+    <mat-card class="oh text-center little-profile">
+      <img
+        mat-card-image
+        src="assets/images/background/profile-bg.jpg"
+        class="profile-bg-height"
+        alt="Photo of a Shiba Inu"
+      />
+      <mat-card-content>
+        <div class="pro-img">
+          <img
+            src="{{ this.downloadUrl }}"
+            width="100"
+            alt="user"
+            matBadge="check"
+          />
+        </div>
+        <h3 class="m-b-0">
+          {{ this.accountData.firstName }} {{ this.accountData.lastName }}
+        </h3>
+        <br />
+        <h6 class="m-t-0">Admin</h6>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="editAccStatus()"
+          >
+            Disable
+          </button>
+        </mat-card-actions>
+        <br />
+        <div fxLayout="row" fxLayoutWrap="wrap" class="text-center">
+          <div fxFlex="100">
+            <small class="m-0 font-light">{{
+              this.accountData.description
+            }}</small>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex.gt-sm="70">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Update Account Details</mat-card-title>
+        <br />
+        <form
+          class="basic-form"
+          [formGroup]="_accountDetailsForm"
+          (ngSubmit)="updateAccount()"
+        >
+          <div fxLayout="row wrap">
+            <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="firstName"
+                  placeholder="First name"
+                />
+              </mat-form-field>
             </div>
-            </form>
-        </mat-card-content>
-        </mat-card>
-    </div>
+
+            <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Last name"
+                />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="33.33" fxFlex="100" class="">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="middleName"
+                  placeholder="Middle name"
+                />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="emailAddress"
+                  placeholder="Email address"
+                  type="email"
+                />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="contactNumber"
+                  placeholder="Contact number"
+                  type="text"
+                />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <textarea
+                  matInput
+                  formControlName="description"
+                  placeholder="Description"
+                ></textarea>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-20">
+              <input
+                formControlName="profileImage"
+                class="form-control b-b"
+                placeholder="Select Profile image"
+                type="file"
+                accept="image/*"
+                (change)="imageTest($event)"
+              />
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="!_accountDetailsForm.valid"
+              >
+                Update Account
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

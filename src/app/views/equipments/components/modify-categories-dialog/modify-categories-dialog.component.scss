@@ -1,35 +1,32 @@
 .close-icon {
-    transition: 1s ease-in-out;
-    float: right;
-  }
-  
-.close-icon:hover {
-    transform: rotate(180deg);
-    cursor: pointer;
-  }
-  
-::ng-deep .icon-outside .close-button{
-    float: right;
-    top:-52px;
-    right:-52px;
-  }
-  
-::ng-deep .icon-outside .mat-dialog-container {
-   overflow: unset
-  }
-.category-header{
-    justify-content: space-between;
+  transition: 1s ease-in-out;
+  float: right;
 }
 
-.category-field{ 
+.close-icon:hover {
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+::ng-deep .icon-outside .mat-dialog-container {
+  overflow: unset;
+}
+.category-header {
+  justify-content: space-between;
+}
+
+.category-field {
   margin: 0px;
   align-items: center;
 }
 
-::ng-deep .mat-form-field-wrapper{
+::ng-deep .mat-form-field-wrapper {
   margin-bottom: -1.25em;
-  padding: -2em ;
-}
-::ng-deep .search-field .mat-form-field-underline {
-  display: none;
+  padding: -2em;
 }

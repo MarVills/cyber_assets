@@ -1,14 +1,14 @@
 
   export interface Category {
-    id?: string;
-    category: string;
+    id?: number;
+    category_name: string;
     prefix?: string;
     edit: boolean;
   }
 
   export interface CategoryDTO {
-    id?: string;
-    category: string;
+    id?: number;
+    category_name: string;
     prefix: string;
     edit?: boolean;
   }

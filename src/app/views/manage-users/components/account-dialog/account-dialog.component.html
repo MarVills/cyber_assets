@@ -1,92 +1,98 @@
 <h2 mat-dialog-title>Add New User</h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="_accountDialogForm" (ngSubmit)="createAccount(formDirective)" #formDirective="ngForm">
-
+  <form
+    [formGroup]="_accountDialogForm"
+    (ngSubmit)="createAccount(formDirective)"
+    #formDirective="ngForm"
+  >
     <mat-form-field>
-      <input 
-      type="text" 
-      matInput 
-      required 
-      formControlName="firstName"
-      placeholder="First name">
+      <input
+        type="text"
+        matInput
+        required
+        formControlName="firstName"
+        placeholder="First name"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <input 
-      type="text" 
-      matInput 
-      required
-      formControlName="lastName"
-      placeholder="Last name">
+      <input
+        type="text"
+        matInput
+        required
+        formControlName="lastName"
+        placeholder="Last name"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <input 
-      type="text" 
-      matInput 
-      required 
-      formControlName="middleName"
-      placeholder="Middle name">
+      <input
+        type="text"
+        matInput
+        required
+        formControlName="middleName"
+        placeholder="Middle name"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select 
-      placeholder="User Role"
-      formControlName="userRole">
+      <mat-select placeholder="User Role" formControlName="userRole">
         <mat-option value="option">Admin</mat-option>
         <mat-option value="option">Staff</mat-option>
       </mat-select>
     </mat-form-field>
-    
+
     <mat-form-field>
-      <input 
-      type="text" 
-      matInput 
-      required 
-      formControlName="emailAddress"
-      placeholder="Email address">
+      <input
+        type="text"
+        matInput
+        required
+        formControlName="emailAddress"
+        placeholder="Email address"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <input 
-      type="text" 
-      matInput 
-      required 
-      formControlName="contactNumber"
-      placeholder="Contact number">
+      <input
+        type="text"
+        matInput
+        required
+        formControlName="contactNumber"
+        placeholder="Contact number"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <input 
-      type="password" 
-      matInput 
-      required 
-      formControlName="password"
-      placeholder="Password">
+      <input
+        type="password"
+        matInput
+        required
+        formControlName="password"
+        placeholder="Password"
+      />
     </mat-form-field>
 
     <mat-form-field>
-      <textarea 
-      type="text" 
-      matInput 
-      required 
-      formControlName="description"
-      placeholder="Description">
-     </textarea>
+      <textarea
+        type="text"
+        matInput
+        required
+        formControlName="description"
+        placeholder="Description"
+      >
+      </textarea>
     </mat-form-field>
 
     <div align="end">
       <button mat-button mat-dialog-close>Cancel</button>
-      <button 
-        mat-button 
+      <button
+        mat-button
         [mat-dialog-close]="_accountDialogForm.valid"
         [disabled]="!_accountDialogForm.valid"
-        type="submit">
+        type="submit"
+      >
         Add Account
       </button>
     </div>
   </form>
 </mat-dialog-content>
-
-
-

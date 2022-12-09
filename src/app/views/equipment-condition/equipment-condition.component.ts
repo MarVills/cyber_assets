@@ -1,128 +1,139 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { EQUIPMENT_CONDITIONS } from 'src/app/shared/equipment-conditions/equipment-conditions';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
-import { Equipment, EQUIPMENT_DATA, EquipmentsWithSelectedStatus, EquipmentDTO } from 'src/app/Models/equipment.model';
-import { CATEGORY_DATA } from 'src/app/Models/category.model';
+import {
+  Equipment,
+  EQUIPMENT_DATA,
+  EquipmentsWithSelectedStatus,
+  EquipmentDTO,
+} from 'src/app/Models/equipment.model';
+import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ManageAccountService } from 'src/app/store/services/manage-account.service';
-
+import { Store } from '@ngrx/store';
+import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
+import { Subscription } from 'rxjs';
+import { selectCategory } from 'src/app/store/categories/categories.selectors';
 
 @Component({
   selector: 'app-equipment-condition',
   templateUrl: './equipment-condition.component.html',
   styleUrls: ['./equipment-condition.component.scss'],
 })
-export class EquipmentConditionComponent implements  OnInit {
-
+export class EquipmentConditionComponent implements OnInit, OnDestroy {
   panelOpenState = false;
-  step = 0;
   equipmentConditions = Object.values(EQUIPMENT_CONDITIONS);
-  categories = CATEGORY_DATA;
-  equipments =  EQUIPMENT_DATA;
-  equipmentsByCategory: Map<string, EquipmentsWithSelectedStatus> = new Map<string, EquipmentsWithSelectedStatus>();
+  categories: Category[] = [];
+  equipment: Equipment[] = [];
+  equipmentsByCategory: Map<string, EquipmentsWithSelectedStatus> = new Map<
+    string,
+    EquipmentsWithSelectedStatus
+  >();
   displayedColumns = ['serialNumber', 'equipmentName', 'status'];
-  selectedEquipments:any;
+  selectedEquipments: any;
   _searchEquipmentForm!: FormGroup;
+  equipmentSubscription$!: Subscription;
+  categoriesSubscription$!: Subscription;
 
-  constructor(breakpointObserver: BreakpointObserver,
-             private equipmentsService: EquipmentsService,
-             private categoriesService: CategoriesService,
-             private formBuilder: FormBuilder,
-             private manageAccountService: ManageAccountService){
-      breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
-        this.displayedColumns = result.matches ?
-            ['serialNumber', 'equipmentName', 'status'] :
-            ['serialNumber', 'equipmentName', 'status'];
-      });
-      
+  constructor(
+    breakpointObserver: BreakpointObserver,
+    private equipmentsService: EquipmentsService,
+    private formBuilder: FormBuilder,
+    private store: Store
+  ) {
+    breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+      this.displayedColumns = result.matches
+        ? ['serialNumber', 'equipmentName', 'status']
+        : ['serialNumber', 'equipmentName', 'status'];
+    });
   }
-  
+  ngOnDestroy(): void {
+    this.equipmentSubscription$.unsubscribe();
+    this.categoriesSubscription$.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.refresh();
-    this.equipmentsService.onFetchEquipments();
-    this.categoriesService.onFetchCategories();
-    this.manageAccountService.onFetchAccDetails();
+    this.equipmentSubscription$ = this.store
+      .select(selectEquipment)
+      .subscribe((response) => {
+        this.equipment = response;
+      });
+    this.categoriesSubscription$ = this.store
+      .select(selectCategory)
+      .subscribe((response) => {
+        this.categories = response.categories;
+        this.setEquipmentsByCategories();
+      });
+
     this.searchEquipmentForm();
-    
   }
 
-  searchEquipmentForm(){
+  searchEquipmentForm() {
     this._searchEquipmentForm = this.formBuilder.group({
-      searchEquipment: new FormControl(""),
-     });
+      searchEquipment: new FormControl(''),
+    });
   }
 
-  panelClicked(category: any){
-    this.selectedEquipments = category
+  panelClicked(category: any) {
+    this.selectedEquipments = category;
     this._searchEquipmentForm.reset();
   }
 
   applyFilter(filterValue: string, category: any) {
-<<<<<<< HEAD
-    filterValue = filterValue.trim(); 
+    filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
-    const equipments:EquipmentsWithSelectedStatus = category.value;
-    if(equipments.items.length != 0){
-      let filteredValue = equipments.items.filter((equipmentDetails)=>{
-        return equipmentDetails.equipment + equipmentDetails.status.includes(filterValue)
+    const equipments: EquipmentsWithSelectedStatus = category.value;
+    if (equipments.items.length != 0) {
+      let filteredValue = equipments.items.filter((equipmentDetails) => {
+        return (
+          equipmentDetails.item_name +
+          equipmentDetails.status.includes(filterValue)
+        );
       });
-      
-      const values: EquipmentsWithSelectedStatus = { isSelected:equipments.isSelected, items:filteredValue}
-      var key = category.key;
-      this.selectedEquipments = {key: key, value:values}
+      const values: EquipmentsWithSelectedStatus = {
+        isSelected: equipments.isSelected,
+        items: filteredValue,
+      };
+      const key = category.key;
+      this.selectedEquipments = { key: key, value: values };
     }
-=======
-      filterValue = filterValue.trim(); 
-      filterValue = filterValue.toLowerCase();
-      this.equipmentsByCategory.forEach((item)=>{
-        console.log("item values", item);
-        if(item.length != 0){
-          let items = item.filter((equipmentDetails)=>{
-            return equipmentDetails.equipment + equipmentDetails.status.includes(filterValue)
-          });
-          this.equipmentsByCategory.set(category.key, items)
-        }
-      })
->>>>>>> parent of 1165ea2 (working on activity log and report)
   }
 
-  setEquipmentsByCategories(){
-    this.categories.forEach((category)=>{
-      let filteredEquipment = this.equipments.filter((equipment)=>equipment.category === category.category);
-      const values = {
+  setEquipmentsByCategories() {
+    this.categories.forEach((category) => {
+      const filteredEquipment = this.equipment.filter(
+        (item) => item.category === category.category_name
+      );
+      const isSlectedCategory: EquipmentsWithSelectedStatus = {
         isSelected: false,
         items: filteredEquipment,
-      }
-      filteredEquipment?this.equipmentsByCategory.set(category.category, values):null
-    })
+      };
+      filteredEquipment
+        ? this.equipmentsByCategory.set(category.category_name, isSlectedCategory)
+        : null;
+    });
   }
 
-  onConditionChange(data: string){
+  onConditionChange(data: string) {
     const previousData = this.equipmentsService.toEditData;
-    const latestData:Equipment = {
-      equipment: previousData.equipment,
+
+    const latestData: Equipment = {
+      item_name: previousData.item_name,
       category: previousData.category,
       status: data,
       description: previousData.description,
-      serialNumber: previousData.serialNumber
-    }
-    this.equipmentsService.onEditEquipment(this.equipmentsService.toEditData, latestData)
+      serial_no: previousData.serial_no,
+    };
+
+    this.equipmentsService.onEditEquipment(
+      this.equipmentsService.toEditData,
+      latestData
+    );
   }
 
-  onSelectionClicked(data: EquipmentDTO){
+  onSelectionClicked(data: Equipment) {
     this.equipmentsService.toEditData = data;
   }
-
-  refresh(){
-    setTimeout(() => {
-      this.setEquipmentsByCategories()
-    }, 2000);
-  }
-
 }
-
-
-

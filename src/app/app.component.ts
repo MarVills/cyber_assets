@@ -1,13 +1,12 @@
-import { Component, HostListener, OnInit} from '@angular/core';
-import { AuthService } from './store/services/authentication/auth.service';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { AuthService } from './store/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
-
+export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {
     // document.addEventListener('contextmenu', function(e) {
     //   e.preventDefault();
@@ -16,7 +15,6 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.authService.isLoggedIn();
   }
- 
 
   // @HostListener('document:keydown', ['$event'])
   // handleKeyboardEvent(e: KeyboardEvent) {
@@ -38,6 +36,4 @@ export class AppComponent implements OnInit{
   //   }
   //   return true;
   // }
-  
- 
 }
