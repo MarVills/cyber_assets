@@ -106,16 +106,18 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         if (response.categories.length != 0) {
           this.categories = response.categories;
+          this.getBackgroundColors();
           this.equipmentSubscription$ = this.store
             .select(selectEquipment)
             .subscribe((response) => {
-              console.log('response', response)
               if (response.length != 0) {
                 this.equipmentDataSource = new MatTableDataSource<Equipment>(response);
                 this.equipments = response;
                 this.setEquipmentsByCategory();
-                this.getBackgroundColors();
                 this.allEquipments('#f5f5f5');
+              }
+              if (response.length == 0) {
+                this.hasEquipments = false;
               }
             });
         }
@@ -152,14 +154,14 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.equipmentDataSource.filter = filterValue;
   }
 
-  filterByCategory(category: string, color: string, equipments: string) {
+  filterByCategory(category: number, color: string, equipments: string) {
     this.hasEquipments = Number(equipments) > 0;
     this.toolbarBgColor = color;
     this.equipment$ = this.store.select(selectEquipment);
     this.equipment$.subscribe((response) => {
       let filteredEquipment: Equipment[] = [];
       response.forEach((item) => {
-        if (item.category == category) {
+        if (item.category_id == category) {
           filteredEquipment.push(item);
         }
       });
@@ -170,7 +172,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   setEquipmentsByCategory() {
     this.categories.forEach((category) => {
       let filteredEquipment = this.equipments.filter(
-        (equipment) => equipment.category === category.category_name
+        (equipment) => equipment.category_id === category.id
       );
       filteredEquipment
         ? this.equipmentsByCategory.set(category.category_name, filteredEquipment)
@@ -265,5 +267,8 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.hasEquipments = true;
     this.toolbarBgColor = color;
     this.equipment$ = this.store.select(selectEquipment);
+     if (this.equipments == undefined || this.equipments.length == 0) {
+        this.hasEquipments = false;
+     }
   }
 }

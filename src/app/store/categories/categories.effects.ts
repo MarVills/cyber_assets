@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -39,14 +40,33 @@ export class CategoriesEffects {
     )
   );
 
+  selectCaategoryEFFECT$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(categoryActions.requestSelectCategoryACTION),
+        switchMap((response:any) => {
+
+          return [
+            categoryActions.successSelectCategoryACTION({
+              payload: response,
+            }),
+          ];
+        
+        }),
+        catchError((error: Error) => {
+          console.log('Fetch Error: ', error);
+          return of(categoryActions.onCategoryFailure({ error: error }));
+        })
+    )
+  );
+
   addCategoryEFFECT$: Observable<Action> = createEffect(() => {
     return this.actions$.pipe(
       ofType(categoryActions.requestAddCategoryACTION),
       switchMap((data) => {
         return this.categoryService.addCategory(data.payload).pipe(
-          switchMap(()=>{
-             this.sharedService.openSnackBar('Category added successfuly', 'Ok');
-            return [categoryActions.successAddCategoryACTION()];
+          switchMap((response)=>{
+            this.sharedService.openSnackBar('Category added successfuly', 'Ok');
+            return [categoryActions.successAddCategoryACTION({payload: response})];
           }),
           catchError((error) => {
             console.log('Add Error: ', error);
@@ -91,7 +111,7 @@ export class CategoriesEffects {
               'Category deleted successfuly',
               'Ok'
             );
-            return [categoryActions.successAddCategoryACTION()];
+            return [categoryActions.successDeleteCategoryACTION()];
           }),
             catchError((error) => {
             console.log('Delete Error: ', error);

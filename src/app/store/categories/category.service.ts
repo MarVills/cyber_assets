@@ -21,12 +21,12 @@ export class CategoryService {
   }
 
   updateCategory(payload: Category, id:number): Observable<any>{
-    const url:string = `/api/resources/categories${id}`
-    return this.http.post(url, payload);
+    const url:string = `/api/resources/categories/${id}`
+    return this.http.put(url, payload);
   }
 
   deleteCategory(id: number): Observable<any>{
-    const url:string = `/api/resources/categories${id}`
-    return this.http.post(url,{});
+    const url:string = `/api/resources/categories/${id}`
+    return this.http.delete(url,{});
   }
 }

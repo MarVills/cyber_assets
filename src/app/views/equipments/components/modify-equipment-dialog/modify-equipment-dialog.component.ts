@@ -20,6 +20,9 @@ import { Store } from '@ngrx/store';
 import * as equipmentActions from '../../../../store/equipments/equipments.actions';
 import { ActivityLog } from 'src/app/Models/activity-log-model';
 import { User } from 'src/app/shared/user-details/user-details';
+import { selectCategory } from 'src/app/store/categories/categories.selectors';
+import { Observable } from 'rxjs';
+import { CategoriesState } from 'src/app/store/state/categories.state';
 
 @Component({
   selector: 'app-equipments',
@@ -31,6 +34,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   equipmentStatus = Object.values(EQUIPMENT_CONDITIONS);
   dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
   actionButton: string = 'Add';
+  categories$!: Observable<CategoriesState>;
   categories!: Category[];
   _equipmentForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
@@ -54,7 +58,12 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     this.searchCategoryForm();
     this.categoriesService.onFetchCategories();
     this.equipmentsService.isEdit ? (this.actionButton = 'Edit') : 'Add';
-    this.categories = CATEGORY_DATA;
+    // this.categories = CATEGORY_DATA;
+    this.categories$ = this.store.select(selectCategory)
+      this.store.select(selectCategory).subscribe((response)=>{
+      console.log("check category response", response)
+      this.categories = response.categories;
+    })
   }
 
   searchCategoryForm() {
@@ -76,7 +85,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
         Validators.required
       ),
       category: new FormControl(
-        isEdit ? this.equipmentData.category : '',
+        isEdit ? this.equipmentData.category_id : '',
         Validators.required
       ),
       serial_no: new FormControl(
@@ -93,14 +102,14 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     });
   }
 
-  searchCategory(filterValue: string) {
-    filterValue = filterValue.toLowerCase();
-    this.categories = CATEGORY_DATA.filter((value) => {
-      return value.category_name.toString().toLowerCase().indexOf(filterValue) > -1;
-    }).map((val) => {
-      return val;
-    });
-  }
+  // searchCategory(filterValue: string) {
+  //   filterValue = filterValue.toLowerCase();
+  //   this.categories = CATEGORY_DATA.filter((value) => {
+  //     return value.category_name.toString().toLowerCase().indexOf(filterValue) > -1;
+  //   }).map((val) => {
+  //     return val;
+  //   });
+  // }
 
   onCancelEdit(formDirective: FormGroupDirective) {
     this.equipmentsService.isEdit = false;
@@ -115,7 +124,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   generateSerialNumber(): string {
     const value = this._equipmentForm.value;
     const category: Category[] = this.categories.filter(
-      (category: Category) => category.category_name === value.category
+      (category: Category) => category.category_name === value.category.category_name
     );
     const year = new Date().getFullYear();
     const month = new Date().getMonth() + 1;
@@ -124,7 +133,9 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     const minutes = new Date().getMinutes();
     const milliseconds = new Date().getMilliseconds();
     const randomNumber = Math.floor(Math.random() * 900000) + 100000;
-    const constructSerialNumber: string = `${category[0].prefix}-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
+    // const constructSerialNumber: string = `${category[0].prefix}-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
+    const constructSerialNumber: string = `TM-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
+
     return constructSerialNumber;
   }
 
@@ -164,7 +175,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
           const equipmentDetails: Equipment = {
             item_name: formValues.item_name,
             status: formValues.status,
-            category: formValues.category,
+            category_id: formValues.category,
             serial_no: serialNumber,
             description: formValues.description,
           };

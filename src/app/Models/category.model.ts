@@ -3,14 +3,14 @@
     id?: number;
     category_name: string;
     prefix?: string;
-    edit: boolean;
+    // edit: boolean;
   }
 
   export interface CategoryDTO {
     id?: number;
     category_name: string;
     prefix: string;
-    edit?: boolean;
+    // edit?: boolean;
   }
 
 export const CATEGORY_DATA: Category[] = [];

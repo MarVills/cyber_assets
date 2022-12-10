@@ -65,17 +65,17 @@
                   <input
                     matInput
                     formControlName="searchCategory"
-                    (input)="searchCategory($event.target.value)"
+                    
                   />
+                  <!-- (input)="searchCategory($event.target.value)" -->
                 </mat-form-field>
               </form>
             </div>
             <br />
             <mat-option
-              *ngFor="let category of categories"
-              [value]="category.category_name"
-            >
-              {{ category.category }}
+              *ngFor="let category of categories$ | async | filter: _searchCategoryForm.value.searchCategory"
+              [value]="category.category_name">
+              {{ category.category_name }}
             </mat-option>
           </mat-select>
         </mat-form-field>

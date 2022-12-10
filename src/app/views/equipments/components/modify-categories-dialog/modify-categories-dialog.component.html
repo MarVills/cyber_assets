@@ -3,9 +3,8 @@
     <div fxFlex.gt-sm="50" fxFlex="100">
       <strong> Modify Category</strong>
     </div>
-    <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn"
-      >close</mat-icon
-    >
+    <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn">
+      close</mat-icon>
   </div>
   <br />
   <form
@@ -13,8 +12,7 @@
     [formGroup]="_addCategoryForm"
     class="d-md-flex align-items-center"
     (ngSubmit)="addCategory(formDirective)"
-    #formDirective="ngForm"
-  >
+    #formDirective="ngForm">
     <mat-form-field class="p-r-15 m-r-15" appearance="fill">
       <mat-label> <mat-icon>add</mat-icon> Category </mat-label>
       <input matInput formControlName="addCategory" />
@@ -26,8 +24,7 @@
         class="shadow-none"
         type="submit"
         id="btnAddTodo"
-        [disabled]="!_addCategoryForm.valid"
-      >
+        [disabled]="!_addCategoryForm.valid">
         Add Category
       </button>
     </div>
@@ -38,8 +35,8 @@
       fxLayout="row"
       [formGroup]="_searchCategoryForm"
       #formDirective="ngForm"
-      class="d-md-flex align-items-center"
-    >
+      class="d-md-flex align-items-center">
+
       <mat-form-field class="p-r-15 m-r-15" appearance="fill">
         <mat-label> <mat-icon>search</mat-icon> Search category </mat-label>
         <input matInput formControlName="searchCategory" />
@@ -50,43 +47,35 @@
 <br />
 <div
   *ngFor="
-    let category of categories
-      | filter : _searchCategoryForm.value.searchCategory;
-    let i = index
-  "
-  class="todo-item py-3 pl-3 border-bottom padding-side-40"
->
+    let category of categories$ | async | filter : _searchCategoryForm.value.searchCategory;
+    let i = index"
+  class="todo-item py-3 pl-3 border-bottom padding-side-40">
   <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row">
-    <div *ngIf="!category.edit">
+    <div *ngIf="category.id != selectedCategory.id">
       <p style="white-space: nowrap">{{ category.category_name }}</p>
     </div>
     <div class="todo-item-label w-100">
-      <div class="d-flex align-items-start" *ngIf="!category.edit">
+      <div class="d-flex align-items-start" *ngIf="category.id != selectedCategory.id">
         <div class="ml-auto px-3 mr-2">
-          <a
-            href="javascript: void(0);"
-            (click)="editCategory('edit', i)"
+          <a href="javascript: void(0);"
+            (click)="editCategory('edit', category)"
             class="link m-r-10"
             placement="top"
-            ngbTooltip="Edit"
-          >
+            ngbTooltip="Edit">
             <mat-icon>edit</mat-icon>
           </a>
-          <a
-            href="javascript: void(0);"
+          <a href="javascript: void(0);"
             class="link text-danger"
             (click)="deleteCategory(category)"
             placement="top"
-            ngbTooltip="Delete"
-          >
+            ngbTooltip="Delete">
             <mat-icon>delete_outline</mat-icon>
           </a>
         </div>
       </div>
       <div
         class="d-flex align-items-start edit-view category-field"
-        *ngIf="category.edit"
-      >
+        *ngIf="category.id == selectedCategory.id">
         <mat-form-field [formGroup]="_editCategoryForm">
           <mat-label></mat-label>
           <input matInput class="form-control" formControlName="editCategory" />
@@ -98,8 +87,7 @@
             (click)="editCategory('save', i)"
             class="link m-r-10"
             placement="top"
-            ngbTooltip="Save"
-          >
+            ngbTooltip="Save">
             <mat-icon>done_all</mat-icon>
           </a>
           <a
@@ -107,8 +95,7 @@
             class="link text-danger"
             (click)="deleteCategory(category)"
             placement="top"
-            ngbTooltip="Delete"
-          >
+            ngbTooltip="Delete">
             <mat-icon>delete_outline</mat-icon>
           </a>
         </div>

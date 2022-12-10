@@ -1,4 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
+import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
+import { SharedService } from 'src/app/shared/shared.service';
+import { selectCategory } from 'src/app/store/categories/categories.selectors';
+import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
+import * as categoryActions from '../../../../store/categories/categories.actions';
 import {
   FormBuilder,
   FormControl,
@@ -6,13 +15,6 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
-import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
-import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
-import { SharedService } from 'src/app/shared/shared.service';
-import { selectCategory } from 'src/app/store/categories/categories.selectors';
-import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 
 @Component({
   selector: 'app-modify-categories-dialog',
@@ -21,9 +23,15 @@ import { CategoriesService } from 'src/app/store/services/inventory/equipments/c
 })
 export class ModifyCategoriesDialogComponent implements OnInit {
   categories!: Category[];
+  selectedCategory: Category = {
+    category_name :  "",
+    id : 0,
+  }
+  categories$!: Observable<Category[]>
   _addCategoryForm!: FormGroup;
   _editCategoryForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
+  tempEdit = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public categoryData: any,
@@ -36,8 +44,12 @@ export class ModifyCategoriesDialogComponent implements OnInit {
   ngOnInit(): void {
     this.addCategoryForm();
     this.searchCategoryForm();
-    console.log("get categpries", this.categoryData.categories)
     this.categories = this.categoryData.categories ;
+    this.store.select(selectCategory).subscribe((response)=>{
+      console.log("selected category", response.selectedCategory)
+      this.selectedCategory = response.selectedCategory
+      this.refreshCategories();
+    })
   }
 
   searchCategoryForm() {
@@ -74,46 +86,47 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     const category: Category = {
       category_name: value.addCategory,
       prefix: this.generatePrefix(),
-      edit: false,
+      // edit: false,
     };
     this.categoriesService.onAddCategory(category);
-    this.categories = CATEGORY_DATA;
+    this.refreshCategories();
     formDirective.resetForm();
   }
 
-  editCategory(action: string, index: number) {
+  editCategory(action: string, category: Category) {
     if (this.categories) {
       switch (action) {
         case 'edit':
-          this.editCategoryForm(this.categories[index].category_name);
+          this.editCategoryForm(category.category_name);
           const editCategory: Category = {
-            id: CATEGORY_DATA[index].id,
             category_name: this._editCategoryForm.value.category_name,
-            edit: true,
           };
-          CATEGORY_DATA[index] = editCategory;
+          // CATEGORY_DATA[index] = editCategory;
+          this.store.dispatch(categoryActions.requestSelectCategoryACTION({payload: category}) )
+
           break;
         case 'save':
           const categoryName = this._editCategoryForm.value.editCategory;
           const saveCategory: Category = {
-            id: CATEGORY_DATA[index].id,
+            // id: CATEGORY_DATA[index].id,
             category_name: categoryName,
-            edit: false,
+            // edit: false,
           };
-          if (categoryName !== CATEGORY_DATA[index].category_name) {
-            this.categoriesService.onEditCategory(index, saveCategory);
-          }
-          CATEGORY_DATA[index] = saveCategory;
-          break;
+           this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: category.id!, payload: category} ))
+          // if (categoryName !== CATEGORY_DATA[index].category_name) {
+          //   this.categoriesService.onEditCategory(index, saveCategory);
+          // }
+          // CATEGORY_DATA[index] = saveCategory;
+          // break;
       }
     }
     this.categories = CATEGORY_DATA;
   }
 
-  checkIfCategoryUsed(category: string): boolean {
+  checkIfCategoryUsed(categoryId: number): boolean {
     let isUsed: boolean = false;
     EQUIPMENT_DATA.forEach((equipment) => {
-      if (equipment.category == category) {
+      if (equipment.category_id == categoryId) {
         isUsed = true;
       }
     });
@@ -126,10 +139,8 @@ export class ModifyCategoriesDialogComponent implements OnInit {
         'Delete Failed',
         'Cannot delete category because \nit is being used in other equipment',
         'OK'
-      );
-      return;
+      ); return;
     }
-
     let isDelete = this.sharedService.openAlertDialog(
       'Delete Category',
       'Are you sure you want to delete this category?',
@@ -139,14 +150,20 @@ export class ModifyCategoriesDialogComponent implements OnInit {
       switch (response) {
         case 'confirm':
           this.categoriesService.onDeleteCategory(category);
-          this.categories = CATEGORY_DATA;
+          this.refreshCategories();
           break;
         case 'cancel':
-          this.sharedService.openSnackBar('Deleting category canceld !');
+          this.sharedService.openSnackBar('Deleting category canceld!');
           break;
         default:
           break;
       }
     });
+  }
+
+  refreshCategories(){
+     this.store.select(selectCategory).subscribe((response)=>{
+      this.categories$  = of(response.categories)
+    })
   }
 }

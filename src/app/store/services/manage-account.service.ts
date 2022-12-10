@@ -67,7 +67,6 @@ export class ManageAccountService implements OnDestroy {
     //     // }
     //   });
     this.store.select(selectUserDetail).subscribe((response) => {
-      console.log('user response', response);
     });
   }
 

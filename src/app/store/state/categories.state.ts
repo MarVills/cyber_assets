@@ -8,4 +8,5 @@ export interface CategoriesDTO {
 }
 export interface CategoriesState {
   categories: any;
+  selectedCategory: Category;
 }

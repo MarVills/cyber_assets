@@ -110,7 +110,7 @@ export class DashboardEquipmentComponent implements OnInit {
   setEquipmentsByCategories() {
     CATEGORY_DATA.forEach((category) => {
       let filteredEquipment = EQUIPMENT_DATA.filter(
-        (equipment) => equipment.category === category.category_name
+        (equipment) => equipment.category_id === category.id
       );
       const values = {
         isSelected: false,

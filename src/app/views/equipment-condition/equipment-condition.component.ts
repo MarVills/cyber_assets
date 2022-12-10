@@ -104,7 +104,7 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
   setEquipmentsByCategories() {
     this.categories.forEach((category) => {
       const filteredEquipment = this.equipment.filter(
-        (item) => item.category === category.category_name
+        (item) => item.category_id === category.id
       );
       const isSlectedCategory: EquipmentsWithSelectedStatus = {
         isSelected: false,
@@ -121,7 +121,7 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
 
     const latestData: Equipment = {
       item_name: previousData.item_name,
-      category: previousData.category,
+      category_id: previousData.category_id,
       status: data,
       description: previousData.description,
       serial_no: previousData.serial_no,

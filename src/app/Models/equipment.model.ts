@@ -2,7 +2,7 @@ export interface Equipment {
   id?: string;
   item_name: string;
   status: string;
-  category: string;
+  category_id: number;
   serial_no?: string;
   description: string;
 }

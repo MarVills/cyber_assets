@@ -7,3 +7,4 @@ export const selectCategory = createSelector(
   selectCategoriesFeatureState,
   (state: CategoriesState) => state
 );
+

@@ -1,11 +1,14 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { CategoriesState } from '../state/categories.state';
 import * as categoriesAction from '../categories/categories.actions';
+import { Category } from 'src/app/Models/category.model';
+
 
 export const categoriesFeatureKey = 'categories';
 
 export const initialState: CategoriesState = {
   categories: [],
+  selectedCategory: <Category>{}
 };
 
 export const categoryReducer = createReducer(
@@ -14,15 +17,19 @@ export const categoryReducer = createReducer(
   on(
     categoriesAction.successFetchCategoriesACTION,
     (state: CategoriesState, { payload }) => {
-      return {
-        ...state,
-        categories: payload,
-      };
+      return { ...state, categories: payload };
     }
   ),
 
-  on(categoriesAction.successAddCategoryACTION, (state: CategoriesState) => {
-    return { ...state, state };
+  on(categoriesAction.successSelectCategoryACTION,
+    (state: any, {payload}) =>{
+      return { ...state, selectedCategory: payload };
+    }),
+
+  on(categoriesAction.successAddCategoryACTION, 
+    (state: CategoriesState, { payload }) => {
+      const categories = [...state.categories, payload]
+    return { ...state, categories: categories };
   }),
 
   on(
@@ -31,18 +38,18 @@ export const categoryReducer = createReducer(
       const updateCategory = [state.categories].map((category: any) => {
         return payload === category.id ? payload : category;
       });
-      const returnState = { ...state, category: updateCategory };
-      return returnState;
+     return { ...state, category: updateCategory }; 
     }
   ),
 
   on(
     categoriesAction.requestDeleteCategoryACTION,
     (state: CategoriesState, { id }) => {
-      let newCategories = [state.categories];
-      newCategories.splice(newCategories.indexOf(id), 1);
-      const returnState = { ...state, products: newCategories };
-      return returnState;
+      const categoryState = state;
+      const categories = categoryState.categories.filter((response: any)=> {
+        return response.id !== id
+      })
+      return { ...state, categories: categories };
     }
   )
 );

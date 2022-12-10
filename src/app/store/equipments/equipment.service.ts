@@ -22,12 +22,12 @@ export class EquipmentService {
 
   updateEquipment(payload: Equipment, id:number): Observable<any>{
     const url:string = `/api/resources/equipment/${id}`
-    return this.http.post(url, payload);
+    return this.http.put(url, payload);
   }
 
   deleteEquipment(id: number): Observable<any>{
     const url:string = `/api/resources/equipment/${id}`
-    return this.http.post(url,{});
+    return this.http.delete(url,{});
   }
 
 
