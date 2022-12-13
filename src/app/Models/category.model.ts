@@ -2,7 +2,7 @@
   export interface Category {
     id?: number;
     category_name: string;
-    prefix?: string;
+    prefix: string;
     // edit: boolean;
   }
 

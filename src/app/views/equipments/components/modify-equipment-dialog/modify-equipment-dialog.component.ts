@@ -3,13 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
 import { CATEGORY_DATA, Category } from 'src/app/Models/category.model';
 import { Equipment } from 'src/app/Models/equipment.model';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators, } from '@angular/forms';
 import { EquipmentsService } from '../../../../store/services/inventory/equipments/equipments.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -21,7 +15,7 @@ import * as equipmentActions from '../../../../store/equipments/equipments.actio
 import { ActivityLog } from 'src/app/Models/activity-log-model';
 import { User } from 'src/app/shared/user-details/user-details';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CategoriesState } from 'src/app/store/state/categories.state';
 
 @Component({
@@ -35,10 +29,9 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
   actionButton: string = 'Add';
   categories$!: Observable<CategoriesState>;
-  categories!: Category[];
+  categoryList!: Category[];
   _equipmentForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
-  serialData = 'somenhtingng';
   serialFieldRow = 1;
   serialNumbers: string[] = [];
 
@@ -58,11 +51,9 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     this.searchCategoryForm();
     this.categoriesService.onFetchCategories();
     this.equipmentsService.isEdit ? (this.actionButton = 'Edit') : 'Add';
-    // this.categories = CATEGORY_DATA;
-    this.categories$ = this.store.select(selectCategory)
       this.store.select(selectCategory).subscribe((response)=>{
-      console.log("check category response", response)
-      this.categories = response.categories;
+      this.categories$ = of(response.categories)
+      this.categoryList = response.categories;
     })
   }
 
@@ -84,21 +75,20 @@ export class ModifyEquipmentDialogComponent implements OnInit {
         isEdit ? this.equipmentData.status : '',
         Validators.required
       ),
-      category: new FormControl(
+      category_id: new FormControl(
         isEdit ? this.equipmentData.category_id : '',
         Validators.required
       ),
-      serial_no: new FormControl(
-        {
+      serial_no: new FormControl({
           value: isEdit ? this.equipmentData.serial_no : '',
-          disabled: true,
-        },
+          disabled: true,},
         Validators.required
       ),
       description: new FormControl(
         isEdit ? this.equipmentData.description : '',
         Validators.required
       ),
+      user_id: new FormControl(0),
     });
   }
 
@@ -123,8 +113,10 @@ export class ModifyEquipmentDialogComponent implements OnInit {
 
   generateSerialNumber(): string {
     const value = this._equipmentForm.value;
-    const category: Category[] = this.categories.filter(
-      (category: Category) => category.category_name === value.category.category_name
+    const category: Category[] = this.categoryList.filter(
+      (category: Category) => {
+        return category.id === value.category_id
+      }
     );
     const year = new Date().getFullYear();
     const month = new Date().getMonth() + 1;
@@ -133,13 +125,12 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     const minutes = new Date().getMinutes();
     const milliseconds = new Date().getMilliseconds();
     const randomNumber = Math.floor(Math.random() * 900000) + 100000;
-    // const constructSerialNumber: string = `${category[0].prefix}-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
-    const constructSerialNumber: string = `TM-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
-
+    const constructSerialNumber: string = `${category[0].prefix}-${year}${month}${day}${hours}${minutes}${milliseconds}-${randomNumber}`;
     return constructSerialNumber;
   }
 
-  onCategoryOrItemsChange() {
+  onCategoryOrItemsChange(event:any) {
+    console.log("event", event)
     const value = this._equipmentForm.value;
     if (value.category != '') {
       const value = this._equipmentForm.value;
@@ -168,16 +159,15 @@ export class ModifyEquipmentDialogComponent implements OnInit {
         break;
       case 'false,true':
         const formValues = this._equipmentForm.value;
-        // let equipmentDetails: Equipment;
-        console.log("serial numbers", this.serialNumbers)
         const userDetails = this.user.signedInUserDetails;
         this.serialNumbers.forEach((serialNumber) => {
           const equipmentDetails: Equipment = {
             item_name: formValues.item_name,
             status: formValues.status,
-            category_id: formValues.category,
+            category_id: formValues.category_id,
             serial_no: serialNumber,
             description: formValues.description,
+            user_id: 0,
           };
           const addEquipmentLog: ActivityLog = {
             activity:
@@ -186,13 +176,12 @@ export class ModifyEquipmentDialogComponent implements OnInit {
                 : `Added equipment`,
             userName: "dummy name", //userDetails.firstName + formValues.lastName,
             userRole: "dummy role", //userDetails.userRole!,
-            date:
-              new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+            date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
           };
           this.store.dispatch(
             equipmentActions.requestAddEquipmentACTION({
               payload: equipmentDetails,
-              addItemLog: addEquipmentLog,
+              itemLog: addEquipmentLog,
             })
           );
         });
@@ -220,13 +209,6 @@ export class ModifyEquipmentDialogComponent implements OnInit {
       data: {},
     });
     addDialogRef.afterClosed().subscribe(() => {
-      this.refresh();
     });
-  }
-
-  refresh() {
-    setTimeout(() => {
-      this.categories = CATEGORY_DATA;
-    }, 1000);
   }
 }

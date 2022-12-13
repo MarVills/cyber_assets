@@ -12,7 +12,7 @@ export const successFetchEquipmentACTION = createAction(
 
 export const requestAddEquipmentACTION = createAction(
   '[ Equipments ] Request Add Equipment',
-  props<{ payload: Equipment; addItemLog: ActivityLog }>()
+  props<{ payload: Equipment; itemLog: ActivityLog }>()
 );
 export const successAddEquipmentACTION = createAction(
   '[ Equipments ] Success Add Equipment',
@@ -21,15 +21,16 @@ export const successAddEquipmentACTION = createAction(
 
 export const requestDeleteEquipmentACTION = createAction(
   '[ Equipments ] Request Delete Equipment',
-  props<{ payload: string }>()
+  props<{ id: number }>()
 );
 export const successDeleteEquipmentACTION = createAction(
-  '[ Equipments ] Success Delete Equipment'
+  '[ Equipments ] Success Delete Equipment',
+  props<{ id: number }>()
 );
 
 export const requestUpdateEquipmentACTION = createAction(
   '[ Equipments ] Request Update Equipment',
-  props<{ id: string; payload: Equipment }>()
+  props<{ id: number; payload: Equipment }>()
 );
 export const successUpdateEquipmentACTION = createAction(
   '[ Equipments ] Success Update Equipment'

@@ -47,25 +47,21 @@ import { selectCategory } from 'src/app/store/categories/categories.selectors';
   styleUrls: ['./equipments.component.scss'],
 })
 export class EquipmentsComponent implements OnInit, OnDestroy {
+
   @ViewChild('widgetsContent', { read: ElementRef })
   public widgetsContent!: ElementRef<any>;
-  @ViewChild(PerfectScrollbarComponent)
-  componentRef?: PerfectScrollbarComponent;
-  @ViewChild(PerfectScrollbarDirective)
-  directiveRef?: PerfectScrollbarDirective;
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+  @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   displayedColumns = ['serial-number', 'equipment', 'status', 'action'];
   equipmentDataSource = new MatTableDataSource<Equipment>([]);
-  equipmentsByCategory: Map<string, Equipment[]> = new Map<
-    string,
-    Equipment[]
-  >();
+  equipmentsByCategory: Map<string, Equipment[]> = new Map< string,Equipment[] >();
   _searchCategoryForm!: FormGroup;
   _searchEquipmentForm!: FormGroup;
   toEditData!: EquipmentDTO;
   panelOpenState: boolean = false;
   sidePanelOpened: boolean = true;
   searchText: string = '';
-  equipments!: Equipment[];
+  equipmentList!: Equipment[];
   equipment$!: Observable<Equipment[]>;
   categories: Category[] = CATEGORY_DATA;
   backgroundColors: string[] = [];
@@ -90,16 +86,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
         ? ['serial-number', 'equipment', 'status', 'action']
         : ['serial-number', 'equipment', 'status', 'action'];
     });
-  }
-  ngOnDestroy(): void {
-    this.categoriesSubscription$.unsubscribe();
-    this.equipmentSubscription$.unsubscribe();
-  }
 
-  ngOnInit(): void {
-    this.manageAccountService.onFetchAccDetails();
-    this.searchCategoryForm();
-    this.searchEquipmentForm();
     this.equipment$ = this.store.select(selectEquipment);
     this.categoriesSubscription$ = this.store
       .select(selectCategory)
@@ -112,7 +99,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
             .subscribe((response) => {
               if (response.length != 0) {
                 this.equipmentDataSource = new MatTableDataSource<Equipment>(response);
-                this.equipments = response;
+                this.equipmentList = response;
                 this.setEquipmentsByCategory();
                 this.allEquipments('#f5f5f5');
               }
@@ -122,6 +109,17 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
             });
         }
       });
+  }
+  ngOnDestroy(): void {
+    this.categoriesSubscription$ != undefined ? this.categoriesSubscription$.unsubscribe():null;
+    this.equipmentSubscription$ != undefined ? this.equipmentSubscription$.unsubscribe():null;
+  }
+
+  ngOnInit(): void {
+    this.manageAccountService.onFetchAccDetails();
+    this.searchCategoryForm();
+    this.searchEquipmentForm();
+    
   }
 
   searchCategoryForm() {
@@ -171,7 +169,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   setEquipmentsByCategory() {
     this.categories.forEach((category) => {
-      let filteredEquipment = this.equipments.filter(
+      let filteredEquipment = this.equipmentList.filter(
         (equipment) => equipment.category_id === category.id
       );
       filteredEquipment
@@ -190,7 +188,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   totalEquipments(): string {
     try {
-      return this.equipments.length.toString();
+      return this.equipmentList.length.toString();
     } catch (e) {
       return '0';
     }
@@ -207,11 +205,9 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
       width: '500px',
       data: {},
     });
-    // addDialogRef.afterClosed().subscribe(() => {
-    //   // this.refresh()
-    //   //
+    addDialogRef.afterClosed().subscribe(() => {
 
-    // });
+    });
   }
 
   openEditDialog(data: any): void {
@@ -243,7 +239,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     addDialogRef.afterClosed().subscribe(() => {});
   }
 
-  onDelete(data: Equipment) {
+  onDelete(equipment: Equipment) {
     let isDelete = this.sharedService.openAlertDialog(
       'Delete Equipment',
       'Are you sure you want to delete this equipment?',
@@ -252,7 +248,9 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     isDelete.subscribe((response) => {
       switch (response) {
         case 'confirm':
-          this.equipmentService.onDeleteEquipment(data);
+          // this.equipmentService.onDeleteEquipment(data);
+          console.log("equipment id", equipment.id)
+          this.store.dispatch(equipmentActions.requestDeleteEquipmentACTION({id: equipment.id!}))
           break;
         case 'cancel':
           this.sharedService.openSnackBar('Deleting equipment canceld !');
@@ -267,7 +265,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.hasEquipments = true;
     this.toolbarBgColor = color;
     this.equipment$ = this.store.select(selectEquipment);
-     if (this.equipments == undefined || this.equipments.length == 0) {
+     if (this.equipmentList == undefined || this.equipmentList.length == 0) {
         this.hasEquipments = false;
      }
   }

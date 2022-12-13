@@ -9,13 +9,11 @@
     <div *ngIf="this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100">
       <strong> Edit Equipment </strong>
     </div>
-
     <form
       [formGroup]="_equipmentForm"
       (ngSubmit)="onModifyEquipment(formDirective)"
       #formDirective="ngForm"
-      class="m-t-20"
-    >
+      class="m-t-20">
       <mat-label>Equipment Name *</mat-label>
       <mat-form-field class="example-full-width" appearance="outline">
         <input matInput required formControlName="item_name" />
@@ -27,35 +25,29 @@
           <input
             matInput
             required
-            (input)="onCategoryOrItemsChange()"
-            formControlName="item_count"
-          />
+            (input)="onCategoryOrItemsChange($event)"
+            formControlName="item_count"/>
         </mat-form-field>
       </div>
-
       <mat-label>Equipment Status*</mat-label>
       <mat-form-field appearance="outline">
         <mat-select formControlName="status" required>
           <mat-option
             *ngFor="let status of this.equipmentStatus"
-            [value]="status"
-          >
+            [value]="status">
             {{ status }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="_equipmentForm.value.status"
-          >Equipment status is required</mat-error
-        >
+          >Equipment status is required</mat-error>
       </mat-form-field>
-
       <mat-label>Category *</mat-label>
       <div class="category-field" fxLayout="row">
         <mat-form-field appearance="outline">
           <mat-select
-            formControlName="category"
-            (selectionChange)="onCategoryOrItemsChange()"
-            required
-          >
+            formControlName="category_id"
+            (selectionChange)="onCategoryOrItemsChange($event)"
+            required>
             <div>
               <form [formGroup]="_searchCategoryForm">
                 <mat-form-field class="p-l-20 p-r-20 p-t-20">
@@ -64,9 +56,7 @@
                   </mat-placeholder>
                   <input
                     matInput
-                    formControlName="searchCategory"
-                    
-                  />
+                    formControlName="searchCategory"/>
                   <!-- (input)="searchCategory($event.target.value)" -->
                 </mat-form-field>
               </form>
@@ -74,7 +64,7 @@
             <br />
             <mat-option
               *ngFor="let category of categories$ | async | filter: _searchCategoryForm.value.searchCategory"
-              [value]="category.category_name">
+              [value]="category.id">
               {{ category.category_name }}
             </mat-option>
           </mat-select>
@@ -83,8 +73,7 @@
           matSuffix
           type="button"
           class="category-button"
-          (click)="openCategoryDialog($event)"
-        >
+          (click)="openCategoryDialog($event)">
           <mat-icon>settings</mat-icon>
         </button>
       </div>

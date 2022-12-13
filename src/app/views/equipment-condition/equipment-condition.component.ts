@@ -125,6 +125,7 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
       status: data,
       description: previousData.description,
       serial_no: previousData.serial_no,
+      user_id: 0,
     };
 
     this.equipmentsService.onEditEquipment(

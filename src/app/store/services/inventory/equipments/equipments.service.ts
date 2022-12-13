@@ -99,7 +99,7 @@ export class EquipmentsService implements OnDestroy {
     };
     EQUIPMENT_DATA.splice(EQUIPMENT_DATA.indexOf(data), 1);
     this.store.dispatch(
-      equipmentActions.requestDeleteEquipmentACTION({ payload: data.id! })
+      equipmentActions.requestDeleteEquipmentACTION({ id: data.id! })
     );
     this.store.dispatch(
       logActions.requestAddActivityLogACTION({ payload: deletedEquipmentLog })

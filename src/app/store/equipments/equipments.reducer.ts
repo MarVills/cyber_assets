@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { Equipment } from 'src/app/Models/equipment.model';
 import { EquipmentsState } from '../state/equipments.state';
 import * as equipmentsAction from './equipments.actions';
 
@@ -25,9 +24,8 @@ export const equipmentReducer = createReducer(
   on(
     equipmentsAction.successAddEquipmentACTION,
     (state: EquipmentsState, { payload }) => {
-      // console.log("state", state)
-      // return { ...state, equipments: [state, payload]}
-      return { ...state };
+      const newState = [...state.equipment,  payload]  
+      return {...state, equipment: newState};  
     }
   ),
 
@@ -43,12 +41,14 @@ export const equipmentReducer = createReducer(
   ),
 
   on(
-    equipmentsAction.requestDeleteEquipmentACTION,
-    (state: EquipmentsState, { payload }) => {
-      let newState = [state.equipment];
-      newState.splice(newState.indexOf(payload), 1);
-      const returnState = { ...state, equipment: newState };
-      return returnState;
+    equipmentsAction.successDeleteEquipmentACTION,
+    (state: EquipmentsState, { id }) => {
+      console.log("what id ", id)
+      const filterEquipment = [state.equipment].filter((item)=>item.id != id)
+      // newState.splice(newState.indexOf(id), 1);
+      // const newState = [ ...state.equipment, filterEquipment ];
+      console.log("return deleted items", filterEquipment)
+      return { ...state, equipment: filterEquipment };
     }
   )
 );

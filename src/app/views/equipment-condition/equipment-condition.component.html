@@ -10,13 +10,11 @@
     <mat-accordion>
       <mat-expansion-panel
         class="p-0"
-        *ngFor="let category of this.equipmentsByCategory | keyvalue"
-      >
+        *ngFor="let category of this.equipmentsByCategory | keyvalue">
         <mat-expansion-panel-header
           style="background-color: #e8fdf8"
           [ngClass]="panelOpenState ? 'no-events' : 'default'"
-          (click)="panelClicked(category)"
-        >
+          (click)="panelClicked(category)">
           <mat-panel-title class="space-between">
             {{ category.key }}
             <span class="label label-primary">
@@ -29,8 +27,7 @@
             <mat-form-field
               appearance="outline"
               class="m-t-10"
-              [formGroup]="_searchEquipmentForm"
-            >
+              [formGroup]="_searchEquipmentForm">
               <mat-label
                 >Search Equipment
                 <mat-icon>search</mat-icon>
@@ -47,9 +44,7 @@
                 #table
                 [dataSource]="
                   category.value.items
-                    | filter : _searchEquipmentForm.value.searchEquipment
-                "
-              >
+                    | filter : _searchEquipmentForm.value.searchEquipment">
                 <ng-container matColumnDef="serialNumber">
                   <mat-header-cell *matHeaderCellDef>
                     Serial No.
@@ -78,25 +73,20 @@
                         panelClass="select-field"
                         (selectionChange)="onConditionChange($event.value)"
                         (openedChange)="onSelectionClicked(element)"
-                        [value]="element.status"
-                      >
+                        [value]="element.status">
                         <mat-option
                           *ngFor="let conditions of this.equipmentConditions"
-                          [value]="conditions"
-                        >
+                          [value]="conditions">
                           {{ conditions }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </mat-cell>
                 </ng-container>
-
-                <mat-header-row
-                  *matHeaderRowDef="displayedColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="let row; columns: displayedColumns"
-                ></mat-row>
+                <mat-header-row *matHeaderRowDef="displayedColumns">
+              </mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns">
+                </mat-row>
               </mat-table>
             </div>
           </div>

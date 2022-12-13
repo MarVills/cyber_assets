@@ -40,6 +40,7 @@ export class CategoriesService implements OnDestroy {
   }
 
   onAddCategory(category: Category) {
+ 
     const userDetails = this.user.signedInUserDetails;
     const addCategoryLog: ActivityLog = {
       activity: `Added "${category.category_name}" category`,
@@ -55,40 +56,40 @@ export class CategoriesService implements OnDestroy {
     );
   }
 
-  onEditCategory(index: number, newData: Category) {
-    CATEGORY_DATA[index] = newData;
-    const userDetails = this.user.signedInUserDetails;
-    const editCategoryLog: ActivityLog = {
-      activity: `Edited category from "${CATEGORY_DATA[index].category_name}" to "${newData.category_name}" category`,
-      userName: 'dummay name',//userDetails.firstName + userDetails.lastName,
-      userRole: 'dummy role', //userDetails.userRole!,
-      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
-    };
-    this.store.dispatch(
-      categoryActions.requestUpdateCategoryACTION({
-        id: CATEGORY_DATA[index].id!,
-        payload: newData,
-      })
-    );
-    this.store.dispatch(
-      logActions.requestAddActivityLogACTION({ payload: editCategoryLog })
-    );
-  }
+  // onEditCategory(index: number, newData: Category) {
+  //   CATEGORY_DATA[index] = newData;
+  //   const userDetails = this.user.signedInUserDetails;
+  //   const editCategoryLog: ActivityLog = {
+  //     activity: `Edited category from "${CATEGORY_DATA[index].category_name}" to "${newData.category_name}" category`,
+  //     userName: 'dummay name',//userDetails.firstName + userDetails.lastName,
+  //     userRole: 'dummy role', //userDetails.userRole!,
+  //     date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+  //   };
+  //   this.store.dispatch(
+  //     categoryActions.requestUpdateCategoryACTION({
+  //       id: CATEGORY_DATA[index].id!,
+  //       payload: newData,
+  //     })
+  //   );
+  //   this.store.dispatch(
+  //     logActions.requestAddActivityLogACTION({ payload: editCategoryLog })
+  //   );
+  // }
 
-  onDeleteCategory(category: Category) {
-    CATEGORY_DATA.splice(CATEGORY_DATA.indexOf(category), 1);
-    const userDetails = this.user.signedInUserDetails;
-    const deleteCategoryLog: ActivityLog = {
-      activity: `Deleted "${category.category_name}" category`,
-      userName: 'dummy name', //userDetails.firstName + userDetails.lastName,
-      userRole: 'dummy role', //userDetails.userRole!,
-      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
-    };
-    this.store.dispatch(
-      categoryActions.requestDeleteCategoryACTION({ id: category.id! })
-    );
-    this.store.dispatch(
-      logActions.requestAddActivityLogACTION({ payload: deleteCategoryLog })
-    );
-  }
+  // onDeleteCategory(category: Category) {
+  //   CATEGORY_DATA.splice(CATEGORY_DATA.indexOf(category), 1);
+  //   const userDetails = this.user.signedInUserDetails;
+  //   const deleteCategoryLog: ActivityLog = {
+  //     activity: `Deleted "${category.category_name}" category`,
+  //     userName: 'dummy name', //userDetails.firstName + userDetails.lastName,
+  //     userRole: 'dummy role', //userDetails.userRole!,
+  //     date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+  //   };
+  //   this.store.dispatch(
+  //     categoryActions.requestDeleteCategoryACTION({ id: category.id! })
+  //   );
+  //   this.store.dispatch(
+  //     logActions.requestAddActivityLogACTION({ payload: deleteCategoryLog })
+  //   );
+  // }
 }

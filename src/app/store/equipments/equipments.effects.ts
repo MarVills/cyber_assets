@@ -69,7 +69,7 @@ export class EquipmentsEffects {
       switchMap((equipment) => {
         return this.fireStore
           .collection('equipments')
-          .doc(equipment.id)
+          .doc(equipment.id.toString())
           .update(equipment.payload)
           .then(() => {
             this.sharedService.openSnackBar(
@@ -90,24 +90,18 @@ export class EquipmentsEffects {
   deleteEquipmentEFFEET$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(equipmentActions.requestDeleteEquipmentACTION),
-      switchMap((docID) => {
-        return this.fireStore
-          .collection('equipments')
-          .doc(docID.payload)
-          .delete()
-          .then(() => {
-            this.sharedService.openSnackBar(
-              'Equipment deleted successfuly',
-              'Ok'
-            );
-
-            return equipmentActions.successDeleteEquipmentACTION();
-          })
-          .catch((error) => {
+      switchMap((response) => {
+        return this.equipmentService.deleteEquipment(response.id).pipe(
+          switchMap(()=>{
+            this.sharedService.openSnackBar( 'Equipment deleted successfuly','Ok');
+            return [equipmentActions.successDeleteEquipmentACTION()];
+          }),
+           catchError((error) => {
             console.log('Delete Error: ', error);
             this.sharedService.openSnackBar('Failed deleting equipment', 'Ok');
-            return equipmentActions.onEquipmentFailure({ error: error });
-          });
+            return [equipmentActions.onEquipmentFailure({ error: error })];
+          }),
+        )
       })
     )
   );
