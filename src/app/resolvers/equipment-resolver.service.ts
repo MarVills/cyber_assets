@@ -25,10 +25,10 @@ export class EquipmentResolverService implements Resolve<Equipment[]> {
     return this.store.select(selectEquipment).pipe(
       first(),
       switchMap((response) => {
-        if (response.length == 0) {
+        if (response.equipment.length == 0) {
           this.store.dispatch(equipmentActions.requestFetchEquipmentACTION());
         }
-        return of(response);
+        return of(response.equipment);
       })
     );
   }

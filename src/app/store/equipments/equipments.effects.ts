@@ -10,6 +10,7 @@ import * as logActions from '../activity-log/activity-log.actions';
 import { ActivityLog } from 'src/app/Models/activity-log-model';
 import { HttpClient } from '@angular/common/http';
 import { EquipmentService } from './equipment.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class EquipmentsEffects {
@@ -19,7 +20,8 @@ export class EquipmentsEffects {
     private sharedService: SharedService,
     private store: Store,
     private http: HttpClient,
-    private equipmentService: EquipmentService
+    private equipmentService: EquipmentService,
+    private router: Router
   ) {}
 
   fetchEquipmentsEFFECT$: Observable<Action> = createEffect(() =>
@@ -35,11 +37,26 @@ export class EquipmentsEffects {
                 }),
               ];
             }),
-            catchError((error: Error) => {
+            catchError((error: any) => {
               console.log('Fetch Error: ', error);
+              if (error.status == 401){
+                this.router.navigate(['/authentication/login'])
+              }
               return of(equipmentActions.onEquipmentFailure({ error: error }));
             })
           );
+      })
+    )
+  );
+
+  selectEquipmentEFFECT$: Observable<Action> = createEffect(()=>
+    this.actions$.pipe(
+      ofType(equipmentActions.requestSelectEquipmentACTION),
+      switchMap((response)=>{
+        return [equipmentActions.successSelectEquipmentACTION({payload: response})];
+      }),
+      catchError((error)=>{
+        return [equipmentActions.onEquipmentFailure({error: error})]
       })
     )
   );
@@ -67,22 +84,38 @@ export class EquipmentsEffects {
     this.actions$.pipe(
       ofType(equipmentActions.requestUpdateEquipmentACTION),
       switchMap((equipment) => {
-        return this.fireStore
-          .collection('equipments')
-          .doc(equipment.id.toString())
-          .update(equipment.payload)
-          .then(() => {
-            this.sharedService.openSnackBar(
+        return this.equipmentService.updateEquipment(equipment.payload, equipment.id).pipe(
+          switchMap((response)=>{
+             this.sharedService.openSnackBar(
               'Equipment updated successfuly',
               'Ok'
             );
-            return equipmentActions.successUpdateEquipmentACTION();
-          })
-          .catch((error) => {
+            return [equipmentActions.successUpdateEquipmentACTION()];
+          }),
+          catchError((error) => {
             console.log('Update Error: ', error);
             this.sharedService.openSnackBar('Failed updating equipment', 'Ok');
-            return equipmentActions.onEquipmentFailure({ error: error });
-          });
+            return [equipmentActions.onEquipmentFailure({ error: error })];
+          }),
+        )
+        
+        
+        // this.fireStore
+        //   .collection('equipments')
+        //   .doc(equipment.id.toString())
+        //   .update(equipment.payload)
+        //   .then(() => {
+        //     this.sharedService.openSnackBar(
+        //       'Equipment updated successfuly',
+        //       'Ok'
+        //     );
+        //     return equipmentActions.successUpdateEquipmentACTION();
+        //   })
+        //   .catch((error) => {
+        //     console.log('Update Error: ', error);
+        //     this.sharedService.openSnackBar('Failed updating equipment', 'Ok');
+        //     return equipmentActions.onEquipmentFailure({ error: error });
+        //   });
       })
     )
   );
@@ -92,9 +125,10 @@ export class EquipmentsEffects {
       ofType(equipmentActions.requestDeleteEquipmentACTION),
       switchMap((response) => {
         return this.equipmentService.deleteEquipment(response.id).pipe(
-          switchMap(()=>{
+          switchMap((response)=>{ 
+            console.log("delete effect response", response)
             this.sharedService.openSnackBar( 'Equipment deleted successfuly','Ok');
-            return [equipmentActions.successDeleteEquipmentACTION()];
+            return [equipmentActions.successDeleteEquipmentACTION(response)];
           }),
            catchError((error) => {
             console.log('Delete Error: ', error);

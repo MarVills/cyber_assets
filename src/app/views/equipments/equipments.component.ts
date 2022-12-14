@@ -40,6 +40,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import * as equipmentActions from '.././../store/equipments/equipments.actions';
 import * as categpriesActions from '../../store/categories/categories.actions';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
+import { EquipmentsState } from 'src/app/store/state/equipments.state';
 
 @Component({
   selector: 'app-equipments',
@@ -87,23 +88,24 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
         : ['serial-number', 'equipment', 'status', 'action'];
     });
 
-    this.equipment$ = this.store.select(selectEquipment);
+    this.store.select(selectEquipment);
     this.categoriesSubscription$ = this.store
       .select(selectCategory)
-      .subscribe((response) => {
-        if (response.categories.length != 0) {
-          this.categories = response.categories;
+      .subscribe((categoryResponse) => {
+        if (categoryResponse.categories.length != 0) {
+          this.categories = categoryResponse.categories;
           this.getBackgroundColors();
           this.equipmentSubscription$ = this.store
             .select(selectEquipment)
-            .subscribe((response) => {
-              if (response.length != 0) {
-                this.equipmentDataSource = new MatTableDataSource<Equipment>(response);
-                this.equipmentList = response;
+            .subscribe((equipmentResponse) => {
+              if (equipmentResponse.equipment.length != 0) {
+                this.equipment$ = of(equipmentResponse.equipment)
+                this.equipmentDataSource = new MatTableDataSource<Equipment>(equipmentResponse.equipment);
+                this.equipmentList = equipmentResponse.equipment;
                 this.setEquipmentsByCategory();
                 this.allEquipments('#f5f5f5');
               }
-              if (response.length == 0) {
+              if (equipmentResponse.equipment.length == 0) {
                 this.hasEquipments = false;
               }
             });
@@ -155,10 +157,9 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   filterByCategory(category: number, color: string, equipments: string) {
     this.hasEquipments = Number(equipments) > 0;
     this.toolbarBgColor = color;
-    this.equipment$ = this.store.select(selectEquipment);
-    this.equipment$.subscribe((response) => {
+    this.store.select(selectEquipment).subscribe((response) => {
       let filteredEquipment: Equipment[] = [];
-      response.forEach((item) => {
+      response.equipment.forEach((item:any) => {
         if (item.category_id == category) {
           filteredEquipment.push(item);
         }
@@ -212,15 +213,12 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   openEditDialog(data: any): void {
     this.equipmentService.isEdit = true;
-    this.equipmentService.toEditData = data;
+    // this.equipmentService.toEditData = data;
+    this.store.dispatch(equipmentActions.requestSelectEquipmentACTION(data))
     const editDialogRef = this.dialog.open(ModifyEquipmentDialogComponent, {
       width: '500px',
       data: {
-        equipment: data.equipment,
-        status: data.status,
-        category: data.category,
-        price: data.price,
-        description: data.description,
+        equipment: data
       },
     });
     editDialogRef.afterClosed().subscribe((result) => {
@@ -248,8 +246,6 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     isDelete.subscribe((response) => {
       switch (response) {
         case 'confirm':
-          // this.equipmentService.onDeleteEquipment(data);
-          console.log("equipment id", equipment.id)
           this.store.dispatch(equipmentActions.requestDeleteEquipmentACTION({id: equipment.id!}))
           break;
         case 'cancel':
@@ -264,7 +260,6 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   allEquipments(color: string) {
     this.hasEquipments = true;
     this.toolbarBgColor = color;
-    this.equipment$ = this.store.select(selectEquipment);
      if (this.equipmentList == undefined || this.equipmentList.length == 0) {
         this.hasEquipments = false;
      }

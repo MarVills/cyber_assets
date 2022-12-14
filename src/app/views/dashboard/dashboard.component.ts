@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.equipmentSubscription$ = this.store
       .select(selectEquipment)
       .subscribe((response) => {
-        this.totalEquipment = response.length;
+        this.totalEquipment = response.equipment.length;
       });
     this.userDetailsSubscription$ = this.store
       .select(selectUserDetail)

@@ -26,7 +26,7 @@ export class ReportsComponent implements OnInit {
     this.equipmentSubscription$ = this.store
       .select(selectEquipment)
       .subscribe((response) => {
-        this.dataSource = new MatTableDataSource<Equipment>(response);
+        this.dataSource = new MatTableDataSource<Equipment>(response.equipment);
       });
   }
 

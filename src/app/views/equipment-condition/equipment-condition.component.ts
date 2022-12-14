@@ -58,7 +58,7 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
     this.equipmentSubscription$ = this.store
       .select(selectEquipment)
       .subscribe((response) => {
-        this.equipment = response;
+        this.equipment = response.equipment;
       });
     this.categoriesSubscription$ = this.store
       .select(selectCategory)

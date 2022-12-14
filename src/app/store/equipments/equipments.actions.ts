@@ -10,6 +10,15 @@ export const successFetchEquipmentACTION = createAction(
   props<{ payload: any }>()
 );
 
+export const requestSelectEquipmentACTION = createAction(
+  '[Equipments] Request Select Equipment',
+  props<{ payload: any}>()
+);
+export const successSelectEquipmentACTION = createAction(
+  '[Equipments] Success Select Equipment',
+  props<{ payload: any }>()
+);
+
 export const requestAddEquipmentACTION = createAction(
   '[ Equipments ] Request Add Equipment',
   props<{ payload: Equipment; itemLog: ActivityLog }>()

@@ -6,6 +6,14 @@ export const equipmentsFeatureKey = 'equipments';
 
 export const initialState: EquipmentsState = {
   equipment: [],
+  selectedItem: {
+    item_name: "",
+    status: "GOOD",
+    category_id: 0,
+    serial_no: "",
+    description: "",
+    user_id: 0
+  }
 };
 
 export const equipmentReducer = createReducer(
@@ -15,8 +23,18 @@ export const equipmentReducer = createReducer(
     equipmentsAction.successFetchEquipmentACTION,
     (state: EquipmentsState, { payload }) => {
       return {
-        ...state,
+        ...state.equipment,
         equipment: payload,
+      };
+    }
+  ),
+
+  on(
+    equipmentsAction.successSelectEquipmentACTION,
+    (state: EquipmentsState, { payload }) => {
+      return {
+        ...state,
+        selectedItem: payload,
       };
     }
   ),
@@ -31,24 +49,21 @@ export const equipmentReducer = createReducer(
 
   on(
     equipmentsAction.requestUpdateEquipmentACTION,
-    (state: EquipmentsState, { payload }) => {
-      const updateItem = [state.equipment].map((equipment: any) => {
-        return payload === equipment.id ? payload : equipment;
+    (state: EquipmentsState, { id, payload }) => {
+      const updateItem = state.equipment.map((equipment: any) => {
+        return id === equipment.id ? payload : equipment;
       });
       const returnState = { ...state, equipment: updateItem };
       return returnState;
     }
   ),
 
-  on(
-    equipmentsAction.successDeleteEquipmentACTION,
+   on(
+    equipmentsAction.requestDeleteEquipmentACTION,
     (state: EquipmentsState, { id }) => {
-      console.log("what id ", id)
-      const filterEquipment = [state.equipment].filter((item)=>item.id != id)
-      // newState.splice(newState.indexOf(id), 1);
-      // const newState = [ ...state.equipment, filterEquipment ];
-      console.log("return deleted items", filterEquipment)
+      const filterEquipment = state.equipment.filter(
+        (item:any)=>item.id != id)
       return { ...state, equipment: filterEquipment };
     }
-  )
+  ),
 );

@@ -5,5 +5,5 @@ export const selectEquipmentsFeatureState =
   createFeatureSelector<any>('equipment');
 export const selectEquipment = createSelector(
   selectEquipmentsFeatureState,
-  (state: EquipmentsState) => state.equipment
+  (state: EquipmentsState) => state
 );

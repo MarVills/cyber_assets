@@ -92,7 +92,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
       prefix: this.generatePrefix(),
       // edit: false,
     };
-    console.log("adding category", category)
+    // console.log("adding category", category)
     // this.categoriesService.onAddCategory(category);
     this.store.dispatch(categoryActions.requestAddCategoryACTION({payload: category}))
     // this.refreshCategories();

@@ -8,4 +8,5 @@ export interface EquipmentsDTO {
 }
 export interface EquipmentsState {
   equipment: any;
+  selectedItem: Equipment
 }

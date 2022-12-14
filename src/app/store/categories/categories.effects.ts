@@ -1,6 +1,7 @@
 import { state } from '@angular/animations';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -15,7 +16,8 @@ export class CategoriesEffects {
     private actions$: Actions,
     private fireStore: AngularFirestore,
     private sharedService: SharedService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router,
   ) {}
 
   fetchCategoriesEFFECT$: Observable<Action> = createEffect(() =>
@@ -31,8 +33,11 @@ export class CategoriesEffects {
                 }),
               ];
             }),
-            catchError((error: Error) => {
+            catchError((error: any) => {
               console.log('Fetch Error: ', error);
+                 if (error.status == 401){
+                this.router.navigate(['/authentication/login'])
+              }
               return of(categoryActions.onCategoryFailure({ error: error }));
             })
           );

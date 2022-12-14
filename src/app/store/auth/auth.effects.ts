@@ -45,6 +45,7 @@ export class AuthEffects {
           switchMap((response: any) => {
             const res = response as Map<string, string>;
             localStorage.setItem('access_token', response.access_token);
+            console.log("loggedout")
             this.routes.navigate(['/dashboard']);
             return [authActions.successAuthLogin({ payload: response })];
           }),

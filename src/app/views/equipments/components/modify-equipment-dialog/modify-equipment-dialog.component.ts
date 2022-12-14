@@ -17,6 +17,8 @@ import { User } from 'src/app/shared/user-details/user-details';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
 import { Observable, of } from 'rxjs';
 import { CategoriesState } from 'src/app/store/state/categories.state';
+import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-equipments',
@@ -36,7 +38,7 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   serialNumbers: string[] = [];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public equipmentData: Equipment,
+    @Inject(MAT_DIALOG_DATA) public equipmentData: any,
     public equipmentsService: EquipmentsService,
     private store: Store,
     public dialog: MatDialog,
@@ -65,41 +67,34 @@ export class ModifyEquipmentDialogComponent implements OnInit {
 
   equipmentForm() {
     let isEdit = this.equipmentsService.isEdit;
+    const value = this.equipmentData.equipment;
+    console.log("equipmentdata", value)
     this._equipmentForm = this.formBuilder.group({
       item_name: new FormControl(
-        isEdit ? this.equipmentData.item_name : '',
+        isEdit ? value.item_name : '',
         Validators.required
       ),
       item_count: new FormControl(1, Validators.pattern('[0-9]*')),
       status: new FormControl(
-        isEdit ? this.equipmentData.status : '',
+        isEdit ? value.status : '',
         Validators.required
       ),
       category_id: new FormControl(
-        isEdit ? this.equipmentData.category_id : '',
+        isEdit ? 'Table' : '',
         Validators.required
       ),
       serial_no: new FormControl({
-          value: isEdit ? this.equipmentData.serial_no : '',
-          disabled: true,},
+          value: isEdit ? value.serial_no : '',
+          disabled: true},
         Validators.required
       ),
       description: new FormControl(
-        isEdit ? this.equipmentData.description : '',
+        isEdit ? value.description : '',
         Validators.required
       ),
       user_id: new FormControl(0),
     });
   }
-
-  // searchCategory(filterValue: string) {
-  //   filterValue = filterValue.toLowerCase();
-  //   this.categories = CATEGORY_DATA.filter((value) => {
-  //     return value.category_name.toString().toLowerCase().indexOf(filterValue) > -1;
-  //   }).map((val) => {
-  //     return val;
-  //   });
-  // }
 
   onCancelEdit(formDirective: FormGroupDirective) {
     this.equipmentsService.isEdit = false;
@@ -130,7 +125,6 @@ export class ModifyEquipmentDialogComponent implements OnInit {
   }
 
   onCategoryOrItemsChange(event:any) {
-    console.log("event", event)
     const value = this._equipmentForm.value;
     if (value.category != '') {
       const value = this._equipmentForm.value;
@@ -152,10 +146,24 @@ export class ModifyEquipmentDialogComponent implements OnInit {
 
     switch (condition) {
       case 'true,true':
-        this.equipmentsService.onEditEquipment(
-          this.equipmentsService.toEditData,
-          this._equipmentForm.value
-        );
+        const formValue:Equipment = this._equipmentForm.value; 
+        const value:Equipment = {
+          item_name: formValue.item_name,
+          category_id: formValue.category_id,
+          status: formValue.status,
+          serial_no: this.equipmentData.equipment.serial_no,
+          description: formValue.description,
+          user_id: 0,
+          id: this.equipmentData.equipment.id
+        }
+        let equipmentID= 0;
+        this.store.select(selectEquipment).subscribe((response)=>{
+          equipmentID = response.selectedItem.id!;
+        })
+        this.store.dispatch(
+            equipmentActions.requestUpdateEquipmentACTION({id: equipmentID, payload: value}))
+         
+       
         break;
       case 'false,true':
         const formValues = this._equipmentForm.value;
