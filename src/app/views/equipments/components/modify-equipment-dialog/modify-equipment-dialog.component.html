@@ -1,7 +1,6 @@
 <div fxFlex.gt-xs="100" fxFlex.gt-md="7100" fxFlex="100">
-  <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn"
-    >close</mat-icon
-  >
+  <mat-icon [mat-dialog-close]="" class="close-icon align-right" color="warn">
+    close</mat-icon>
   <div fxLayout="column" fxLayoutWrap="wrap">
     <div *ngIf="!this.equipmentsService.isEdit" fxFlex.gt-sm="50" fxFlex="100">
       <strong> Add Equipment </strong>
@@ -18,7 +17,6 @@
       <mat-form-field class="example-full-width" appearance="outline">
         <input matInput required formControlName="item_name" />
       </mat-form-field>
-
       <div *ngIf="!this.equipmentsService.isEdit">
         <mat-label>Items *</mat-label>
         <mat-form-field class="example-full-width" appearance="outline">
@@ -47,6 +45,7 @@
           <mat-select
             formControlName="category_id"
             (selectionChange)="onCategoryOrItemsChange($event)"
+            matNativeControl
             required>
             <div>
               <form [formGroup]="_searchCategoryForm">
@@ -85,8 +84,8 @@
             matInput
             required
             rows="{{ serialFieldRow }}"
-            formControlName="serial_no"
-          ></textarea>
+            formControlName="serial_no">
+        </textarea>
         </mat-form-field>
       </div>
 
@@ -101,8 +100,7 @@
           [mat-dialog-close]=""
           class="button-margin button-width"
           mat-raised-button
-          color="basic"
-        >
+          color="basic">
           Cancel
         </button>
         <button
@@ -111,8 +109,7 @@
           color="primary"
           [disabled]="!_equipmentForm.valid"
           [mat-dialog-close]
-          mat-raised-button
-        >
+          mat-raised-button>
           {{ actionButton }}
         </button>
       </div>

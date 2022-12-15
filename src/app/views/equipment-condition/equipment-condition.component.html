@@ -2,15 +2,15 @@
   <mat-card-content>
     <mat-card-title>Equipments Conditions</mat-card-title>
     <mat-card-subtitle>
-      <code
-        ><a href="">Monitor and update conditions of each equipments</a></code
-      >
+      <code> 
+        <a href="">Monitor and update conditions of each equipments</a>
+      </code>
     </mat-card-subtitle>
     <div class="categories">Categories</div>
     <mat-accordion>
       <mat-expansion-panel
         class="p-0"
-        *ngFor="let category of this.equipmentsByCategory | keyvalue">
+        *ngFor="let category of categorizedEquipment$ | async | keyvalue">
         <mat-expansion-panel-header
           style="background-color: #e8fdf8"
           [ngClass]="panelOpenState ? 'no-events' : 'default'"
@@ -50,7 +50,7 @@
                     Serial No.
                   </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    {{ element.serialNumber }}
+                    {{ element.serial_no }}
                   </mat-cell>
                 </ng-container>
 
@@ -59,7 +59,7 @@
                     Equipment Name
                   </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    {{ element.equipment }}
+                    {{ element.item_name }}
                   </mat-cell>
                 </ng-container>
 

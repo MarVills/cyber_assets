@@ -160,6 +160,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.store.select(selectEquipment).subscribe((response) => {
       let filteredEquipment: Equipment[] = [];
       response.equipment.forEach((item:any) => {
+        // console.log("see diff", item.category_id, category)
         if (item.category_id == category) {
           filteredEquipment.push(item);
         }
@@ -171,7 +172,9 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   setEquipmentsByCategory() {
     this.categories.forEach((category) => {
       let filteredEquipment = this.equipmentList.filter(
-        (equipment) => equipment.category_id === category.id
+        (equipment) => {
+          return Number(equipment.category_id) === category.id
+        }
       );
       filteredEquipment
         ? this.equipmentsByCategory.set(category.category_name, filteredEquipment)
@@ -189,7 +192,7 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   totalEquipments(): string {
     try {
-      return this.equipmentList.length.toString();
+      return this.equipmentList.length!.toString();
     } catch (e) {
       return '0';
     }
@@ -215,10 +218,16 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.equipmentService.isEdit = true;
     // this.equipmentService.toEditData = data;
     this.store.dispatch(equipmentActions.requestSelectEquipmentACTION(data))
+    
     const editDialogRef = this.dialog.open(ModifyEquipmentDialogComponent, {
       width: '500px',
       data: {
-        equipment: data
+        item_name: data.item_name,
+        status: data.status,
+        category: this.categories.find(e=>e.id == data.category_id),
+        serial_no: data.serial_no,
+        description: data.description,
+        user_id: 0,
       },
     });
     editDialogRef.afterClosed().subscribe((result) => {
@@ -260,8 +269,9 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   allEquipments(color: string) {
     this.hasEquipments = true;
     this.toolbarBgColor = color;
-     if (this.equipmentList == undefined || this.equipmentList.length == 0) {
-        this.hasEquipments = false;
-     }
+    if (this.equipmentList == undefined || this.equipmentList.length == 0) {
+      this.hasEquipments = false;
+    }
+    this.equipment$ = of(this.equipmentList)
   }
 }

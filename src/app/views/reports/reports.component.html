@@ -16,21 +16,21 @@
                 Serial Number
               </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                {{ element.serialNumber }}
+                {{ element.serial_no }}
               </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="equipment">
               <mat-header-cell *matHeaderCellDef> Equipment </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                {{ element.equipment }}
+                {{ element.item_name }}
               </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="category">
               <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                {{ element.category }}
+                {{ element.category_id }}
               </mat-cell>
             </ng-container>
 

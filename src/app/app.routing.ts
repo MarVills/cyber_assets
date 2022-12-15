@@ -16,6 +16,7 @@ import { ManageUsersComponent } from './views/manage-users/manage-users.componen
 import { EquipmentResolverService } from './resolvers/equipment-resolver.service';
 import { CategoriesResolverService } from './resolvers/categories-resolver.service';
 import { UsersResolverService } from './resolvers/users-resolver.service';
+import { EquipmentConditionResolverService } from './resolvers/equipment-condition-resolver.service';
 
 export const AppRoutes: Routes = [
   {
@@ -59,7 +60,7 @@ export const AppRoutes: Routes = [
       {
         path: 'equipment-condition',
         component: EquipmentConditionComponent,
-        resolve: [EquipmentResolverService, CategoriesResolverService],
+        resolve: [EquipmentConditionResolverService, CategoriesResolverService],
         data: {
           title: 'Equipment Condition',
           urls: [

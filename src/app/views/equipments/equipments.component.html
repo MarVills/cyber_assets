@@ -22,7 +22,7 @@
               <div fxLayout="row" fxFlex="100">
                 <form [formGroup]="_searchCategoryForm">
                   <mat-form-field>
-                    <mat-label>Search Category</mat-label>
+                    <mat-label>Search Category &nbsp; <mat-icon>search</mat-icon> </mat-label>
                     <input matInput formControlName="searchCategory" />
                   </mat-form-field>
                 </form>
@@ -53,7 +53,7 @@
                     let category of this.categories | filter : _searchCategoryForm.value.searchCategory;
                     let i = index"
                   (click)="filterByCategory(
-                      category.category,
+                      category.id,
                       this.backgroundColors[i] + '1f',
                       this.getTotalEquipmentsPerCategory(category.category_name))">
                   <div class="note d-flex"

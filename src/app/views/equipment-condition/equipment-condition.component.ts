@@ -14,8 +14,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 import { Store } from '@ngrx/store';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
+import * as equipmentActions from '../../store/equipments/equipments.actions' 
 
 @Component({
   selector: 'app-equipment-condition',
@@ -27,10 +28,8 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
   equipmentConditions = Object.values(EQUIPMENT_CONDITIONS);
   categories: Category[] = [];
   equipment: Equipment[] = [];
-  equipmentsByCategory: Map<string, EquipmentsWithSelectedStatus> = new Map<
-    string,
-    EquipmentsWithSelectedStatus
-  >();
+  equipmentsByCategory: Map<string, EquipmentsWithSelectedStatus> = new Map<string, EquipmentsWithSelectedStatus>();
+  categorizedEquipment$: Observable<Map<string, EquipmentsWithSelectedStatus>> = new Observable<Map<string, EquipmentsWithSelectedStatus>>();
   displayedColumns = ['serialNumber', 'equipmentName', 'status'];
   selectedEquipments: any;
   _searchEquipmentForm!: FormGroup;
@@ -66,7 +65,6 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
         this.categories = response.categories;
         this.setEquipmentsByCategories();
       });
-
     this.searchEquipmentForm();
   }
 
@@ -104,7 +102,9 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
   setEquipmentsByCategories() {
     this.categories.forEach((category) => {
       const filteredEquipment = this.equipment.filter(
-        (item) => item.category_id === category.id
+        (item) =>  { 
+          return Number(item.category_id) === category.id
+        }
       );
       const isSlectedCategory: EquipmentsWithSelectedStatus = {
         isSelected: false,
@@ -114,6 +114,7 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
         ? this.equipmentsByCategory.set(category.category_name, isSlectedCategory)
         : null;
     });
+    this.categorizedEquipment$ = of(this.equipmentsByCategory)
   }
 
   onConditionChange(data: string) {
@@ -128,10 +129,12 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
       user_id: 0,
     };
 
-    this.equipmentsService.onEditEquipment(
-      this.equipmentsService.toEditData,
-      latestData
-    );
+    // this.equipmentsService.onEditEquipment(
+    //   this.equipmentsService.toEditData,
+    //   latestData
+    // );
+
+    this.store.dispatch(equipmentActions.requestUpdateEquipmentACTION({id: previousData.id!, payload: latestData}))
   }
 
   onSelectionClicked(data: Equipment) {

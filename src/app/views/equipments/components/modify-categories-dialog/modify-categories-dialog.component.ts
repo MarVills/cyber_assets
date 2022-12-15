@@ -99,7 +99,8 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     formDirective.resetForm();
   }
 
-  editCategory(action: string, category: Category) {
+  editCategory(action: string, category: any) {
+    console.log("see category",category)
     if (this.categoryList) {
       switch (action) {
         case 'edit':
