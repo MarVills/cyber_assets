@@ -1,10 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Equipment } from 'src/app/Models/equipment.model';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
+import jsPDF from 'jspdf';
+// import pdf
+// import pdf
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// import htmlToPdfmake from 'html-to-pdfmake';
 
 @Component({
   selector: 'app-reports',
@@ -12,13 +19,16 @@ import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
   styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
-    Object.create(null);
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
+   @ViewChild('content') content!: ElementRef;
   displayedColumns = ['serialNumber', 'equipment', 'category', 'status'];
   equipmentSubscription$!: Subscription;
   dataSource = new MatTableDataSource<Equipment>([]);
+  
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    
+  }
 
   ngOnInit(): void {
     this.refresh();
@@ -31,7 +41,14 @@ export class ReportsComponent implements OnInit {
   }
 
   print() {
-    window.print();
+    // window.print();
+     let doc = new jsPDF();
+    //  autoTable(doc, "#basic-table");
+    doc.save("table.pdf");
+    //  doc.addPage(this.content.nativeElement, "protrait")
+    // doc.addPage(this.content.nativeElement, () {
+    //    doc.save("obrz.pdf");
+    // });
   }
 
   refresh() {
