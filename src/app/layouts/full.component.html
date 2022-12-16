@@ -2,15 +2,17 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div class="main-container" [dir]="dir"
-  [ngClass]="{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }">
+  
+  [ngClass]="{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }"
+  >
   <!-- ============================================================== -->
   <!-- Topbar - style you can find in header.scss -->
   <!-- ============================================================== -->
-  <mat-toolbar color="primary" class="topbar telative">
+  <mat-toolbar style="background-color: rgb(38,198,218);" class="topbar telative">
     <!-- ============================================================== -->
     <!-- Logo - style you can find in header.scss -->
     <!-- ============================================================== -->
-    <div class="navbar-header">
+    <div class="navbar-header" style="background-color: white; padding: 5px; border-radius: 5px;" >
       <a class="navbar-brand" href="/dashboard">
         <!-- Logo icon -->
         <b>
@@ -18,15 +20,17 @@
           <!-- Dark Logo icon -->
           <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo">
           <!-- Light Logo icon -->
-          <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo">
+          <img src="assets/images/logo.png" alt="homepage" class="light-logo" style="height: 40px; width:40px">
         </b>
         <!--End Logo icon -->
+          &nbsp;
         <!-- Logo text -->
         <span fxShow="false" fxShow.gt-xs>
           <!-- dark Logo text -->
-          <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo">
+          <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" >
           <!-- Light Logo text -->
-          <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage">
+        
+          <img src="assets/images/trans_cyber_assets.png" class="light-logo" alt="homepage" style="height: 40px; width:150px">
         </span>
       </a>
     </div>
@@ -127,9 +131,7 @@
         <router-outlet>
           <app-spinner></app-spinner>
         </router-outlet>
-
       </div>
-
     </mat-sidenav-content>
     <!-- ============================================================== -->
     <!-- Page container - style you can find in pages.scss -->

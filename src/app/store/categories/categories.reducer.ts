@@ -35,10 +35,10 @@ export const categoryReducer = createReducer(
   on(
     categoriesAction.requestUpdateCategoryACTION,
     (state: CategoriesState, { payload }) => {
-      const updateCategory = [state.categories].map((category: any) => {
-        return payload === category.id ? payload : category;
+      const updateCategory = state.categories.map((category: any) => {
+        return payload.id === category.id ? payload : category;
       });
-     return { ...state, category: updateCategory }; 
+     return { ...state, categories: updateCategory }; 
     }
   ),
 

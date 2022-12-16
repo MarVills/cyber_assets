@@ -10,7 +10,7 @@ export const successFetchCategoriesACTION = createAction(
 );
 export const requestSelectCategoryACTION = createAction(
   '[ Categories ] Request Select Category',
-  props<{ payload: Category }>()
+  props<{ payload: Category| null }>()
 );
 export const successSelectCategoryACTION = createAction(
   '[ Categories ] Success Select Category',
@@ -36,7 +36,8 @@ export const requestUpdateCategoryACTION = createAction(
   props<{ id: number; payload: Category }>()
 );
 export const successUpdateCategoryACTION = createAction(
-  '[ Categories ] Success Update Category'
+  '[ Categories ] Success Update Category',
+  props<{ payload: Category }>()
 );
 export const onCategoryFailure = createAction(
   '[ Categories ] Categories Failure',

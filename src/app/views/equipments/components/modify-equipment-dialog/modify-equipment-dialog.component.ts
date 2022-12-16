@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
-import { CATEGORY_DATA, Category } from 'src/app/Models/category.model';
+import { Category } from 'src/app/Models/category.model';
 import { Equipment } from 'src/app/Models/equipment.model';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators, } from '@angular/forms';
 import { EquipmentsService } from '../../../../store/services/inventory/equipments/equipments.service';
@@ -27,7 +26,7 @@ import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
 })
 export class ModifyEquipmentDialogComponent implements OnInit {
   equipmentStatus = Object.values(EQUIPMENT_CONDITIONS);
-  dataSource = new MatTableDataSource<Equipment>(EQUIPMENT_DATA);
+  dataSource = new MatTableDataSource<Equipment>([]);
   actionButton: string = 'Add';
   categories$!: Observable<CategoriesState>;
   categoryList!: Category[];
@@ -43,14 +42,12 @@ export class ModifyEquipmentDialogComponent implements OnInit {
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
-    private categoriesService: CategoriesService,
     private user: User
   ) {}
 
   ngOnInit(): void {
     this.equipmentForm();
     this.searchCategoryForm();
-    this.categoriesService.onFetchCategories();
     this.equipmentsService.isEdit ? (this.actionButton = 'Edit') : 'Add';
       this.store.select(selectCategory).subscribe((response)=>{
       this.categories$ = of(response.categories)
@@ -191,7 +188,6 @@ export class ModifyEquipmentDialogComponent implements OnInit {
         );
         break;
       default:
-        break;
     }
   }
 

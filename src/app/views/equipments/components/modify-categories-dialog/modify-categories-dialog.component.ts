@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
+import { Category, } from 'src/app/Models/category.model';
 import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
 import { SharedService } from 'src/app/shared/shared.service';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
@@ -28,7 +28,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     prefix: "",
     id : 0,
   }
-  categories$!: Observable<Category[]>
+  categories$!: Observable<any[]>
   _addCategoryForm!: FormGroup;
   _editCategoryForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
@@ -45,15 +45,7 @@ export class ModifyCategoriesDialogComponent implements OnInit {
   ngOnInit(): void {
     this.addCategoryForm();
     this.searchCategoryForm();
-    // this.categoryList = this.categoryData.categories ;
-    this.store.select(selectCategory).subscribe((response)=>{
-      this.categories$  = of(response.categories)
-      this.categoryList = response.categories;
-    })
-    // this.store.select(selectCategory).subscribe((response)=>{
-    //   console.log("selected category", response.selectedCategory)
-    //   this.selectedCategory = response.selectedCategory
-    // })
+    this.updateCategoryState();
   }
 
   searchCategoryForm() {
@@ -90,44 +82,51 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     const category: Category = {
       category_name: value.addCategory,
       prefix: this.generatePrefix(),
-      // edit: false,
     };
-    // console.log("adding category", category)
-    // this.categoriesService.onAddCategory(category);
     this.store.dispatch(categoryActions.requestAddCategoryACTION({payload: category}))
-    // this.refreshCategories();
     formDirective.resetForm();
   }
 
-  editCategory(action: string, category: any) {
-    console.log("see category",category)
+  editCategory(action: string, category: Category) {
     if (this.categoryList) {
       switch (action) {
         case 'edit':
           this.editCategoryForm(category.category_name);
-          // const editCategory: Category = {
-          //   category_name: this._editCategoryForm.value.category_name,
-          // };
-          // CATEGORY_DATA[index] = editCategory;
           this.store.dispatch(categoryActions.requestSelectCategoryACTION({payload: category}) )
-          // this.categories$.
-
+          this.updateCategoryState();
+          this.categories$.subscribe((response)=>{
+          })
           break;
         case 'save':
-          const categoryName = this._editCategoryForm.value.editCategory;
-          // const saveCategory: Category = {
-          //   // id: CATEGORY_DATA[index].id,
-          //   category_name: categoryName,
-          //   // edit: false,
-          // };
-           this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: category.id!, payload: category} ))
-          // if (categoryName !== CATEGORY_DATA[index].category_name) {
-          //   this.categoriesService.onEditCategory(index, saveCategory);
-          // }
-          // CATEGORY_DATA[index] = saveCategory;
-          // break;
+          const categoryName = this._editCategoryForm.value;
+          const saveCategory: Category = {
+            id: category.id,
+            category_name: this._editCategoryForm.value.editCategory,
+            prefix: category.prefix
+          };
+          this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: category.id!, payload: saveCategory} ))
+          this.store.dispatch(categoryActions.requestSelectCategoryACTION({payload:{id:0, category_name:"", prefix: ""}}) )
+          this.updateCategoryState();
       }
     }
+  }
+
+  updateCategoryState(){
+    this.store.select(selectCategory).subscribe((response)=>{
+      let tempList:any = []
+      response.categories.forEach((category:any) => {
+        const categoryState = {
+          category_name: category.category_name,
+          id: category.id,
+          isEdit: response.selectedCategory.id == category.id? true: false,
+          prefix: category.prefix,
+          user_id: 0
+        }
+        tempList.push(categoryState)
+      });
+      this.categories$ = of(tempList)
+      this.categoryList = response.categories;
+    })
   }
 
   checkIfCategoryUsed(categoryId: number): boolean {
@@ -156,11 +155,9 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     isDelete.subscribe((response: string) => {
       switch (response) {
         case 'confirm':
-          // this.categoriesService.onDeleteCategory(category);
           this.store.dispatch(
           categoryActions.requestDeleteCategoryACTION({ id: category.id! })
           );
-          // this.refreshCategories();
           break;
         case 'cancel':
           this.sharedService.openSnackBar('Deleting category canceld!');
@@ -170,8 +167,4 @@ export class ModifyCategoriesDialogComponent implements OnInit {
       }
     });
   }
-
-  // refreshCategories(){
-
-  // }
 }

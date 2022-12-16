@@ -143,10 +143,6 @@ export const AppRoutes: Routes = [
       },
     ],
   },
-  // {
-  //     path: 'login',
-  //     component: LoginComponent,
-  // },
   {
     path: 'authentication',
     loadChildren: () =>
@@ -154,7 +150,6 @@ export const AppRoutes: Routes = [
         (m) => m.AuthenticationModule
       ),
   },
-
   {
     path: '**',
     component: ErrorComponent,

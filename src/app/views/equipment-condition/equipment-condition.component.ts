@@ -118,26 +118,31 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
   }
 
   onConditionChange(data: string) {
-    const previousData = this.equipmentsService.toEditData;
-
-    const latestData: Equipment = {
-      item_name: previousData.item_name,
-      category_id: previousData.category_id,
+    // const previousData = this.equipmentsService.toEditData;
+   
+    this.store.select(selectEquipment).subscribe((response)=>{
+     const latestData: Equipment = {
+      item_name: response.selectedItem.item_name,
+      category_id: response.selectedItem.category_id,
       status: data,
-      description: previousData.description,
-      serial_no: previousData.serial_no,
+      description: response.selectedItem.description,
+      serial_no: response.selectedItem.serial_no,
       user_id: 0,
     };
+    })
+    //  this.store.dispatch(equipmentActions.requestUpdateEquipmentACTION({id: response.selectedItem.id!, payload: latestData}))
+    
 
     // this.equipmentsService.onEditEquipment(
     //   this.equipmentsService.toEditData,
     //   latestData
     // );
 
-    this.store.dispatch(equipmentActions.requestUpdateEquipmentACTION({id: previousData.id!, payload: latestData}))
+    
   }
 
   onSelectionClicked(data: Equipment) {
-    this.equipmentsService.toEditData = data;
+    // this.equipmentsService.toEditData = data;
+     this.store.dispatch(equipmentActions.requestSelectEquipmentACTION({payload: data }))
   }
 }

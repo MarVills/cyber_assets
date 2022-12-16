@@ -51,11 +51,11 @@
     let i = index"
   class="todo-item py-3 pl-3 border-bottom padding-side-40">
   <div class="todo-item-left d-md-flex w-100 category-field" fxLayout="row">
-    <div *ngIf="category.id != selectedCategory.id">
+    <div *ngIf="!category.isEdit">
       <p style="white-space: nowrap">{{ category.category_name }}</p>
     </div>
     <div class="todo-item-label w-100">
-      <div class="d-flex align-items-start" *ngIf="category.id != selectedCategory.id">
+      <div class="d-flex align-items-start" *ngIf="!category.isEdit">
         <div class="ml-auto px-3 mr-2">
           <a href="javascript: void(0);"
             (click)="editCategory('edit', category)"
@@ -75,7 +75,7 @@
       </div>
       <div
         class="d-flex align-items-start edit-view category-field"
-        *ngIf="category.id == selectedCategory.id">
+        *ngIf="category.isEdit">
         <mat-form-field [formGroup]="_editCategoryForm">
           <mat-label></mat-label>
           <input matInput class="form-control" formControlName="editCategory" />
@@ -84,7 +84,7 @@
         <div class="ml-auto d-flex">
           <a
             href="javascript: void(0);"
-            (click)="editCategory('save', i)"
+            (click)="editCategory('save', category)"
             class="link m-r-10"
             placement="top"
             ngbTooltip="Save">

@@ -51,9 +51,7 @@ export class CategoriesEffects {
         switchMap((response:any) => {
 
           return [
-            categoryActions.successSelectCategoryACTION({
-              payload: response,
-            }),
+            categoryActions.successSelectCategoryACTION(response),
           ];
         
         }),
@@ -89,12 +87,13 @@ export class CategoriesEffects {
       switchMap((data) => {
 
         return this.categoryService.updateCategory(data.payload, data.id).pipe(
-          switchMap(()=>{
+          switchMap((response)=>{
              this.sharedService.openSnackBar(
               'Category updated successfuly',
               'Ok'
             );
-            return [categoryActions.successUpdateCategoryACTION()];
+            console.log("response", response)
+            return [categoryActions.successUpdateCategoryACTION(response)];
           }),
           catchError((error) => {
             console.log('Update Error: ', error);
@@ -124,8 +123,6 @@ export class CategoriesEffects {
             return [categoryActions.onCategoryFailure({ error: error })];
           }),
         )
-          
-        
       })
     )
   );

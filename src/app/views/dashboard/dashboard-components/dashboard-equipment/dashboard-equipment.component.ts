@@ -5,7 +5,7 @@ import {
   EquipmentsWithSelectedStatus,
   EQUIPMENT_DATA,
 } from 'src/app/Models/equipment.model';
-import { CATEGORY_DATA } from 'src/app/Models/category.model';
+import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 import {
@@ -25,6 +25,8 @@ import {
   ApexResponsive,
 } from 'ng-apexcharts';
 import { Equipments } from 'src/app/store/state/equipments.state';
+import { Store } from '@ngrx/store';
+import { selectCategory } from 'src/app/store/categories/categories.selectors';
 
 @Component({
   selector: 'app-dashboard-equipment',
@@ -42,8 +44,7 @@ export class DashboardEquipmentComponent implements OnInit {
   texts = TEXTS;
 
   constructor(
-    private equipmentsService: EquipmentsService,
-    private categoriesService: CategoriesService
+   private store: Store
   ) {
     this.inexpuchartOptions = {
       series: [
@@ -103,12 +104,11 @@ export class DashboardEquipmentComponent implements OnInit {
       },
     };
   }
-  ngOnInit(): void {
-    this.categoriesService.onFetchCategories();
-  }
+  ngOnInit(): void {}
 
   setEquipmentsByCategories() {
-    CATEGORY_DATA.forEach((category) => {
+    this.store.select(selectCategory).subscribe((response)=>{
+       response.categories.forEach((category:Category) => {
       let filteredEquipment = EQUIPMENT_DATA.filter(
         (equipment) => equipment.category_id === category.id
       );
@@ -117,6 +117,7 @@ export class DashboardEquipmentComponent implements OnInit {
         items: filteredEquipment,
       };
     });
+    })
   }
 }
 

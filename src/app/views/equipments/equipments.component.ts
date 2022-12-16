@@ -1,46 +1,27 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ModifyEquipmentDialogComponent } from './components/modify-equipment-dialog/modify-equipment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
 import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Category } from 'src/app/Models/category.model';
-import {
-  Equipment,
-  EquipmentDTO,
-  EQUIPMENT_DATA,
-} from 'src/app/Models/equipment.model';
+import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
 import { CATEGORY_DATA } from 'src/app/Models/category.model';
-import {
-  PerfectScrollbarComponent,
-  PerfectScrollbarConfigInterface,
-  PerfectScrollbarDirective,
-} from 'ngx-perfect-scrollbar';
 import { AuthService } from 'src/app/store/services/auth/auth.service';
 import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 import { ModifyCategoriesDialogComponent } from './components/modify-categories-dialog/modify-categories-dialog.component';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
 import { Store } from '@ngrx/store';
 import { Observable, of, Subscription } from 'rxjs';
-// import { EquipmentsState } from 'src/app/store/state/equipments.state';
 import * as equipmentActions from '.././../store/equipments/equipments.actions';
-import * as categpriesActions from '../../store/categories/categories.actions';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
-import { EquipmentsState } from 'src/app/store/state/equipments.state';
+import {
+  PerfectScrollbarComponent,
+  PerfectScrollbarDirective,
+} from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'app-equipments',
@@ -49,8 +30,7 @@ import { EquipmentsState } from 'src/app/store/state/equipments.state';
 })
 export class EquipmentsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('widgetsContent', { read: ElementRef })
-  public widgetsContent!: ElementRef<any>;
+  @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent!: ElementRef<any>;
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   displayedColumns = ['serial-number', 'equipment', 'status', 'action'];
@@ -77,8 +57,6 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     private equipmentService: EquipmentsService,
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
-    private categoriesService: CategoriesService,
-    private authService: AuthService,
     private manageAccountService: ManageAccountService,
     private store: Store
   ) {
@@ -160,7 +138,6 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     this.store.select(selectEquipment).subscribe((response) => {
       let filteredEquipment: Equipment[] = [];
       response.equipment.forEach((item:any) => {
-        // console.log("see diff", item.category_id, category)
         if (item.category_id == category) {
           filteredEquipment.push(item);
         }
@@ -216,7 +193,6 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
 
   openEditDialog(data: any): void {
     this.equipmentService.isEdit = true;
-    // this.equipmentService.toEditData = data;
     this.store.dispatch(equipmentActions.requestSelectEquipmentACTION(data))
     
     const editDialogRef = this.dialog.open(ModifyEquipmentDialogComponent, {

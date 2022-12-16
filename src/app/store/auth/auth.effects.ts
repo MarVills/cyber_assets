@@ -45,7 +45,6 @@ export class AuthEffects {
           switchMap((response: any) => {
             const res = response as Map<string, string>;
             localStorage.setItem('access_token', response.access_token);
-            console.log("loggedout")
             this.routes.navigate(['/dashboard']);
             return [authActions.successAuthLogin({ payload: response })];
           }),
@@ -62,7 +61,6 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(authActions.requestAuthLogout),
       switchMap(() => {
-        console.log('loggingOut');
         return this.authService.logoutAuth().pipe(
           switchMap((response: any) => {
             localStorage.removeItem('access_token');

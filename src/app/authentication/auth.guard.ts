@@ -30,9 +30,11 @@ export class AuthGuard implements CanActivate, OnInit {
     state: RouterStateSnapshot
   ): boolean {
     // Still working on this, temporary functiontions for the meantime
+    console.log("checking auth guard..")
     if (localStorage.getItem('access_token') != null) {
       return true;
     } else {
+      console.log("navigating to login")
       this.routes.navigate(['/authentication/login']);
       return false;
     }

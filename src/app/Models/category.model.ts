@@ -4,6 +4,7 @@
     category_name: string;
     prefix: string;
     // edit: boolean;
+    user_id?: string;
   }
 
   export interface CategoryDTO {
