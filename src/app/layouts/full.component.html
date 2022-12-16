@@ -8,29 +8,34 @@
   <!-- ============================================================== -->
   <!-- Topbar - style you can find in header.scss -->
   <!-- ============================================================== -->
-  <mat-toolbar style="background-color: rgb(38,198,218);" class="topbar telative">
+  <mat-toolbar style="background-color: rgb(63,75,120);" class="topbar telative">
     <!-- ============================================================== -->
     <!-- Logo - style you can find in header.scss -->
     <!-- ============================================================== -->
-    <div class="navbar-header" style="background-color: white; padding: 5px; border-radius: 5px;" >
+    <div 
+    class="navbar-header" 
+    style="background-color: white; 
+           padding-left: 5px;
+           padding-right:5px; 
+           border-radius: 5px;
+           margin: 10px;" >
       <a class="navbar-brand" href="/dashboard">
-        <!-- Logo icon -->
         <b>
-          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-          <!-- Dark Logo icon -->
           <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo">
-          <!-- Light Logo icon -->
-          <img src="assets/images/logo.png" alt="homepage" class="light-logo" style="height: 40px; width:40px">
+          <img 
+          src="assets/images/logo.png" 
+          alt="homepage" 
+          class="light-logo" 
+          style="height: 30px; width:40px; padding-left:10px;">
         </b>
-        <!--End Logo icon -->
           &nbsp;
-        <!-- Logo text -->
         <span fxShow="false" fxShow.gt-xs>
-          <!-- dark Logo text -->
           <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" >
-          <!-- Light Logo text -->
-        
-          <img src="assets/images/trans_cyber_assets.png" class="light-logo" alt="homepage" style="height: 40px; width:150px">
+          <img 
+          src="assets/images/trans_cyber_assets.png" 
+          class="light-logo" 
+          alt="homepage"
+          style="height: 40px; width:150px">
         </span>
       </a>
     </div>
@@ -39,7 +44,7 @@
     <!-- ============================================================== -->
 
     <button mat-icon-button (click)="snav.toggle() && clickEvent()" value="sidebarclosed">
-      <mat-icon>menu</mat-icon>
+      <mat-icon style="color: white;">menu</mat-icon>
     </button>
     <!-- ============================================================== -->
     <!-- Search - style you can find in header.scss -->
@@ -62,7 +67,7 @@
     <!-- Right sidebar toggle - style you can find in rightsidebar.component.scss -->
     <!-- ============================================================== -->
     <button (click)="end.toggle()" mat-icon-button class="ml-xs overflow-visible">
-      <mat-icon>settings</mat-icon>
+      <mat-icon style="color: white;">settings</mat-icon>
     </button>
   </mat-toolbar>
   <!-- ============================================================== -->
