@@ -1,9 +1,10 @@
 export interface AccountDetails {
     id?: string,
-    firstName: string;
-    lastName: string;
-    middleName: string;
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
     userRole?: string;
+    name?: string;
     emailAddress: string;
     contactNumber: string;
     description: string;
@@ -18,9 +19,10 @@ export interface AccountCredentials{
 
 
 export interface AllData{
-    firstName: string;
-    lastName: string;
-    middleName: string;
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
+    name?: string;
     userRole: string;
     emailAddress: string;
     contactNumber: string;

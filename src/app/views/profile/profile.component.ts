@@ -15,6 +15,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { selectUserData } from 'src/app/store/auth/auth.selectors';
 
 @Component({
   selector: 'app-profile',
@@ -44,20 +46,22 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
     private storage: AngularFireStorage,
-    private authService: AuthService
+    private store: Store,
   ) {
-    this.accountDetailsForm();
+    
   }
 
   ngOnInit(): void {
+    this.store.select(selectUserData).subscribe((response)=>{
+      console.log('see response', response)
+      this.accountDetailsForm(response.userData);
+    })
   }
 
-  accountDetailsForm() {
+  accountDetailsForm(userData: any) {
     this._accountDetailsForm = this.formBuilder.group({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      middleName: new FormControl('', Validators.required),
-      emailAddress: new FormControl('', [
+      name: new FormControl(userData.name, Validators.required),
+      emailAddress: new FormControl(userData.email, [
         Validators.required,
         Validators.email,
       ]),

@@ -86,12 +86,13 @@ export const AppRoutes: Routes = [
         },
       },
       {
-        path: 'manage-account',
+        path: 'profile',
         component: ProfileComponent,
+        resolve: [ UserDataResolverService ],
         data: {
           title: 'Manage Account',
           urls: [
-            { title: 'Manage Account', url: '/manage-account' },
+            { title: 'Manage Account', url: '/profile' },
             { title: 'Manage Account' },
           ],
         },
