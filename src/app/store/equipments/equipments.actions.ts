@@ -7,16 +7,16 @@ export const requestFetchEquipmentACTION = createAction(
 );
 export const successFetchEquipmentACTION = createAction(
   '[Equipments] Success Fetch Equipments',
-  props<{ payload: any }>()
+  props<{ payload: Equipment[] }>()
 );
 
 export const requestSelectEquipmentACTION = createAction(
   '[Equipments] Request Select Equipment',
-  props<{ payload: any}>()
+  props<{ payload: Equipment}>()
 );
 export const successSelectEquipmentACTION = createAction(
   '[Equipments] Success Select Equipment',
-  props<{ payload: any }>()
+  props<{ payload: Object }>()
 );
 
 export const requestAddEquipmentACTION = createAction(
@@ -47,5 +47,5 @@ export const successUpdateEquipmentACTION = createAction(
 
 export const onEquipmentFailure = createAction(
   '[ Equipments ] Equipments Failure',
-  props<{ error: any }>()
+  props<{ error: Object}>()
 );

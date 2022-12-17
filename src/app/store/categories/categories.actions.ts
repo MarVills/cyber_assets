@@ -7,7 +7,7 @@ export const requestFetchCategoriesACTION = createAction(
 );
 export const successFetchCategoriesACTION = createAction(
   '[ Categories ] Success Fetch Categories',
-  props<{ payload: any[] }>()
+  props<{ payload: Category[] }>()
 );
 export const requestSelectCategoryACTION = createAction(
   '[ Categories ] Request Select Category',
@@ -42,5 +42,5 @@ export const successUpdateCategoryACTION = createAction(
 );
 export const onCategoryFailure = createAction(
   '[ Categories ] Categories Failure',
-  props<{ error: any }>()
+  props<{ error: Object }>()
 );
