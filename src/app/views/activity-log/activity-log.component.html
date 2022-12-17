@@ -9,15 +9,15 @@
           </button>
         </div>
         <div class="m-l-20 m-r-20 m-t-20">
-          <mat-form-field appearance="fill">
-            <mat-label
-              >Search Log &nbsp;&nbsp;<mat-icon>search</mat-icon></mat-label
-            >
-            <input matInput (keyup)="applyFilter($event.target.value)" />
-          </mat-form-field>
+          <form  [formGroup]="_searchLogForm">
+            <mat-form-field appearance="fill" >
+              <mat-label>Search Log &nbsp;&nbsp;<mat-icon>search</mat-icon></mat-label>
+              <input matInput formControlName="searchLog"/>
+            </mat-form-field>
+          </form>
         </div>
         <div class="responsive-table" style="overflow: hidden">
-          <mat-table [dataSource]="dataSource" matSort>
+          <mat-table [dataSource]="dataSource$ | async | filter: _searchLogForm.value.searchLog" matSort>
             <ng-container matColumnDef="activity">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
                 Activity
@@ -50,7 +50,7 @@
                 Date
               </mat-header-cell>
               <mat-cell *matCellDef="let row" style="word-break: break-all">
-                {{ row.date }}
+                {{ row.created_at | date:'MMM d, YYYY h:mm a' }}
               </mat-cell>
             </ng-container>
 

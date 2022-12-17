@@ -7,18 +7,19 @@ export const authFeatureKey = 'auth';
 export const initialState: AuthState = {
   signedIn: false,
   uid: '',
+  userData: {}
 };
 
 export const authReducer = createReducer(
   initialState,
   on(authActions.successAuthLogin, (state: any, { payload }) => {
-    return { state, payload };
+    return { ...state.uid, uid: payload.uid };
   }),
 
   on(authActions.successAuthLogout, (state: any) => {
-    return {
-      signedin: false,
-      uid: '',
-    };
-  })
+    return {...state.uid, uid: '' };
+  }),
+   on(authActions.successFetchUserData, (state: any, { payload }) => {
+    return { ...state.userData, userData: payload };
+  }),
 );

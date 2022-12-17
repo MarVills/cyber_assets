@@ -64,11 +64,13 @@ export class EquipmentsEffects {
   addEquipmentEFFECT$: Observable<Action> = createEffect(() => 
       this.actions$.pipe(
       ofType(equipmentActions.requestAddEquipmentACTION),
-      switchMap((data) => {
-        return this.equipmentService.addEquipment(data.payload)
+      switchMap((payload) => {
+        return this.equipmentService.addEquipment(payload.payload)
         .pipe(
           switchMap((response: any)=>{
-            return [equipmentActions.successAddEquipmentACTION(data)];
+            this.sharedService.openSnackBar(`Success adding ${payload.payload.item_name} item.`)
+            this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.itemLog}))
+            return [equipmentActions.successAddEquipmentACTION(payload)];
           }),
           catchError((error:any) => {
             console.log('Add Error: ', error);
@@ -83,13 +85,12 @@ export class EquipmentsEffects {
   updateEquipmentEffect$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(equipmentActions.requestUpdateEquipmentACTION),
-      switchMap((equipment) => {
-        return this.equipmentService.updateEquipment(equipment.payload, equipment.id).pipe(
+      switchMap((payload) => {
+        console.log("see data", payload)
+        return this.equipmentService.updateEquipment(payload.payload, payload.id).pipe(
           switchMap((response)=>{
-             this.sharedService.openSnackBar(
-              'Equipment updated successfuly',
-              'Ok'
-            );
+            this.sharedService.openSnackBar( `${payload.payload.item_name} updated successfuly`,'Ok');
+            this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.itemLog}))
             return [equipmentActions.successUpdateEquipmentACTION()];
           }),
           catchError((error) => {
@@ -98,24 +99,6 @@ export class EquipmentsEffects {
             return [equipmentActions.onEquipmentFailure({ error: error })];
           }),
         )
-        
-        
-        // this.fireStore
-        //   .collection('equipments')
-        //   .doc(equipment.id.toString())
-        //   .update(equipment.payload)
-        //   .then(() => {
-        //     this.sharedService.openSnackBar(
-        //       'Equipment updated successfuly',
-        //       'Ok'
-        //     );
-        //     return equipmentActions.successUpdateEquipmentACTION();
-        //   })
-        //   .catch((error) => {
-        //     console.log('Update Error: ', error);
-        //     this.sharedService.openSnackBar('Failed updating equipment', 'Ok');
-        //     return equipmentActions.onEquipmentFailure({ error: error });
-        //   });
       })
     )
   );
@@ -123,12 +106,13 @@ export class EquipmentsEffects {
   deleteEquipmentEFFEET$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(equipmentActions.requestDeleteEquipmentACTION),
-      switchMap((response) => {
-        return this.equipmentService.deleteEquipment(response.id).pipe(
+      switchMap((payload) => {
+        return this.equipmentService.deleteEquipment(payload.payload.id!).pipe(
           switchMap((response)=>{ 
             console.log("delete effect response", response)
-            this.sharedService.openSnackBar( 'Equipment deleted successfuly','Ok');
-            return [equipmentActions.successDeleteEquipmentACTION(response)];
+            this.sharedService.openSnackBar( `${payload.payload.item_name} deleted successfuly`,'Ok');
+             this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.itemLog}))
+            return [equipmentActions.successDeleteEquipmentACTION(payload)];
           }),
            catchError((error) => {
             console.log('Delete Error: ', error);

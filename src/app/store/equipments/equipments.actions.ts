@@ -30,16 +30,16 @@ export const successAddEquipmentACTION = createAction(
 
 export const requestDeleteEquipmentACTION = createAction(
   '[ Equipments ] Request Delete Equipment',
-  props<{ id: number }>()
+  props<{ payload: Equipment; itemLog: ActivityLog }>()
 );
 export const successDeleteEquipmentACTION = createAction(
   '[ Equipments ] Success Delete Equipment',
-  props<{ id: number }>()
+  props<{ payload: Equipment }>()
 );
 
 export const requestUpdateEquipmentACTION = createAction(
   '[ Equipments ] Request Update Equipment',
-  props<{ id: number; payload: Equipment }>()
+  props<{ id: number; payload: Equipment; itemLog: ActivityLog }>()
 );
 export const successUpdateEquipmentACTION = createAction(
   '[ Equipments ] Success Update Equipment'

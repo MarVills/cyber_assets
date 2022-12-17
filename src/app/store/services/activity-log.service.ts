@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { ACTIVITY_LOG_DATA } from 'src/app/Models/activity-log-model';
 import * as logActions from '../activity-log/activity-log.actions';
 import { selectActivityLog } from '../activity-log/activity-log.selectors';
 
@@ -16,15 +15,15 @@ export class ActivityLogService implements OnDestroy {
     this.fetchActivityLogs$.unsubscribe();
   }
 
-  onFetchActivityLogs() {
-    this.store.dispatch(logActions.requestFetchActivityLogsACTION());
-    this.fetchActivityLogs$ = this.store
-      .select(selectActivityLog)
-      .subscribe((response) => {
-        ACTIVITY_LOG_DATA.splice(0);
-        for (var res of response.activityLogs) {
-          ACTIVITY_LOG_DATA.push(res);
-        }
-      });
-  }
+  // onFetchActivityLogs() {
+  //   this.store.dispatch(logActions.requestFetchActivityLogsACTION());
+  //   this.fetchActivityLogs$ = this.store
+  //     .select(selectActivityLog)
+  //     .subscribe((response) => {
+  //       ACTIVITY_LOG_DATA.splice(0);
+  //       for (var res of response.activityLogs) {
+  //         ACTIVITY_LOG_DATA.push(res);
+  //       }
+  //     });
+  // }
 }

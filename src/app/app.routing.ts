@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-
 import { FullComponent } from './layouts/full.component';
-import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './authentication/auth.guard';
 import { ErrorComponent } from './views/error/error.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
@@ -17,6 +15,8 @@ import { EquipmentResolverService } from './resolvers/equipment-resolver.service
 import { CategoriesResolverService } from './resolvers/categories-resolver.service';
 import { UsersResolverService } from './resolvers/users-resolver.service';
 import { EquipmentConditionResolverService } from './resolvers/equipment-condition-resolver.service';
+import { UserDataResolverService } from './resolvers/user-data-resolver.service';
+import { ActivityLogResolverService } from './resolvers/activity-log-resolver.service';
 
 export const AppRoutes: Routes = [
   {
@@ -48,7 +48,10 @@ export const AppRoutes: Routes = [
       {
         path: 'inventory/equipments',
         component: EquipmentsComponent,
-        resolve: [EquipmentResolverService, CategoriesResolverService],
+        resolve: [
+          EquipmentResolverService, 
+          CategoriesResolverService, 
+          UserDataResolverService],
         data: {
           title: 'Equipments',
           urls: [
@@ -60,7 +63,11 @@ export const AppRoutes: Routes = [
       {
         path: 'equipment-condition',
         component: EquipmentConditionComponent,
-        resolve: [EquipmentConditionResolverService, CategoriesResolverService],
+        resolve: [
+          EquipmentConditionResolverService,
+          EquipmentResolverService, 
+          CategoriesResolverService,
+          UserDataResolverService],
         data: {
           title: 'Equipment Condition',
           urls: [
@@ -100,6 +107,7 @@ export const AppRoutes: Routes = [
       {
         path: 'activity-log',
         component: ActivityLogComponent,
+        resolve: [ActivityLogResolverService],
         data: {
           title: 'Activity Log',
           urls: [
@@ -122,11 +130,12 @@ export const AppRoutes: Routes = [
       {
         path: 'manage-account',
         component: ProfileComponent,
+        resolve: [UserDataResolverService],
         data: {
           title: 'Manage Account',
           urls: [
             { title: 'Manage Account', url: '/manage-account' },
-            { title: 'Manage Account' },
+            { title: 'Manage Account' }, 
           ],
         },
       },

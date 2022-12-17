@@ -1,13 +1,7 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import { TEXTS } from '../../dashboardTexts';
-import {
-  EquipmentsWithSelectedStatus,
-  EQUIPMENT_DATA,
-} from 'src/app/Models/equipment.model';
-import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
-import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
-import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
+import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
+import { Category} from 'src/app/Models/category.model';
 import {
   ApexAxisChartSeries,
   ApexChart,

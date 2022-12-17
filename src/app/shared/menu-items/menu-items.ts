@@ -38,13 +38,13 @@ const MENUITEMS = [
     icon: 'av_timer',
     toolTip: 'Go back to Dashboard',
   },
-  {
-    state: 'manage-users',
-    name: 'Manage Users',
-    type: 'link',
-    icon: 'account_circle',
-    toolTip: 'Manage Users',
-  },
+  // {
+  //   state: 'manage-users',
+  //   name: 'Manage Users',
+  //   type: 'link',
+  //   icon: 'account_circle',
+  //   toolTip: 'Manage Users',
+  // },
   {
     state: 'equipment-condition',
     name: 'Equipment Condition',

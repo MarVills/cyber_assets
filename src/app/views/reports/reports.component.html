@@ -1,4 +1,4 @@
-<div fxLayout="row wrap">
+<div fxLayout="row wrap" class="all-pages">
   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
       <mat-card-content>
@@ -10,7 +10,7 @@
         </div>
 
         <div class="responsive-table">
-          <mat-table #table [dataSource]="dataSource">
+          <mat-table #table [dataSource]="dataSource"  class="all-pages">
             <ng-container matColumnDef="serialNumber">
               <mat-header-cell *matHeaderCellDef>
                 Serial Number

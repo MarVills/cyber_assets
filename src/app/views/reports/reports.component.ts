@@ -6,12 +6,6 @@ import { Subscription } from 'rxjs';
 import { Equipment } from 'src/app/Models/equipment.model';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
 import jsPDF from 'jspdf';
-// import pdf
-// import pdf
-// import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// import htmlToPdfmake from 'html-to-pdfmake';
 
 @Component({
   selector: 'app-reports',
@@ -19,13 +13,13 @@ import jsPDF from 'jspdf';
   styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
+  
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
-   @ViewChild('content') content!: ElementRef;
+  @ViewChild('content') content!: ElementRef;
   displayedColumns = ['serialNumber', 'equipment', 'category', 'status'];
   equipmentSubscription$!: Subscription;
   dataSource = new MatTableDataSource<Equipment>([]);
   
-
   constructor(private store: Store) {
     
   }
@@ -42,13 +36,40 @@ export class ReportsComponent implements OnInit {
 
   print() {
     // window.print();
-     let doc = new jsPDF();
-    //  autoTable(doc, "#basic-table");
-    doc.save("table.pdf");
-    //  doc.addPage(this.content.nativeElement, "protrait")
-    // doc.addPage(this.content.nativeElement, () {
-    //    doc.save("obrz.pdf");
-    // });
+    //  const doc = new jsPDF();
+     const elementHTML = document.querySelector('#printContent') as HTMLElement;
+    //  doc.text('Hello world!', 20, 20);
+    //  doc.text('This is client-side Javascript to generate a PDF.', 20, 30);
+
+    const doc = new jsPDF({
+      unit: 'px',
+      format: [842, 1191]// this.pdfOptions.value.pageFormat === 'A4' ? [595, 842] : [842, 1191]
+    });
+
+    // doc.html(elementHTML, {
+    //   callback: function(doc){
+    //     doc.save('document-html.pdf');
+    //   },
+    //   // margin: [10, 10, 10, 10],
+    //   // autoPaging: 'text',
+    //   // x: 0,
+    //   // y: 0,
+    //   // width: 190, 
+    //   // windowWidth: 675
+    // },
+    // )
+     const pages = document.querySelector('.all-pages') as HTMLElement;
+    // this.workspaceService.exportAllToPDF(pages);
+     doc.html(pages, {
+      callback: (doc: jsPDF) => {
+        doc.deletePage(doc.getNumberOfPages());
+        doc.save('pdf-export');
+      }
+    });
+
+    //  doc.save("table.pdf");
+
+    
   }
 
   refresh() {

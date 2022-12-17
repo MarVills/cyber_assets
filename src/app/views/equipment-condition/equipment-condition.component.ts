@@ -1,22 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { EQUIPMENT_CONDITIONS } from 'src/app/shared/equipment-conditions/equipment-conditions';
-import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
-import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 import {
   Equipment,
-  EQUIPMENT_DATA,
   EquipmentsWithSelectedStatus,
-  EquipmentDTO,
 } from 'src/app/Models/equipment.model';
-import { Category, CATEGORY_DATA } from 'src/app/Models/category.model';
+import { Category } from 'src/app/Models/category.model';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 import { Store } from '@ngrx/store';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
 import { Observable, of, Subscription } from 'rxjs';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
 import * as equipmentActions from '../../store/equipments/equipments.actions' 
+import { selectUserData } from 'src/app/store/auth/auth.selectors';
+import { ActivityLog } from 'src/app/Models/activity-log-model';
 
 @Component({
   selector: 'app-equipment-condition',
@@ -35,10 +32,10 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
   _searchEquipmentForm!: FormGroup;
   equipmentSubscription$!: Subscription;
   categoriesSubscription$!: Subscription;
+  selectedEquipment!: any;
 
   constructor(
     breakpointObserver: BreakpointObserver,
-    private equipmentsService: EquipmentsService,
     private formBuilder: FormBuilder,
     private store: Store
   ) {
@@ -66,6 +63,10 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
         this.setEquipmentsByCategories();
       });
     this.searchEquipmentForm();
+
+    this.store.select(selectEquipment).subscribe((response)=>{
+      this.selectedEquipment = response.selectedItem
+    })
   }
 
   searchEquipmentForm() {
@@ -117,32 +118,27 @@ export class EquipmentConditionComponent implements OnInit, OnDestroy {
     this.categorizedEquipment$ = of(this.equipmentsByCategory)
   }
 
-  onConditionChange(data: string) {
-    // const previousData = this.equipmentsService.toEditData;
-   
-    this.store.select(selectEquipment).subscribe((response)=>{
-     const latestData: Equipment = {
-      item_name: response.selectedItem.item_name,
-      category_id: response.selectedItem.category_id,
-      status: data,
-      description: response.selectedItem.description,
-      serial_no: response.selectedItem.serial_no,
-      user_id: 0,
-    };
+  onConditionChange(status: string) {
+  
+    this.store.select(selectUserData).subscribe((userResponse)=>{
+        const latestData: Equipment = {
+          item_name: this.selectedEquipment.payload.item_name,
+          category_id: this.selectedEquipment.payload.category_id,
+          status: status,
+          description: this.selectedEquipment.payload.description,
+          serial_no: this.selectedEquipment.payload.serial_no,
+          user_id: 0,
+        };
+        const updateEquipmentLog: ActivityLog = {
+            activity: `${this.selectedEquipment.item_name} item updated`,
+            user_id: userResponse.userData.id,
+            date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+          };
+      this.store.dispatch(equipmentActions.requestUpdateEquipmentACTION({id: this.selectedEquipment.payload.id!, payload: latestData, itemLog: updateEquipmentLog}))
     })
-    //  this.store.dispatch(equipmentActions.requestUpdateEquipmentACTION({id: response.selectedItem.id!, payload: latestData}))
-    
-
-    // this.equipmentsService.onEditEquipment(
-    //   this.equipmentsService.toEditData,
-    //   latestData
-    // );
-
-    
   }
 
   onSelectionClicked(data: Equipment) {
-    // this.equipmentsService.toEditData = data;
      this.store.dispatch(equipmentActions.requestSelectEquipmentACTION({payload: data }))
   }
 }

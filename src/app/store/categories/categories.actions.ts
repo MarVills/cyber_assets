@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { ActivityLog } from 'src/app/Models/activity-log-model';
 import { Category, CategoryDTO } from 'src/app/Models/category.model';
 
 export const requestFetchCategoriesACTION = createAction(
@@ -10,7 +11,7 @@ export const successFetchCategoriesACTION = createAction(
 );
 export const requestSelectCategoryACTION = createAction(
   '[ Categories ] Request Select Category',
-  props<{ payload: Category| null }>()
+  props<{ payload: Category }>()
 );
 export const successSelectCategoryACTION = createAction(
   '[ Categories ] Success Select Category',
@@ -18,7 +19,7 @@ export const successSelectCategoryACTION = createAction(
 );
 export const requestAddCategoryACTION = createAction(
   '[ Categories ] Request Add Category',
-  props<{ payload: Category }>()
+  props<{ payload: Category, categoryLog: ActivityLog}>()
 );
 export const successAddCategoryACTION = createAction(
   '[ Categories ] Success Add Category',
@@ -26,14 +27,14 @@ export const successAddCategoryACTION = createAction(
 );
 export const requestDeleteCategoryACTION = createAction(
   '[ Categories ] Request Delete Category',
-  props<{ id: number }>()
+  props<{ id: number, categoryLog: ActivityLog}>()
 );
 export const successDeleteCategoryACTION = createAction(
   '[ Categories ] Success Delete Category'
 );
 export const requestUpdateCategoryACTION = createAction(
   '[ Categories ] Request Update Category',
-  props<{ id: number; payload: Category }>()
+  props<{ id: number; payload: Category, categoryLog: ActivityLog}>()
 );
 export const successUpdateCategoryACTION = createAction(
   '[ Categories ] Success Update Category',

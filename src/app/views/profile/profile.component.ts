@@ -1,16 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountDetails } from 'src/app/Models/manage-account.model';
-import {
-  ManageAccountService,
-  accData,
-} from 'src/app/store/services/manage-account.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/store/services/auth/auth.service';
@@ -19,6 +9,12 @@ import {
   AngularFireStorageReference,
   AngularFireUploadTask,
 } from '@angular/fire/storage';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +30,6 @@ export class ProfileComponent implements OnInit {
   accDetails!: AccountDetails;
   hide = true;
   _accountDetailsForm!: FormGroup;
-  accountData = accData;
   base64Output!: string;
   selectedFiles?: FileList;
   currentFileUpload?: FileUpload;
@@ -47,7 +42,6 @@ export class ProfileComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
-    private manageAccount: ManageAccountService,
     private sharedService: SharedService,
     private storage: AngularFireStorage,
     private authService: AuthService
@@ -56,29 +50,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.manageAccount.onFetchAccDetails();
-
-    setTimeout(() => {
-      this._accountDetailsForm = this.formBuilder.group({
-        firstName: new FormControl(accData.firstName, Validators.required),
-        lastName: new FormControl(accData.lastName, Validators.required),
-        middleName: new FormControl(accData.middleName, Validators.required),
-        emailAddress: new FormControl(accData.emailAddress, [
-          Validators.required,
-          Validators.email,
-        ]),
-        contactNumber: new FormControl(
-          accData.contactNumber,
-          Validators.required
-        ),
-        profileImage: new FormControl(''),
-        description: new FormControl(accData.description, Validators.required),
-      });
-      this.accountData = accData;
-      this.downloadUrl = accData.profileImageID
-        ? accData.profileImageID
-        : this.downloadUrl;
-    }, 1000);
   }
 
   accountDetailsForm() {
@@ -115,27 +86,27 @@ export class ProfileComponent implements OnInit {
       .subscribe();
   };
 
-  updateAccount() {
-    var value = this._accountDetailsForm.value;
-    value.profileImageID = this.downloadUrl;
-    this.manageAccount
-      .onEditAccountDetails(this.manageAccount.userAccountDetails, {
-        firstName: value.firstName,
-        lastName: value.lastName,
-        middleName: value.middleName,
-        emailAddress: value.emailAddress,
-        contactNumber: value.contactNumber,
-        profileImageID: this.downloadUrl,
-        description: value.description,
-      })
-      .then(() => {
-        this.sharedService.openSnackBar(
-          'Account details updated successfuly',
-          'Ok'
-        );
-        this.accountData = accData;
-      });
-  }
+  // updateAccount() {
+  //   var value = this._accountDetailsForm.value;
+  //   value.profileImageID = this.downloadUrl;
+  //   this.manageAccount
+  //     .onEditAccountDetails(this.manageAccount.userAccountDetails, {
+  //       firstName: value.firstName,
+  //       lastName: value.lastName,
+  //       middleName: value.middleName,
+  //       emailAddress: value.emailAddress,
+  //       contactNumber: value.contactNumber,
+  //       profileImageID: this.downloadUrl,
+  //       description: value.description,
+  //     })
+  //     .then(() => {
+  //       this.sharedService.openSnackBar(
+  //         'Account details updated successfuly',
+  //         'Ok'
+  //       );
+  //       this.accountData = accData;
+  //     });
+  // }
 
   editAccStatus() {}
 }

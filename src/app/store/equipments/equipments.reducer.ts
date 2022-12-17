@@ -60,9 +60,9 @@ export const equipmentReducer = createReducer(
 
    on(
     equipmentsAction.requestDeleteEquipmentACTION,
-    (state: EquipmentsState, { id }) => {
+    (state: EquipmentsState, { payload }) => {
       const filterEquipment = state.equipment.filter(
-        (item:any)=>item.id != id)
+        (item:any)=>item.id != payload.id)
       return { ...state, equipment: filterEquipment };
     }
   ),

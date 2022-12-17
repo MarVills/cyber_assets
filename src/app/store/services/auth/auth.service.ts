@@ -24,7 +24,7 @@ import { AuthState } from '../../state/auth.state';
 })
 export class AuthService {
   userData: Observable<any>;
-  initialValue: AuthState = { uid: '', signedIn: false };
+  initialValue: AuthState = { uid: '', signedIn: false, userData: {}};
   loggedIn = new BehaviorSubject<AuthState>(this.initialValue);
   authState = false;
   loginState$!: Subscription;

@@ -8,6 +8,8 @@ import {
   FormControl,
 } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { selectUserData } from 'src/app/store/auth/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -21,12 +23,14 @@ export class LoginComponent implements OnInit {
   constructor(
     private routes: Router,
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private store: Store
   ) {
     this.loginForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   loginForm() {
     this._loginForm = this.formBuilder.group({
@@ -45,4 +49,5 @@ export class LoginComponent implements OnInit {
       this.authService.signIn(value.email, value.password);
     }
   }
+
 }

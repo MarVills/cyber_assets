@@ -17,7 +17,6 @@
           />
         </div>
         <h3 class="m-b-0">
-          {{ this.accountData.firstName }} {{ this.accountData.lastName }}
         </h3>
         <br />
         <h6 class="m-t-0">Admin</h6>
@@ -34,9 +33,7 @@
         <br />
         <div fxLayout="row" fxLayoutWrap="wrap" class="text-center">
           <div fxFlex="100">
-            <small class="m-0 font-light">{{
-              this.accountData.description
-            }}</small>
+            <small class="m-0 font-light"></small>
           </div>
         </div>
       </mat-card-content>
@@ -50,7 +47,7 @@
         <form
           class="basic-form"
           [formGroup]="_accountDetailsForm"
-          (ngSubmit)="updateAccount()"
+          
         >
           <div fxLayout="row wrap">
             <div fxFlex.gt-sm="33.33" fxFlex="100" class="">

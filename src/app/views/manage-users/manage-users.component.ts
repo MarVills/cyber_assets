@@ -5,7 +5,6 @@ import {
   ACCOUNT_DETAILS_DATA,
 } from 'src/app/Models/manage-account.model';
 import { AccountDialogComponent } from './components/account-dialog/account-dialog.component';
-import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -18,15 +17,9 @@ export class ManageUsersComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public manageAccount: ManageAccountService
   ) {}
 
-  ngOnInit(): void {
-    this.manageAccount.fetchAccounts();
-    setTimeout(() => {
-      this.accounts = ACCOUNT_DETAILS_DATA;
-    }, 1000);
-  }
+  ngOnInit(): void {}
 
   openDialog(action: string, obj: any) {
     obj.action = action;

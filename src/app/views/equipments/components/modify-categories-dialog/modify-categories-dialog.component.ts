@@ -6,7 +6,6 @@ import { Category, } from 'src/app/Models/category.model';
 import { EQUIPMENT_DATA } from 'src/app/Models/equipment.model';
 import { SharedService } from 'src/app/shared/shared.service';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
-import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 import * as categoryActions from '../../../../store/categories/categories.actions';
 import {
   FormBuilder,
@@ -15,6 +14,8 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
+import { selectUserData } from 'src/app/store/auth/auth.selectors';
+import { ActivityLog } from 'src/app/Models/activity-log-model';
 
 @Component({
   selector: 'app-modify-categories-dialog',
@@ -33,12 +34,12 @@ export class ModifyCategoriesDialogComponent implements OnInit {
   _editCategoryForm!: FormGroup;
   _searchCategoryForm!: FormGroup;
   tempEdit = false;
+  userData:any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public categoryData: any,
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
-    private categoriesService: CategoriesService,
     private store: Store,
   ) {}
 
@@ -46,6 +47,9 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     this.addCategoryForm();
     this.searchCategoryForm();
     this.updateCategoryState();
+    this.store.select(selectUserData).subscribe((response)=>{
+     this.userData = response
+    })
   }
 
   searchCategoryForm() {
@@ -83,7 +87,12 @@ export class ModifyCategoriesDialogComponent implements OnInit {
       category_name: value.addCategory,
       prefix: this.generatePrefix(),
     };
-    this.store.dispatch(categoryActions.requestAddCategoryACTION({payload: category}))
+    const addCategoryLog: ActivityLog = {
+      activity: `${value.addCategory} category added. `,
+      user_id: this.userData.userData.id,
+      date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+    };
+    this.store.dispatch(categoryActions.requestAddCategoryACTION({payload: category, categoryLog: addCategoryLog}))
     formDirective.resetForm();
   }
 
@@ -104,7 +113,12 @@ export class ModifyCategoriesDialogComponent implements OnInit {
             category_name: this._editCategoryForm.value.editCategory,
             prefix: category.prefix
           };
-          this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: category.id!, payload: saveCategory} ))
+          const updateCategoryLog: ActivityLog = {
+            activity: `${category.category_name} category updated. `,
+            user_id: this.userData.userData.id,
+            date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+          };
+          this.store.dispatch(categoryActions.requestUpdateCategoryACTION({id: category.id!, payload: saveCategory, categoryLog:updateCategoryLog} ))
           this.store.dispatch(categoryActions.requestSelectCategoryACTION({payload:{id:0, category_name:"", prefix: ""}}) )
           this.updateCategoryState();
       }
@@ -155,9 +169,12 @@ export class ModifyCategoriesDialogComponent implements OnInit {
     isDelete.subscribe((response: string) => {
       switch (response) {
         case 'confirm':
-          this.store.dispatch(
-          categoryActions.requestDeleteCategoryACTION({ id: category.id! })
-          );
+           const deleteCategoryLog: ActivityLog = {
+            activity: `${category.category_name} category deleted. `,
+            user_id: this.userData.userData.id,
+            date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+          };
+          this.store.dispatch( categoryActions.requestDeleteCategoryACTION({ id: category.id!, categoryLog: deleteCategoryLog }));
           break;
         case 'cancel':
           this.sharedService.openSnackBar('Deleting category canceld!');

@@ -4,24 +4,21 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ModifyEquipmentDialogComponent } from './components/modify-equipment-dialog/modify-equipment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { EquipmentsService } from 'src/app/store/services/inventory/equipments/equipments.service';
-import { CategoriesService } from 'src/app/store/services/inventory/equipments/categories.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Category } from 'src/app/Models/category.model';
 import { Equipment, EquipmentDTO } from 'src/app/Models/equipment.model';
 import { CATEGORY_DATA } from 'src/app/Models/category.model';
-import { AuthService } from 'src/app/store/services/auth/auth.service';
-import { ManageAccountService } from 'src/app/store/services/manage-account.service';
 import { ModifyCategoriesDialogComponent } from './components/modify-categories-dialog/modify-categories-dialog.component';
 import { selectEquipment } from 'src/app/store/equipments/equipments.selectors';
 import { Store } from '@ngrx/store';
 import { Observable, of, Subscription } from 'rxjs';
 import * as equipmentActions from '.././../store/equipments/equipments.actions';
 import { selectCategory } from 'src/app/store/categories/categories.selectors';
-import {
-  PerfectScrollbarComponent,
-  PerfectScrollbarDirective,
-} from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import { EquipmentsService } from '../../store/services/inventory/equipments/equipments.service';
+import { selectUserData } from 'src/app/store/auth/auth.selectors';
+import { ActivityLog } from 'src/app/Models/activity-log-model';
+
 
 @Component({
   selector: 'app-equipments',
@@ -54,11 +51,10 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   constructor(
     breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
-    private equipmentService: EquipmentsService,
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
-    private manageAccountService: ManageAccountService,
-    private store: Store
+    private store: Store,
+    private equipmentService: EquipmentsService,
   ) {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
       this.displayedColumns = result.matches
@@ -96,10 +92,8 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.manageAccountService.onFetchAccDetails();
     this.searchCategoryForm();
     this.searchEquipmentForm();
-    
   }
 
   searchCategoryForm() {
@@ -231,7 +225,14 @@ export class EquipmentsComponent implements OnInit, OnDestroy {
     isDelete.subscribe((response) => {
       switch (response) {
         case 'confirm':
-          this.store.dispatch(equipmentActions.requestDeleteEquipmentACTION({id: equipment.id!}))
+         this.store.select(selectUserData).subscribe((response)=>{
+           const deleteEquipmentLog: ActivityLog = {
+            activity: `${equipment.item_name} item deleted`,
+            user_id: response.userData.id,
+            date: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+          };
+           this.store.dispatch(equipmentActions.requestDeleteEquipmentACTION({payload: equipment, itemLog: deleteEquipmentLog}))
+         })
           break;
         case 'cancel':
           this.sharedService.openSnackBar('Deleting equipment canceld !');

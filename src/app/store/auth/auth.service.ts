@@ -18,4 +18,14 @@ export class AuthService {
     const url: string = '/api/auth/logout';
     return this.http.post(url, {});
   }
+
+  userData():Observable<any>{
+    const url: string = '/api/auth/me';
+    return this.http.post(url, {})
+  }
+
+  refresh():Observable<any>{
+    const url: string = '/api/auth/refresh';
+    return this.http.get(url, {})
+  }
 }

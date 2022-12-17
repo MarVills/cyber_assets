@@ -45,11 +45,12 @@ export class AuthEffects {
           switchMap((response: any) => {
             const res = response as Map<string, string>;
             localStorage.setItem('access_token', response.access_token);
+            this.store.dispatch(authActions.requestFetchUserData())
             this.routes.navigate(['/dashboard']);
             return [authActions.successAuthLogin({ payload: response })];
           }),
           catchError((error) => {
-            this.sharedService.openSnackBar(error.message);
+            this.sharedService.openSnackBar("login error", error.message);
             return of(authActions.authFailure(error));
           })
         );
@@ -67,6 +68,22 @@ export class AuthEffects {
             location.reload();
             this.sharedService.openSnackBar(response.message);
             return [authActions.successAuthLogout()];
+          }),
+          catchError((error) => {
+            return of(authActions.authFailure(error));
+          })
+        );
+      })
+    )
+  );
+
+   userDataEFFECT$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.requestFetchUserData),
+      switchMap(() => {
+        return this.authService.userData().pipe(
+          switchMap((response: any) => {
+            return [authActions.successFetchUserData({payload: response})];
           }),
           catchError((error) => {
             return of(authActions.authFailure(error));

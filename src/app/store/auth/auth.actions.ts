@@ -14,7 +14,19 @@ export const requestAuthLogout = createAction(
   '[Auth] Request Auth Logout '
   // props<{ payload: any }>()
 );
-export const successAuthLogout = createAction('[Auth] Success Auth Logout ');
+export const successAuthLogout = createAction(
+  '[Auth] Success Auth Logout '
+  );
+
+  export const requestFetchUserData = createAction(
+  '[Auth] Request Fetch User Data ',
+  // props<{ payload: any }>()
+);
+
+  export const successFetchUserData = createAction(
+  '[Auth] Success Fetch User Data ',
+  props<{ payload: any }>()
+)
 
 export const authFailure = createAction(
   '[Auth] Auth Failure',

@@ -1,23 +1,22 @@
-import { state } from '@angular/animations';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as categoryActions from '../categories/categories.actions';
 import { CategoryService } from './category.service';
+import * as logActions from '../activity-log/activity-log.actions';
 
 @Injectable()
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private fireStore: AngularFirestore,
     private sharedService: SharedService,
     private categoryService: CategoryService,
     private router: Router,
+    private store: Store,
   ) {}
 
   fetchCategoriesEFFECT$: Observable<Action> = createEffect(() =>
@@ -65,10 +64,11 @@ export class CategoriesEffects {
   addCategoryEFFECT$: Observable<Action> = createEffect(() => {
     return this.actions$.pipe(
       ofType(categoryActions.requestAddCategoryACTION),
-      switchMap((data) => {
-        return this.categoryService.addCategory(data.payload).pipe(
+      switchMap((payload) => {
+        return this.categoryService.addCategory(payload.payload).pipe(
           switchMap((response)=>{
             this.sharedService.openSnackBar('Category added successfuly', 'Ok');
+            this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.categoryLog}))
             return [categoryActions.successAddCategoryACTION({payload: response})];
           }),
           catchError((error) => {
@@ -84,15 +84,11 @@ export class CategoriesEffects {
   updateCategoryEffect$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(categoryActions.requestUpdateCategoryACTION),
-      switchMap((data) => {
-
-        return this.categoryService.updateCategory(data.payload, data.id).pipe(
+      switchMap((payload) => {
+        return this.categoryService.updateCategory(payload.payload, payload.id).pipe(
           switchMap((response)=>{
-             this.sharedService.openSnackBar(
-              'Category updated successfuly',
-              'Ok'
-            );
-            console.log("response", response)
+            this.sharedService.openSnackBar('Category updated successfuly','Ok');
+            this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.categoryLog}))
             return [categoryActions.successUpdateCategoryACTION(response)];
           }),
           catchError((error) => {
@@ -111,10 +107,8 @@ export class CategoriesEffects {
       switchMap((payload) => {
         return this.categoryService.deleteCategory(payload.id).pipe(
           switchMap((response)=>{
-            this.sharedService.openSnackBar(
-              'Category deleted successfuly',
-              'Ok'
-            );
+            this.sharedService.openSnackBar('Category deleted successfuly','Ok');
+            this.store.dispatch(logActions.requestAddActivityLogACTION({payload: payload.categoryLog}))
             return [categoryActions.successDeleteCategoryACTION()];
           }),
             catchError((error) => {
