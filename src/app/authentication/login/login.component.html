@@ -2,10 +2,6 @@
 class="login-register" 
 style="background-image:url(assets/images/background/login-office-bg.jpg);">
     <div class="login-register-box">
-        <!-- <div class="bg-info text-white m-b-10 text-center p-t-10 p-b-10 alert-box">
-            <span class="m-r-10">Username : admin</span> |
-            <span class="m-l-10">Password : admin123</span>
-        </div> -->
         <mat-card class="m-t-10" style="width:400px;">
         <mat-card-content>
         <form id="loginform" [formGroup]="_loginForm" (ngSubmit)="onLogin()">
@@ -23,11 +19,9 @@ style="background-image:url(assets/images/background/login-office-bg.jpg);">
                         matInput 
                         placeholder="Username" 
                         required="" 
-                        formControlName="email"
-                        >
+                        formControlName="email" >
                     </mat-form-field>
                 </div>
-              
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                     <mat-form-field appearance="outline">
                         <mat-label>Password</mat-label>
@@ -39,19 +33,6 @@ style="background-image:url(assets/images/background/login-office-bg.jpg);">
                         formControlName="password">
                     </mat-form-field>
                 </div>
-                
-                <!-- <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                    <mat-checkbox 
-                    color="warn"
-                    formControlName="rememberMe">
-                    Remember me
-                    </mat-checkbox>
-                </div> -->
-                
-                <!-- <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" class="text-right">
-                    <a [routerLink]="['/authentication/forgot-password']" class="link">Forgot pwd?</a>
-                </div> -->
-            
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                     <button mat-raised-button color="primary" class="btn-block btn-lg m-t-20 m-b-20" type="submit">Login</button>
                 </div>
